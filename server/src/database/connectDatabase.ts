@@ -28,9 +28,6 @@ const runMigrations = async () => {
         context: database.getQueryInterface(),
         logger: console
     });
-
-    console.log('TEST TEST TEST TEST');
-
     const migrations = await migrator.up();
     logInfo('Migrations are up to date', { 
         files: migrations.map(migration => migration.name) 
