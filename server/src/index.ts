@@ -1,13 +1,11 @@
 import app from './app';
 import { PORT } from './serverUtils/config';
-import { logInfo, logError } from './serverUtils/logger';
-import database from './database/connectDatabase';
+import { logInfo } from './serverUtils/logger';
+import { connectDatabase } from './database/connectDatabase';
 
-// Test:
-try {
-    database.sync({ force: false });
-} catch (error) {
-    logError(error);
+const startServer = async () => {
+    await connectDatabase();
+    app.listen(PORT, () => logInfo(`Starting server at port ${PORT}...`));
 };
 
-app.listen(PORT, () => logInfo(`Starting server at port ${PORT}...`));
+startServer();
