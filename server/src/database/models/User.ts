@@ -12,10 +12,11 @@ const User = database.define('User', {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    password: {
+    passwordHash: {
         type: DataTypes.STRING,
         allowNull: false
-    }
-});
+    }},
+    { tableName: 'users', timestamps: false }
+);
 
 export default User;

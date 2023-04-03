@@ -1,6 +1,6 @@
 import { DataTypes, QueryInterface } from 'sequelize';
 
-export const migration = {
+const migration = {
     up: async ({ context: queryInterface }: { context: QueryInterface }): Promise<void> => {
         await queryInterface.createTable('users', {
             id: {
@@ -13,7 +13,7 @@ export const migration = {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            password: {
+            passwordHash: {
                 type: DataTypes.STRING,
                 allowNull: false
             }
@@ -23,3 +23,5 @@ export const migration = {
         await queryInterface.dropTable('users');
     }
 };
+
+export = migration;

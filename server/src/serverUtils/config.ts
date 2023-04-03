@@ -12,3 +12,5 @@ export const POSTGRES_USER: string = process.env.POSTGRES_USER || '';
 export const POSTGRES_PASSWORD: string = process.env.POSTGRES_PASSWORD || '';
 
 export const POSTGRES_HOST: string = process.env.POSTGRES_HOST || '';
+
+export const JWT_SECRET = process.env.JWT_SECRET || '';

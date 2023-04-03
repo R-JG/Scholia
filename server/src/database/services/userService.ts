@@ -1,9 +1,10 @@
 import User from '../models/User';
+import { NewUser } from '../../typeUtils/types';
 
 const getAll = async () => await User.findAll();
 
 const getOne = async (primaryKey: string) => await User.findByPk(primaryKey);
 
-const createOne = async () => {};
+const createOne = async (newUserData: NewUser) => await User.create(newUserData);
 
 export default { getAll, getOne, createOne };

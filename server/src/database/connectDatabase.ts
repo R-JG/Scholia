@@ -42,5 +42,6 @@ export const connectDatabase = async () => {
     } catch (error) {
         logInfo('Could not connect to the database');
         logError(error);
+        process.exit(1);
     };
 };
