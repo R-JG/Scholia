@@ -7,4 +7,6 @@ const getOne = async (primaryKey: string) => await User.findByPk(primaryKey);
 
 const createOne = async (newUserData: NewUser) => await User.create(newUserData);
 
-export default { getAll, getOne, createOne };
+const deleteOne = async (primaryKey: string) => await User.destroy({ where: { id: primaryKey } });
+
+export default { getAll, getOne, createOne, deleteOne };

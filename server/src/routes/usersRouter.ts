@@ -9,4 +9,6 @@ usersRouter.get('/:id', usersController.getOne);
 
 usersRouter.post('/', usersController.createOne);
 
+usersRouter.delete('/:id', usersController.deleteOne);
+
 export default usersRouter;

@@ -43,4 +43,15 @@ const createOne = async (
     };
 };
 
-export default { getAll, getOne, createOne };
+const deleteOne = async (
+        request: Request, response: Response, next: NextFunction
+    ) => {
+    try {
+        const deleteResult = await userService.deleteOne(request.params.id);
+        response.json(deleteResult);
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { getAll, getOne, createOne, deleteOne };
