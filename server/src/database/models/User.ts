@@ -1,7 +1,8 @@
 import { DataTypes } from 'sequelize';
+import { UserModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
 
-const User = database.define('User', {
+const User = database.define<UserModel>('User', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -11,6 +12,7 @@ const User = database.define('User', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
     },
     passwordHash: {
         type: DataTypes.STRING,

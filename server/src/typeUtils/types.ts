@@ -1,4 +1,4 @@
-
+import { Model } from 'sequelize';
 
 export interface User {
     id: number,
@@ -12,3 +12,5 @@ export interface UserEntry {
     username: string,
     password: string
 };
+
+export interface UserModel extends User, Model {};

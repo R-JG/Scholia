@@ -1,12 +1,22 @@
 import User from '../models/User';
-import { NewUser } from '../../typeUtils/types';
+import { NewUser, UserModel } from '../../typeUtils/types';
 
-const getAll = async () => await User.findAll();
+const getAll = async (): Promise<UserModel[]> => await User.findAll();
 
-const getOne = async (primaryKey: string) => await User.findByPk(primaryKey);
+const getOneById = async (primaryKey: string): Promise<UserModel | null> => {
+    return await User.findByPk(primaryKey);
+};
 
-const createOne = async (newUserData: NewUser) => await User.create(newUserData);
+const getOneByUsername = async (username: string): Promise<UserModel | null> => {
+    return await User.findOne({ where: { username } });
+};
 
-const deleteOne = async (primaryKey: string) => await User.destroy({ where: { id: primaryKey } });
+const createOne = async (newUserData: NewUser): Promise<UserModel> => {
+    return await User.create(newUserData);
+};
 
-export default { getAll, getOne, createOne, deleteOne };
+const deleteOne = async (primaryKey: string): Promise<number> => {
+    return await User.destroy({ where: { id: primaryKey } });
+};
+
+export default { getAll, getOneById, getOneByUsername, createOne, deleteOne };

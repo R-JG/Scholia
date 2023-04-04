@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserEntry, NewUser } from '../typeUtils/types';
+import { UserEntry, NewUser, UserModel } from '../typeUtils/types';
 import { parseUserEntry } from '../typeUtils/validation';
 import { createPasswordHash } from '../serverUtils/encryption';
 import userService from '../database/services/userService';
@@ -8,7 +8,7 @@ const getAll = async (
         _request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
     try {
-        const allUsers = await userService.getAll();
+        const allUsers: UserModel[] = await userService.getAll();
         response.json(allUsers);
     } catch (error) {
         next(error);
@@ -19,7 +19,7 @@ const getOne = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
     try {
-        const user = await userService.getOne(request.params.id);
+        const user: UserModel | null = await userService.getOneById(request.params.id);
         response.json(user);
     } catch (error) {
         next(error);
@@ -36,7 +36,7 @@ const createOne = async (
             username: newUserEntry.username,
             passwordHash
         };
-        const createdUser = await userService.createOne(newUser);
+        const createdUser: UserModel = await userService.createOne(newUser);
         response.json(createdUser);
     } catch (error) {
         next(error);
@@ -47,7 +47,7 @@ const deleteOne = async (
         request: Request, response: Response, next: NextFunction
     ) => {
     try {
-        const deleteResult = await userService.deleteOne(request.params.id);
+        const deleteResult: number = await userService.deleteOne(request.params.id);
         response.json(deleteResult);
     } catch (error) {
         next(error);
