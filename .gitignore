@@ -5,4 +5,7 @@ server/.env
 server/docker-compose.db.yml
 server/docker-compose.yml
 
+client/node_modules
+client/dist
+
 notes.md

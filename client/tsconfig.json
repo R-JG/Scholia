@@ -3,7 +3,6 @@
     "target": "es2016",
     "module": "commonjs",
     "resolveJsonModule": true,
-    "outDir": "./build/server",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -11,5 +10,15 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-  }
+    "allowJs": false,
+
+    "lib": ["DOM", "DOM.Iterable", "es2016"],
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
