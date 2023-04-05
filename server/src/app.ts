@@ -7,6 +7,7 @@ import loginRouter from './routes/loginRouter';
 
 const app = express();
 
+app.use(express.static('./build/client'));
 app.use(express.json());
 app.use(requestLogger);
 

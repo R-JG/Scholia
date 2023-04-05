@@ -37,7 +37,7 @@ const createOne = async (
             passwordHash
         };
         const createdUser: UserModel = await userService.createOne(newUser);
-        response.json(createdUser);
+        response.json({ username: createdUser.username });
     } catch (error) {
         next(error);
     };
