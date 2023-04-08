@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UserToken } from '../typeUtils/types';
+import { homeRoute, dashboardRoute } from '../routesConfig';
 import Home from './Home';
 import Dashboard from './Dashboard';
+import '../css/App.css';
 
 const App = () => {
 
@@ -11,18 +13,21 @@ const App = () => {
     console.log(user);
 
     return (
-        <BrowserRouter>
-            <div className='App'>
+        <div className='App'>
+            <BrowserRouter>
                 <Routes>
-                    <Route path='/' element={
-                        <Home setUser={setUser} />
+                    <Route path={homeRoute} element={
+                        <Home 
+                            user={user}
+                            setUser={setUser}
+                        />
                     } />
-                    <Route path='/dashboard' element={
-                        <Dashboard />
+                    <Route path={dashboardRoute} element={
+                        (user) ? <Dashboard /> : <Navigate replace to={homeRoute} />
                     } />
                 </Routes>
-            </div>
-        </BrowserRouter>
+            </BrowserRouter>
+        </div>
     );
 };
 

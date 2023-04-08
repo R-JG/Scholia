@@ -1,25 +1,26 @@
 import { UserToken } from '../typeUtils/types';
-import usersService from '../services/usersService';
-import loginService from '../services/loginService';
+import LoginForm from './LoginForm';
+import '../css/Home.css';
 
 interface Props {
-    setUser: (userToken: UserToken | null) => void
+    user: UserToken | null,
+    setUser: (userData: UserToken | null) => void
 };
 
-const Home = (props: Props) => {
-
-    const createUser = (username: string, password: string): void => {
-        usersService.createUser({ username, password });
-    };
-
-    const login = (username: string, password: string): void => {
-        loginService.login({ username, password }).then(
-            userToken => props.setUser(userToken)
-        );
-    };
+const Home = ({ 
+    user, 
+    setUser
+}: Props) => {
 
     return (
-        <div className='Home'></div>
+        <div className='Home'>
+            <div>
+                {!user && 
+                <LoginForm 
+                    setUser={setUser}
+                />}
+            </div>
+        </div>
     );
 };
 
