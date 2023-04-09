@@ -1,11 +1,21 @@
-import { Link } from 'react-router-dom';
+import { UserToken } from '../typeUtils/types';
+import UserHeader from './UserHeader';
 import '../css/Dashboard.css';
 
-const Dashboard = () => {
+interface Props {
+    user: UserToken | null,
+    setUser: (userData: UserToken | null) => void
+};
+
+const Dashboard = ({ user, setUser }: Props) => {
     return (
         <div className='Dashboard'>
+            {user && 
+            <UserHeader 
+                user={user} 
+                setUser={setUser}
+            />}
             <h1>Dashboard</h1>
-            <Link to='/'>Home Test Link</Link>
         </div>
     );
 };

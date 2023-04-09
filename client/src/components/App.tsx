@@ -23,7 +23,12 @@ const App = () => {
                         />
                     } />
                     <Route path={dashboardRoute} element={
-                        (user) ? <Dashboard /> : <Navigate replace to={homeRoute} />
+                        (user) 
+                        ? <Dashboard 
+                            user={user} 
+                            setUser={setUser}
+                        /> 
+                        : <Navigate replace to={homeRoute} />
                     } />
                 </Routes>
             </BrowserRouter>
