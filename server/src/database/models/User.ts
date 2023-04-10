@@ -18,7 +18,7 @@ const User = database.define<UserModel>('User', {
         type: DataTypes.STRING,
         allowNull: false
     }},
-    { tableName: 'users', timestamps: false }
+    { tableName: 'users', underscored: true, timestamps: false }
 );
 
 export default User;

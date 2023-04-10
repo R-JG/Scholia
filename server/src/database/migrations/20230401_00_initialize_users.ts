@@ -14,11 +14,11 @@ const migration = {
                 allowNull: false,
                 unique: true
             },
-            passwordHash: {
+            password_hash: {
                 type: DataTypes.STRING,
                 allowNull: false
             }
-        })
+        });
     },
     down: async ({ context: queryInterface }: { context: QueryInterface }): Promise<void> => {
         await queryInterface.dropTable('users');
