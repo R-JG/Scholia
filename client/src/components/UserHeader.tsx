@@ -2,12 +2,12 @@ import { UserToken } from '../typeUtils/types';
 
 interface Props {
     user: UserToken | null,
-    setUser: (userData: UserToken | null) => void
+    updateUser: (userData: UserToken | null) => void
 };
 
-const UserHeader = ({ user, setUser }: Props) => {
+const UserHeader = ({ user, updateUser }: Props) => {
 
-    const logout = (): void => setUser(null);
+    const logout = (): void => updateUser(null);
 
     return (
         <header className='UserHeader'>

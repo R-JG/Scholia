@@ -7,11 +7,11 @@ import loginService from '../services/loginService';
 import '../css/LoginForm.css';
 
 interface Props {
-    setUser: (userData: UserToken | null) => void
+    updateUser: (userData: UserToken | null) => void
 };
 
 const LoginForm = ({
-    setUser
+    updateUser
 }: Props) => {
 
     const [formMode, setFormMode] = useState<'login' | 'create'>('login');
@@ -27,7 +27,7 @@ const LoginForm = ({
 
     const login = (username: string, password: string): void => {
         loginService.login({ username, password }).then(userToken => {
-            setUser(userToken);
+            updateUser(userToken);
             navigate(dashboardRoute);
         });
     };

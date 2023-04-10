@@ -4,16 +4,16 @@ import '../css/Dashboard.css';
 
 interface Props {
     user: UserToken | null,
-    setUser: (userData: UserToken | null) => void
+    updateUser: (userData: UserToken | null) => void
 };
 
-const Dashboard = ({ user, setUser }: Props) => {
+const Dashboard = ({ user, updateUser }: Props) => {
     return (
         <div className='Dashboard'>
             {user && 
             <UserHeader 
                 user={user} 
-                setUser={setUser}
+                updateUser={updateUser}
             />}
             <h1>Dashboard</h1>
         </div>
