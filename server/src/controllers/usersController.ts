@@ -59,8 +59,8 @@ const getSomeByUsername = async (
     ): Promise<void> => {
     try {
         const searchTerm: string = request.params.searchTerm;
-        const searchResult = await userService.getSomeByUsername(searchTerm);
-        response.json(searchResult);
+        const searchResult: UserModel[] = await userService.getSomeByUsername(searchTerm);
+        response.json(searchResult.map(user => ({ username: user.username })));
     } catch (error) {
         next(error);
     };
