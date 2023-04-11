@@ -23,13 +23,9 @@ const parseNumberProp = (prop: unknown): number => {
 };
 
 export const parseUser = (params: unknown): User => {
-    if (!params || (typeof params !== 'object')) {
+    if (!params || (typeof params !== 'object') 
+    || !(('id' in params) && ('username' in params) && ('passwordHash' in params))) {
         throw new Error('missing or incorrectly formatted data for type User');
-    };
-    if (!(('id' in params) 
-    && ('username' in params) 
-    && ('passwordHash' in params))) {
-        throw new Error('some properties are missing for type User');
     };
     const user: User = {
         id: parseNumberProp(params.id),
@@ -40,12 +36,9 @@ export const parseUser = (params: unknown): User => {
 };
 
 export const parseNewUser = (params: unknown): NewUser => {
-    if (!params || (typeof params !== 'object')) {
+    if (!params || (typeof params !== 'object') 
+    || !(('username' in params) && ('passwordHash' in params))) {
         throw new Error('missing or incorrectly formatted data for type NewUser');
-    };
-    if (!(('username' in params) 
-    && ('passwordHash' in params))) {
-        throw new Error('some properties are missing for type NewUser');
     };
     const newUser: NewUser = {
         username: parseStringProp(params.username),
@@ -55,12 +48,9 @@ export const parseNewUser = (params: unknown): NewUser => {
 };
 
 export const parseUserEntry = (params: unknown): UserEntry => {
-    if (!params || (typeof params !== 'object')) {
+    if (!params || (typeof params !== 'object') 
+    || !(('username' in params) && ('password' in params))) {
         throw new Error('missing or incorrectly formatted data for type UserEntry');
-    };
-    if (!(('username' in params) 
-    && ('password' in params))) {
-        throw new Error('some properties are missing for type UserEntry');
     };
     const userEntry: UserEntry = {
         username: parseStringProp(params.username),

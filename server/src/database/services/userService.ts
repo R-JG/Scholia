@@ -1,5 +1,6 @@
 import User from '../models/User';
 import { NewUser, UserModel } from '../../typeUtils/types';
+import { Op } from 'sequelize';
 
 const getAll = async (): Promise<UserModel[]> => await User.findAll();
 
@@ -11,6 +12,10 @@ const getOneByUsername = async (username: string): Promise<UserModel | null> => 
     return await User.findOne({ where: { username } });
 };
 
+const getSomeByUsername = async (searchTerm: string): Promise<UserModel[]> => {
+    return await User.findAll({ where: { username: { [Op.like]: `%${searchTerm}%` } } });
+};
+
 const createOne = async (newUserData: NewUser): Promise<UserModel> => {
     return await User.create(newUserData);
 };
@@ -19,4 +24,4 @@ const deleteOne = async (primaryKey: string): Promise<number> => {
     return await User.destroy({ where: { id: primaryKey } });
 };
 
-export default { getAll, getOneById, getOneByUsername, createOne, deleteOne };
+export default { getAll, getOneById, getOneByUsername, getSomeByUsername, createOne, deleteOne };

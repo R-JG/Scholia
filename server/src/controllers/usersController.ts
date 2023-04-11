@@ -45,7 +45,7 @@ const createOne = async (
 
 const deleteOne = async (
         request: Request, response: Response, next: NextFunction
-    ) => {
+    ): Promise<void> => {
     try {
         const deleteResult: number = await userService.deleteOne(request.params.id);
         response.json(deleteResult);
@@ -54,4 +54,16 @@ const deleteOne = async (
     };
 };
 
-export default { getAll, getOne, createOne, deleteOne };
+const getSomeByUsername = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const searchTerm: string = request.params.searchTerm;
+        const searchResult = await userService.getSomeByUsername(searchTerm);
+        response.json(searchResult);
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { getAll, getOne, createOne, deleteOne, getSomeByUsername };
