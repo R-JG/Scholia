@@ -17,7 +17,7 @@ const Dashboard = ({ user, updateUser }: Props) => {
                 updateUser={updateUser}
             />}
             <h1>Dashboard</h1>
-            <NetworkPanel />
+            <NetworkPanel user={user} />
         </div>
     );
 };

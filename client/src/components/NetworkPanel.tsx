@@ -1,8 +1,14 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { User } from '../typeUtils/types';
+import { User, UserToken } from '../typeUtils/types';
 import usersService from '../services/usersService';
 
-const NetworkPanel = () => {
+interface Props {
+    user: UserToken | null
+};
+
+const NetworkPanel = ({ user }: Props) => {
+
+    if (!user) return <div className='NetworkPanel'></div>;
 
     const [userSearchValue, setUserSearchValue] = useState('');
     const [userSearchResult, setUserSearchResult] = useState<User[]>([]);
@@ -14,8 +20,9 @@ const NetworkPanel = () => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         if (userSearchValue === '') return;
-        usersService.searchByUsername(userSearchValue)
-        .then(users => setUserSearchResult(users));
+        usersService.searchByUsername(userSearchValue, user.token).then(users => 
+            setUserSearchResult(users)
+        );
     };
 
     return (

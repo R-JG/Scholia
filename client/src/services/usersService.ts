@@ -15,9 +15,12 @@ const createUser = async (newUserData: UserEntry): Promise<User | null> => {
     };
 };
 
-const searchByUsername = async (searchTerm: string): Promise<User[]> => {
+const searchByUsername = async (searchTerm: string, token: string): Promise<User[]> => {
     try {
-        const response = await axios.get(`${baseUrl}/search/${searchTerm}`);
+        const response = await axios.get(
+            `${baseUrl}/search/${searchTerm}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         const usersResult: User[] = parseUserArray(response.data);
         return usersResult;
     } catch (error) {
