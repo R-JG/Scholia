@@ -1,4 +1,4 @@
-import { User, NewUser, UserEntry } from './types';
+import { User, NewUser, UserEntry, Token, GroupEntry } from './types';
 
 const isString = (params: unknown): params is string => {
     return ((typeof params === 'string') || (params instanceof String));
@@ -57,4 +57,24 @@ export const parseUserEntry = (params: unknown): UserEntry => {
         password: parseStringProp(params.password)
     };
     return userEntry;
+};
+
+export const parseToken = (params: unknown): Token => {
+    if (!params || (typeof params !== 'object') || !('username' in params)) {
+        throw new Error('missing or incorrectly formatted data for type Token');
+    };
+    const token: Token = {
+        username: parseStringProp(params.username)
+    };
+    return token;
+};
+
+export const parseGroupEntry = (params: unknown): GroupEntry => {
+    if (!params || (typeof params !== 'object') || !('name' in params)) {
+        throw new Error('missing or incorrectly formatted data for type GroupEntry');
+    };
+    const groupEntry: GroupEntry = {
+        name: parseStringProp(params.name)
+    };
+    return groupEntry;
 };

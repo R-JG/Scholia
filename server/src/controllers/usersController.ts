@@ -4,6 +4,7 @@ import { parseUserEntry } from '../typeUtils/validation';
 import { createPasswordHash } from '../serverUtils/encryption';
 import userService from '../database/services/userService';
 
+/*
 const getAll = async (
         _request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
@@ -25,6 +26,7 @@ const getOne = async (
         next(error);
     };
 };
+*/
 
 const createOne = async (
         request: Request, response: Response, next: NextFunction
@@ -43,6 +45,7 @@ const createOne = async (
     };
 };
 
+/*
 const deleteOne = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
@@ -53,6 +56,7 @@ const deleteOne = async (
         next(error);
     };
 };
+*/
 
 const getSomeByUsername = async (
         request: Request, response: Response, next: NextFunction
@@ -66,4 +70,4 @@ const getSomeByUsername = async (
     };
 };
 
-export default { getAll, getOne, createOne, deleteOne, getSomeByUsername };
+export default { createOne, getSomeByUsername };

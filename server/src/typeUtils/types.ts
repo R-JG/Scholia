@@ -14,3 +14,11 @@ export interface UserEntry {
 };
 
 export interface UserModel extends User, Model {};
+
+export interface Token {
+    username: string,
+};
+
+export interface GroupEntry {
+    name: string
+};
