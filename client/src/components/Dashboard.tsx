@@ -1,5 +1,6 @@
 import { UserToken } from '../typeUtils/types';
 import UserHeader from './UserHeader';
+import NetworkPanel from './NetworkPanel';
 import '../css/Dashboard.css';
 
 interface Props {
@@ -16,6 +17,7 @@ const Dashboard = ({ user, updateUser }: Props) => {
                 updateUser={updateUser}
             />}
             <h1>Dashboard</h1>
+            <NetworkPanel />
         </div>
     );
 };
