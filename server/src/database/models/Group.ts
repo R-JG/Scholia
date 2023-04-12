@@ -1,14 +1,15 @@
 import { DataTypes } from 'sequelize';
+import { GroupModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
 
-const Group = database.define('Group', {
+const Group = database.define<GroupModel>('Group', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    name: {
+    groupName: {
         type: DataTypes.STRING,
         allowNull: false
     }},

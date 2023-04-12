@@ -19,6 +19,25 @@ export interface Token {
     username: string,
 };
 
-export interface GroupEntry {
-    name: string
+export interface Group {
+    id: number,
+    groupName: string
 };
+
+export type NewGroup = Omit<Group, 'id'>;
+
+export interface GroupEntry {
+    groupName: string
+};
+
+export interface GroupModel extends Group, Model {};
+
+export interface GroupMembership {
+    id: number,
+    groupId: number,
+    userId: number
+};
+
+export type NewGroupMembership = Omit<GroupMembership, 'id'>;
+
+export interface GroupMembershipModel extends GroupMembership, Model {};

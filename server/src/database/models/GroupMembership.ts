@@ -1,7 +1,8 @@
 import { DataTypes } from 'sequelize';
+import { GroupMembershipModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
 
-const GroupMembership = database.define('GroupMembership', {
+const GroupMembership = database.define<GroupMembershipModel>('GroupMembership', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

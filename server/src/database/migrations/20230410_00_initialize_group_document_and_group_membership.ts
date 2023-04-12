@@ -9,7 +9,7 @@ const migration = {
                 allowNull: false,
                 primaryKey: true
             },
-            name: {
+            group_name: {
                 type: DataTypes.STRING,
                 allowNull: false
             }

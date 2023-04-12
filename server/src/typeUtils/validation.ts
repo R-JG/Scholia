@@ -70,11 +70,11 @@ export const parseToken = (params: unknown): Token => {
 };
 
 export const parseGroupEntry = (params: unknown): GroupEntry => {
-    if (!params || (typeof params !== 'object') || !('name' in params)) {
+    if (!params || (typeof params !== 'object') || !('groupName' in params)) {
         throw new Error('missing or incorrectly formatted data for type GroupEntry');
     };
     const groupEntry: GroupEntry = {
-        name: parseStringProp(params.name)
+        groupName: parseStringProp(params.groupName)
     };
     return groupEntry;
 };
