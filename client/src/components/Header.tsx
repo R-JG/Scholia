@@ -1,4 +1,5 @@
 import { UserToken } from '../typeUtils/types';
+import '../css/Header.css';
 
 interface Props {
     user: UserToken | null,
@@ -10,9 +11,9 @@ const UserHeader = ({ user, updateUser }: Props) => {
     const logout = (): void => updateUser(null);
 
     return (
-        <header className='UserHeader'>
-            <h1>{(user) ? user.username : ''}</h1>
-            <button className='button--logout' onClick={logout}>Logout</button>
+        <header className='Header'>
+            {user && <h1 className='header--username'>{user.username}</h1>}
+            {user && <button className='header--logout-button' onClick={logout}>Logout</button>}
         </header>
     );
 };

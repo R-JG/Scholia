@@ -55,27 +55,42 @@ const LoginForm = ({
 
     return (
         <form className='LoginForm' onSubmit={handleSubmit}>
-            <h1>{(formMode === 'login') ? 'Login' : 'Create Account'}</h1>
-            <button type='button' onClick={handleFormModeButton}>
-                {(formMode === 'login') ? 'Create Account' : 'Login'}
+            <h1 className='login-form--title'>
+                {(formMode === 'login') ? 'Login' : 'Create Account'}
+            </h1>
+            <button 
+                className='login-form--mode-button'
+                type='button' 
+                onClick={handleFormModeButton}
+            > {(formMode === 'login') ? 'Create Account' : 'Login'}
             </button>
-            <label htmlFor='username-input'>Username</label>
+            <label 
+                className='login-form--username-label' 
+                htmlFor='login-form--username-input'
+            >Username
+            </label>
             <input 
-                id='username-input' 
+                id='login-form--username-input' 
                 name='username' 
                 type='text' 
                 value={formValues.username}
                 onChange={handleInputChange}
             />
-            <label htmlFor='password-input'>Password</label>
+            <label 
+                className='login-form--password-label' 
+                htmlFor='login-form--password-input'
+            >Password
+            </label>
             <input 
-                id='password-input' 
+                id='login-form--password-input' 
                 name='password' 
                 type='password' 
                 value={formValues.password}
                 onChange={handleInputChange}
             />
-            <button>Enter</button>
+            <button className='login-form--submit-button'>
+                Enter
+            </button>
         </form>
     );
 };

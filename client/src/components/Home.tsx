@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { UserToken } from '../typeUtils/types';
 import { dashboardRoute } from '../routesConfig';
 import LoginForm from './LoginForm';
-import UserHeader from './UserHeader';
+import Header from './Header';
 import '../css/Home.css';
 
 interface Props {
@@ -17,17 +17,15 @@ const Home = ({
 
     return (
         <div className='Home'>
-            <UserHeader 
+            <Header 
                 user={user} 
                 updateUser={updateUser} 
             />
-            <div>
-                {(!user) 
-                ? <LoginForm 
-                    updateUser={updateUser}
-                />
-                : <Link to={dashboardRoute}>Go to dashboard</Link>}
-            </div>
+            {(!user) 
+            ? <LoginForm 
+                updateUser={updateUser}
+            />
+            : <Link to={dashboardRoute}>Go to dashboard</Link>}
         </div>
     );
 };

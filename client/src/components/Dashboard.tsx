@@ -1,5 +1,5 @@
 import { UserToken } from '../typeUtils/types';
-import UserHeader from './UserHeader';
+import UserHeader from './Header';
 import NetworkPanel from './NetworkPanel';
 import '../css/Dashboard.css';
 

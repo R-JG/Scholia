@@ -1,0 +1,53 @@
+.LoginForm {
+    height: 70%;
+    width: 30%;
+    margin: 4rem;
+    padding: 3rem;
+    border: 0.1em solid var(--background-color-two);
+    color: var(--font-color);
+    align-self: flex-end;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas: 
+    'title title . mode-button'
+    'username-label . username-input username-input'
+    'password-label . password-input password-input'
+    'submit-button . . .';
+}
+
+.login-form--title {
+    grid-area: title;
+    margin: 0;
+}
+
+.login-form--mode-button {
+    grid-area: mode-button;
+    max-height: 2em;
+    max-width: 12em;
+    margin: 0;
+}
+
+.login-form--username-label {
+    grid-area: username-label;
+}
+
+#login-form--username-input {
+    grid-area: username-input;
+    max-height: 1.5em;
+}
+
+.login-form--password-label {
+    grid-area: password-label;
+}
+
+#login-form--password-input {
+    grid-area: password-input;
+    max-height: 1.5em;
+}
+
+.login-form--submit-button {
+    grid-area: submit-button;
+    max-height: 2em;
+    margin: 0;
+}

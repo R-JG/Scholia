@@ -1,6 +1,9 @@
 .Home {
     width: 100%;
     height: 100%;
-    padding: 2em;
-    background-color: white;
+    background-color: var(--background-color-one);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }

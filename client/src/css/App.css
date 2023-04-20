@@ -1,3 +1,12 @@
+:root {
+    --background-color-one: #5f5566;
+    --background-color-two: #33202a;
+
+    --font-color: #f4edea;
+}
+
+/* backgroud, light: #f4edea */
+
 body {
     margin: 0;
     padding: 0;
