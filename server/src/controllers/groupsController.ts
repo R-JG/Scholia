@@ -18,4 +18,16 @@ const createOne = async (
     };
 };
 
-export default { createOne }
+const getSomeByUser = async (
+        _request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const authenticatedUser: UserModel = response.locals.authenticatedUser;
+        const groups: GroupModel[] = await groupService.getSomeByUser(authenticatedUser.id);
+        response.json(groups);
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { createOne, getSomeByUser }

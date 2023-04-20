@@ -5,4 +5,6 @@ const groupsRouter = Router();
 
 groupsRouter.post('/', groupsController.createOne);
 
+groupsRouter.get('/', groupsController.getSomeByUser);
+
 export default groupsRouter;

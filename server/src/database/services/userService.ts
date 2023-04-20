@@ -1,6 +1,6 @@
+import { Op } from 'sequelize';
 import User from '../models/User';
 import { NewUser, UserModel } from '../../typeUtils/types';
-import { Op } from 'sequelize';
 
 const getAll = async (): Promise<UserModel[]> => await User.findAll();
 
