@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import groupsService from '../services/groupsService';
 import { UserToken } from '../typeUtils/types';
 import UserHeader from './Header';
 import NetworkPanel from './NetworkPanel';
@@ -9,6 +11,13 @@ interface Props {
 };
 
 const Dashboard = ({ user, updateUser }: Props) => {
+
+    if (!user) return <div className='Dashboard'></div>;
+
+    useEffect(() => {
+        groupsService.getGroupsByUser(user.token);
+    }, []);
+
     return (
         <div className='Dashboard'>
             {user && 

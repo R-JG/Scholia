@@ -15,3 +15,8 @@ export interface UserToken {
 export interface GroupEntry {
     groupName: string
 };
+
+export interface Group {
+    id: number,
+    groupName: string
+};
