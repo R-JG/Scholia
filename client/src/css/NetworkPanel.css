@@ -1,0 +1,23 @@
+.NetworkPanel {
+    height: 100%;
+    max-width: 20%;
+    padding: 1em;
+    border-left: 0.2em solid var(--background-color-two);
+    align-self: flex-end;
+    color: var(--font-color);
+}
+
+.network-panel--groups {
+    margin-bottom: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.network-panel--group-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}

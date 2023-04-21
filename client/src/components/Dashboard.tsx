@@ -1,32 +1,29 @@
-import { useEffect } from 'react';
-import groupsService from '../services/groupsService';
-import { UserToken } from '../typeUtils/types';
-import UserHeader from './Header';
+import { UserToken, Group } from '../typeUtils/types';
+import Header from './Header';
 import NetworkPanel from './NetworkPanel';
 import '../css/Dashboard.css';
 
 interface Props {
     user: UserToken | null,
+    userGroups: Group[],
     updateUser: (userData: UserToken | null) => void
 };
 
-const Dashboard = ({ user, updateUser }: Props) => {
+const Dashboard = ({ user, userGroups, updateUser }: Props) => {
 
     if (!user) return <div className='Dashboard'></div>;
-
-    useEffect(() => {
-        groupsService.getGroupsByUser(user.token);
-    }, []);
 
     return (
         <div className='Dashboard'>
             {user && 
-            <UserHeader 
+            <Header 
                 user={user} 
                 updateUser={updateUser}
             />}
-            <h1>Dashboard</h1>
-            <NetworkPanel user={user} />
+            <NetworkPanel 
+                user={user} 
+                userGroups={userGroups}
+            />
         </div>
     );
 };

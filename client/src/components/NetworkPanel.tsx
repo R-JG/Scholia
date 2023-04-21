@@ -1,13 +1,15 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { User, UserToken } from '../typeUtils/types';
+import { User, UserToken, Group } from '../typeUtils/types';
 import usersService from '../services/usersService';
 import groupsService from '../services/groupsService';
+import '../css/NetworkPanel.css';
 
 interface Props {
-    user: UserToken | null
+    user: UserToken | null,
+    userGroups: Group[],
 };
 
-const NetworkPanel = ({ user }: Props) => {
+const NetworkPanel = ({ user, userGroups }: Props) => {
 
     if (!user) return <div className='NetworkPanel'></div>;
 
@@ -39,6 +41,27 @@ const NetworkPanel = ({ user }: Props) => {
 
     return (
         <div className='NetworkPanel'>
+            <div className='network-panel--groups'>
+                <h3>Groups</h3>
+                {(userGroups.length > 0) 
+                && <div className='network-panel--group-list'>
+                    {userGroups.map(group => 
+                    <h5>{group.groupName}</h5>)}
+                </div>}
+                <form 
+                    className='form--create-group'
+                    onSubmit={handleGroupFormSubmit}
+                >
+                    <input 
+                        className='input--group-name' 
+                        type='text' 
+                        value={groupNameInputValue}
+                        onChange={handleGroupNameInputChange}
+                    />
+                    <button>Create Group</button>
+                </form>
+            </div>
+            <h3>Search</h3>
             <form 
                 className='form--search' 
                 onSubmit={handleSearchFormSubmit}
@@ -56,18 +79,6 @@ const NetworkPanel = ({ user }: Props) => {
                 {searchResults.map(user => 
                 <h5>{user.username}</h5>)}
             </div>}
-            <form 
-                className='form--create-group'
-                onSubmit={handleGroupFormSubmit}
-            >
-                <input 
-                    className='input--group-name' 
-                    type='text' 
-                    value={groupNameInputValue}
-                    onChange={handleGroupNameInputChange}
-                />
-                <button>Create Group</button>
-            </form>
         </div>
     );
 };

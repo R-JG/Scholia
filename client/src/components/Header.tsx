@@ -12,7 +12,7 @@ const UserHeader = ({ user, updateUser }: Props) => {
 
     return (
         <header className='Header'>
-            {user && <h1 className='header--username'>{user.username}</h1>}
+            {user && <h4 className='header--username'>{user.username}</h4>}
             {user && <button className='header--logout-button' onClick={logout}>Logout</button>}
         </header>
     );

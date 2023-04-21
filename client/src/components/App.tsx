@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { UserToken } from '../typeUtils/types';
+import { UserToken, Group } from '../typeUtils/types';
 import { parseUserToken } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute } from '../routesConfig';
+import groupsService from '../services/groupsService';
 import Home from './Home';
 import Dashboard from './Dashboard';
 import '../css/App.css';
@@ -10,6 +11,7 @@ import '../css/App.css';
 const App = () => {
 
     const [user, setUser] = useState<UserToken | null>(null);
+    const [userGroups, setUserGroups] = useState<Group[]>([]);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -18,6 +20,13 @@ const App = () => {
             setUser(userData);
         };
     }, []);
+
+    useEffect(() => {
+        if (!user) return;
+        groupsService.getGroupsByUser(user.token).then(groups => 
+            setUserGroups(groups)
+        );
+    }, [user]);
 
     const updateUser = (userData: UserToken | null): void => {
         if (userData) {
@@ -28,8 +37,6 @@ const App = () => {
         };
         setUser(userData);
     };
-
-    console.log(user);
 
     return (
         <div className='App'>
@@ -45,6 +52,7 @@ const App = () => {
                         (user) 
                         ? <Dashboard 
                             user={user} 
+                            userGroups={userGroups}
                             updateUser={updateUser}
                         /> 
                         : <Navigate replace to={homeRoute} />

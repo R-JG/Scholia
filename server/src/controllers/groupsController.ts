@@ -12,7 +12,7 @@ const createOne = async (
         const createdGroup: GroupModel = await groupService.createOne(
             groupEntry, authenticatedUser.id
         );
-        response.json({ groupName: createdGroup.groupName });
+        response.json(createdGroup);
     } catch (error) {
         next(error);
     };
