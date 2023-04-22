@@ -2,14 +2,22 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { User, UserToken, Group } from '../typeUtils/types';
 import usersService from '../services/usersService';
 import groupsService from '../services/groupsService';
+import GroupSelector from './GroupSelector';
 import '../css/NetworkPanel.css';
 
 interface Props {
     user: UserToken | null,
     userGroups: Group[],
+    selectedGroup: Group | null,
+    setSelectedGroup: (group: Group) => void
 };
 
-const NetworkPanel = ({ user, userGroups }: Props) => {
+const NetworkPanel = ({ 
+    user, 
+    userGroups, 
+    selectedGroup, 
+    setSelectedGroup 
+}: Props) => {
 
     if (!user) return <div className='NetworkPanel'></div>;
 
@@ -46,7 +54,11 @@ const NetworkPanel = ({ user, userGroups }: Props) => {
                 {(userGroups.length > 0) 
                 && <div className='network-panel--group-list'>
                     {userGroups.map(group => 
-                    <h5>{group.groupName}</h5>)}
+                    <GroupSelector 
+                        group={group}
+                        isSelected={selectedGroup?.id === group.id}
+                        setSelectedGroup={setSelectedGroup}
+                    />)}
                 </div>}
                 <form 
                     className='form--create-group'
