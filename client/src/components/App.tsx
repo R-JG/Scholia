@@ -40,7 +40,9 @@ const App = () => {
 
     const createGroup = (groupName: string): void => {
         if (!user) return;
-        groupsService.createGroup({ groupName }, user.token);
+        groupsService.createGroup({ groupName }, user.token).then(createdGroup => {
+            if (createdGroup) setUserGroups(userGroups.concat(createdGroup));
+        });
     };
 
     return (
