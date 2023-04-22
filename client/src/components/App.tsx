@@ -38,6 +38,11 @@ const App = () => {
         setUser(userData);
     };
 
+    const createGroup = (groupName: string): void => {
+        if (!user) return;
+        groupsService.createGroup({ groupName }, user.token);
+    };
+
     return (
         <div className='App'>
             <BrowserRouter>
@@ -54,6 +59,7 @@ const App = () => {
                             user={user} 
                             userGroups={userGroups}
                             updateUser={updateUser}
+                            createGroup={createGroup}
                         /> 
                         : <Navigate replace to={homeRoute} />
                     } />

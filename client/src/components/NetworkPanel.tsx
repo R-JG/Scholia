@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import { User, UserToken, Group } from '../typeUtils/types';
 import usersService from '../services/usersService';
-import groupsService from '../services/groupsService';
 import GroupSelector from './GroupSelector';
 import '../css/NetworkPanel.css';
 
@@ -9,14 +8,16 @@ interface Props {
     user: UserToken | null,
     userGroups: Group[],
     selectedGroup: Group | null,
-    setSelectedGroup: (group: Group) => void
+    setSelectedGroup: (group: Group) => void,
+    createGroup: (groupName: string) => void
 };
 
 const NetworkPanel = ({ 
     user, 
     userGroups, 
     selectedGroup, 
-    setSelectedGroup 
+    setSelectedGroup,
+    createGroup
 }: Props) => {
 
     if (!user) return <div className='NetworkPanel'></div>;
@@ -44,7 +45,8 @@ const NetworkPanel = ({
     const handleGroupFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         if (groupNameInputValue === '') return;
-        groupsService.createGroup({ groupName: groupNameInputValue }, user.token);
+        createGroup(groupNameInputValue);
+        setGroupNameInputValue('');
     };
 
     return (

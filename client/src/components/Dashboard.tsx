@@ -7,13 +7,15 @@ import '../css/Dashboard.css';
 interface Props {
     user: UserToken | null,
     userGroups: Group[],
-    updateUser: (userData: UserToken | null) => void
+    updateUser: (userData: UserToken | null) => void,
+    createGroup: (groupName: string) => void
 };
 
 const Dashboard = ({ 
     user, 
     userGroups, 
-    updateUser 
+    updateUser,
+    createGroup
 }: Props) => {
 
     if (!user) return <div className='Dashboard'></div>;
@@ -32,6 +34,7 @@ const Dashboard = ({
                 userGroups={userGroups}
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
+                createGroup={createGroup}
             />
         </div>
     );
