@@ -7,7 +7,7 @@ export interface User {
     username: string
 };
 
-export interface UserToken {
+export interface LoggedInUser {
     username: string,
     token: string
 };

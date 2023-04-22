@@ -1,13 +1,13 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserToken } from '../typeUtils/types';
+import { LoggedInUser } from '../typeUtils/types';
 import { dashboardRoute } from '../routesConfig';
 import usersService from '../services/usersService';
 import loginService from '../services/loginService';
 import '../css/LoginForm.css';
 
 interface Props {
-    updateUser: (userData: UserToken | null) => void
+    updateUser: (userData: LoggedInUser | null) => void
 };
 
 const LoginForm = ({
@@ -26,8 +26,8 @@ const LoginForm = ({
     };
 
     const login = (username: string, password: string): void => {
-        loginService.login({ username, password }).then(userToken => {
-            updateUser(userToken);
+        loginService.login({ username, password }).then(loggedInUser => {
+            updateUser(loggedInUser);
             navigate(dashboardRoute);
         });
     };

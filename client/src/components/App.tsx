@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { UserToken, Group } from '../typeUtils/types';
-import { parseUserToken } from '../typeUtils/validation';
+import { LoggedInUser, Group } from '../typeUtils/types';
+import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute } from '../routesConfig';
 import groupsService from '../services/groupsService';
 import Home from './Home';
@@ -10,13 +10,13 @@ import '../css/App.css';
 
 const App = () => {
 
-    const [user, setUser] = useState<UserToken | null>(null);
+    const [user, setUser] = useState<LoggedInUser | null>(null);
     const [userGroups, setUserGroups] = useState<Group[]>([]);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
         if (storedUserData) {
-            const userData: UserToken = parseUserToken(JSON.parse(storedUserData));
+            const userData: LoggedInUser = parseLoggedInUser(JSON.parse(storedUserData));
             setUser(userData);
         };
     }, []);
@@ -28,7 +28,7 @@ const App = () => {
         );
     }, [user]);
 
-    const updateUser = (userData: UserToken | null): void => {
+    const updateUser = (userData: LoggedInUser | null): void => {
         if (userData) {
             localStorage.setItem('user', JSON.stringify(userData));
         };

@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { UserToken, Group } from '../typeUtils/types';
+import { LoggedInUser, Group } from '../typeUtils/types';
 import Header from './Header';
 import NetworkPanel from './NetworkPanel';
 import '../css/Dashboard.css';
 
 interface Props {
-    user: UserToken | null,
+    user: LoggedInUser | null,
     userGroups: Group[],
-    updateUser: (userData: UserToken | null) => void,
+    updateUser: (userData: LoggedInUser | null) => void,
     createGroup: (groupName: string) => void
 };
 

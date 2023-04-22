@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import { UserToken } from '../typeUtils/types';
+import { LoggedInUser } from '../typeUtils/types';
 import { dashboardRoute } from '../routesConfig';
 import LoginForm from './LoginForm';
 import Header from './Header';
 import '../css/Home.css';
 
 interface Props {
-    user: UserToken | null,
-    updateUser: (userData: UserToken | null) => void
+    user: LoggedInUser | null,
+    updateUser: (userData: LoggedInUser | null) => void
 };
 
 const Home = ({ 

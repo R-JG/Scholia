@@ -1,9 +1,9 @@
-import { UserToken } from '../typeUtils/types';
+import { LoggedInUser } from '../typeUtils/types';
 import '../css/Header.css';
 
 interface Props {
-    user: UserToken | null,
-    updateUser: (userData: UserToken | null) => void
+    user: LoggedInUser | null,
+    updateUser: (userData: LoggedInUser | null) => void
 };
 
 const UserHeader = ({ user, updateUser }: Props) => {

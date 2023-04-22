@@ -1,11 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { User, UserToken, Group } from '../typeUtils/types';
+import { User, LoggedInUser, Group } from '../typeUtils/types';
 import usersService from '../services/usersService';
 import GroupSelector from './GroupSelector';
 import '../css/NetworkPanel.css';
 
 interface Props {
-    user: UserToken | null,
+    user: LoggedInUser | null,
     userGroups: Group[],
     selectedGroup: Group | null,
     setSelectedGroup: (group: Group) => void,
