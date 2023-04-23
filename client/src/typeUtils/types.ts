@@ -20,3 +20,12 @@ export interface Group {
     id: number,
     groupName: string
 };
+
+export interface GroupDocument {
+    id: number,
+    groupId: number,
+    name: string,
+    file: File
+};
+
+export type GroupDocumentInfo = Omit<GroupDocument, 'file'>;

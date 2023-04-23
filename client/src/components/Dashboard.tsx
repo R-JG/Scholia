@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { LoggedInUser, Group } from '../typeUtils/types';
 import Header from './Header';
+import GroupContentPanel from './GroupContentPanel';
 import NetworkPanel from './NetworkPanel';
 import '../css/Dashboard.css';
 
@@ -8,14 +9,16 @@ interface Props {
     user: LoggedInUser | null,
     userGroups: Group[],
     updateUser: (userData: LoggedInUser | null) => void,
-    createGroup: (groupName: string) => void
+    createGroup: (groupName: string) => void,
+    uploadDocument: (document: File) => void
 };
 
 const Dashboard = ({ 
     user, 
     userGroups, 
     updateUser,
-    createGroup
+    createGroup,
+    uploadDocument
 }: Props) => {
 
     if (!user) return <div className='Dashboard'></div>;
@@ -24,11 +27,13 @@ const Dashboard = ({
 
     return (
         <div className='Dashboard'>
-            {user && 
             <Header 
                 user={user} 
                 updateUser={updateUser}
-            />}
+            />
+            <GroupContentPanel 
+                uploadDocument={uploadDocument}
+            />
             <NetworkPanel 
                 user={user} 
                 userGroups={userGroups}

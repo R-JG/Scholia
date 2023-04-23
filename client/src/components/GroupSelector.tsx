@@ -9,7 +9,7 @@ interface Props {
 
 const GroupSelector = ({ group, isSelected, setSelectedGroup }: Props) => {
 
-    const handleClick = () => setSelectedGroup(group);
+    const handleClick = (): void => setSelectedGroup(group);
 
     return (
         <div 

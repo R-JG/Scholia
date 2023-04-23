@@ -1,4 +1,4 @@
-import { User, LoggedInUser, Group } from './types';
+import { User, LoggedInUser, Group, GroupDocument, GroupDocumentInfo } from './types';
 
 const isString = (params: unknown): params is string => {
     return ((typeof params === 'string') || (params instanceof String));
@@ -20,6 +20,13 @@ const parseNumberProp = (prop: unknown): number => {
         throw new Error(`property ${prop} is not of type number`);
     };
     return prop;
+};
+
+const parseFile = (params: unknown): File => {
+    if (!params || !(params instanceof File)) {
+        throw new Error('missing or incorrectly formatted data for type File');
+    };
+    return params;
 };
 
 export const parseUser = (params: unknown): User => {
@@ -70,4 +77,29 @@ export const parseGroupArray = (params: unknown): Group[] => {
     };
     const groupArray: Group[] = params.map(element => parseGroup(element));
     return groupArray;
+};
+
+export const parseGroupDocumentInfo = (params: unknown): GroupDocumentInfo => {
+    if (!params || (typeof params !== 'object') 
+    || !(('id' in params) && ('groupId' in params) && ('name' in params))) {
+        throw new Error('missing or incorrectly formatted data for GroupDocument info');
+    };
+    const groupDocumentInfo: GroupDocumentInfo = {
+        id: parseNumberProp(params.id),
+        groupId: parseNumberProp(params.groupId),
+        name: parseStringProp(params.name)
+    };
+    return groupDocumentInfo;
+};
+
+export const parseGroupDocument = (params: unknown): GroupDocument => {
+    if (!params || (typeof params !== 'object') 
+    || !('file' in params)) {
+        throw new Error('missing or incorrectly formatted data for type GroupDocument');
+    };
+    const groupDocument: GroupDocument = {
+        ...parseGroupDocumentInfo(params),
+        file: parseFile(params.file)
+    };
+    return groupDocument;
 };

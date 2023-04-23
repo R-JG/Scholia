@@ -4,6 +4,7 @@ import { LoggedInUser, Group } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute } from '../routesConfig';
 import groupsService from '../services/groupsService';
+import documentsService from '../services/documentsService';
 import Home from './Home';
 import Dashboard from './Dashboard';
 import '../css/App.css';
@@ -45,6 +46,14 @@ const App = () => {
         });
     };
 
+    const uploadDocument = (document: File): void => {
+        if (!user) return;
+        documentsService.addDocument(document, user.token);
+
+        // return document id and name from the server
+        // save document in local storage
+    };
+
     return (
         <div className='App'>
             <BrowserRouter>
@@ -62,6 +71,7 @@ const App = () => {
                             userGroups={userGroups}
                             updateUser={updateUser}
                             createGroup={createGroup}
+                            uploadDocument={uploadDocument}
                         /> 
                         : <Navigate replace to={homeRoute} />
                     } />
