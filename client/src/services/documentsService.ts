@@ -7,7 +7,7 @@ const baseUrl: string = '/api/v1/documents';
 const addDocument = async (document: File, token: string): Promise<GroupDocumentInfo | null> => {
     try {
         const formData = new FormData();
-        formData.append('document', document);
+        formData.append('file', document);
         const response = await axios.post(
             baseUrl,
             formData,

@@ -8,4 +8,5 @@ server/docker-compose.yml
 client/node_modules
 client/dist
 
+test_documents
 notes.md

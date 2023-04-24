@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LoggedInUser, Group } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocument, GroupDocumentInfo } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute } from '../routesConfig';
 import groupsService from '../services/groupsService';
@@ -13,6 +13,7 @@ const App = () => {
 
     const [user, setUser] = useState<LoggedInUser | null>(null);
     const [userGroups, setUserGroups] = useState<Group[]>([]);
+    const [documents, setDocuments] = useState<(GroupDocument | GroupDocumentInfo)[]>([]);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -48,11 +49,18 @@ const App = () => {
 
     const uploadDocument = (document: File): void => {
         if (!user) return;
-        documentsService.addDocument(document, user.token);
-
-        // return document id and name from the server
-        // save document in local storage
+        documentsService.addDocument(document, user.token).then(addedDocument => {
+            if (!addedDocument) return;
+            const groupDocument: GroupDocument = {
+                ...addedDocument,
+                file: document
+            };
+            setDocuments(documents.concat(groupDocument));
+            localStorage.setItem('documents', JSON.stringify(documents));
+        });
     };
+
+    console.log(documents);
 
     return (
         <div className='App'>

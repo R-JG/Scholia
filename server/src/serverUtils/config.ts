@@ -13,4 +13,7 @@ export const POSTGRES_PASSWORD: string = process.env.POSTGRES_PASSWORD || '';
 
 export const POSTGRES_HOST: string = process.env.POSTGRES_HOST || '';
 
-export const JWT_SECRET = process.env.JWT_SECRET || '';
+export const JWT_SECRET: string = process.env.JWT_SECRET || '';
+
+
+export const DOCUMENT_FILE_PATH: string = process.env.DOCUMENT_FILE_PATH || '';
