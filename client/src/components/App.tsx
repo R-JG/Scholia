@@ -4,7 +4,7 @@ import { LoggedInUser, Group, GroupDocument, GroupDocumentInfo } from '../typeUt
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute } from '../routesConfig';
 import groupsService from '../services/groupsService';
-import documentsService from '../services/documentsService';
+import groupDocumentsService from '../services/groupDocumentsService';
 import Home from './Home';
 import Dashboard from './Dashboard';
 import '../css/App.css';
@@ -47,9 +47,9 @@ const App = () => {
         });
     };
 
-    const uploadDocument = (document: File): void => {
+    const uploadDocument = (document: File, groupId: number): void => {
         if (!user) return;
-        documentsService.addDocument(document, user.token).then(addedDocument => {
+        groupDocumentsService.addDocument(document, groupId, user.token).then(addedDocument => {
             if (!addedDocument) return;
             const groupDocument: GroupDocument = {
                 ...addedDocument,

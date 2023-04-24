@@ -1,23 +1,27 @@
 import { DataTypes } from 'sequelize';
 import { database } from '../connectDatabase';
 
-const Document = database.define('Document', {
+const GroupDocument = database.define('GroupDocument', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: false
     },
-    filePath: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     groupId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: 'groups', key: 'id' }
+    },
+    documentName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    filePath: {
+        type: DataTypes.STRING,
+        allowNull: false
     }},
-    { tableName: 'documents', underscored: true, timestamps: false }
+    { tableName: 'group_documents', underscored: true, timestamps: false }
 );
 
-export default Document;
+export default GroupDocument;

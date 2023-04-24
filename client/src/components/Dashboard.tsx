@@ -10,7 +10,7 @@ interface Props {
     userGroups: Group[],
     updateUser: (userData: LoggedInUser | null) => void,
     createGroup: (groupName: string) => void,
-    uploadDocument: (document: File) => void
+    uploadDocument: (document: File, groupId: number) => void
 };
 
 const Dashboard = ({ 
@@ -32,6 +32,7 @@ const Dashboard = ({
                 updateUser={updateUser}
             />
             <GroupContentPanel 
+                selectedGroup={selectedGroup}
                 uploadDocument={uploadDocument}
             />
             <NetworkPanel 

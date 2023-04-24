@@ -2,14 +2,16 @@ import axios from 'axios';
 import { GroupDocumentInfo } from '../typeUtils/types';
 import { parseGroupDocumentInfo } from '../typeUtils/validation';
 
-const baseUrl: string = '/api/v1/documents';
+const baseUrl: string = '/api/v1/groups';
 
-const addDocument = async (document: File, token: string): Promise<GroupDocumentInfo | null> => {
+const addDocument = async (
+        document: File, groupId: number, token: string
+    ): Promise<GroupDocumentInfo | null> => {
     try {
         const formData = new FormData();
         formData.append('file', document);
         const response = await axios.post(
-            baseUrl,
+            `${baseUrl}/${groupId}/documents`,
             formData,
             { headers: { Authorization: `Bearer ${token}` } }
         );

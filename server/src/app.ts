@@ -6,7 +6,6 @@ import authenticateUser from './middleware/authenticateUser';
 import usersRouter from './routes/usersRouter';
 import loginRouter from './routes/loginRouter';
 import groupsRouter from './routes/groupsRouter';
-import documentsRouter from './routes/documentsRouter';
 
 const app = express();
 
@@ -17,7 +16,6 @@ app.use(requestLogger);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/login', loginRouter);
 app.use('/api/v1/groups', authenticateUser, groupsRouter);
-app.use('/api/v1/documents', authenticateUser, documentsRouter);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
