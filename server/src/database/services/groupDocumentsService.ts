@@ -5,4 +5,8 @@ const createOne = async (newDocument: NewGroupDocument): Promise<GroupDocumentMo
     return await GroupDocument.create(newDocument);
 };
 
-export default { createOne };
+const getAll = async (groupId: string): Promise<GroupDocumentModel[]> => {
+    return await GroupDocument.findAll({ where: { groupId } });
+};
+
+export default { createOne, getAll };

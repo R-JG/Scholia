@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserModel, NewGroupDocument, GroupDocumentInfo } from '../typeUtils/types';
+import { UserModel, NewGroupDocument, GroupDocumentInfo, GroupDocumentModel } from '../typeUtils/types';
 import groupDocumentsService from '../database/services/groupDocumentsService';
 import groupsService from '../database/services/groupsService';
 
@@ -37,4 +37,21 @@ const createOne = async (
     };
 };
 
-export default { createOne };
+const getAllDocumentInfo = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void>  => {
+    try {
+        const groupId: string = request.params.groupId;
+        const groupDocuments: GroupDocumentModel[] = await groupDocumentsService.getAll(groupId);
+        const groupDocumentInfo: GroupDocumentInfo[] = groupDocuments.map(document => ({
+            id: document.id,
+            groupId: document.groupId,
+            documentName: document.documentName
+        }));
+        response.json(groupDocumentInfo);
+    } catch (error) {
+        next(error); 
+    };
+};
+
+export default { createOne, getAllDocumentInfo };
