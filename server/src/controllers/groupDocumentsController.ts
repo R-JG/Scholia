@@ -43,15 +43,36 @@ const getAllDocumentInfo = async (
     try {
         const groupId: string = request.params.groupId;
         const groupDocuments: GroupDocumentModel[] = await groupDocumentsService.getAll(groupId);
-        const groupDocumentInfo: GroupDocumentInfo[] = groupDocuments.map(document => ({
+        const groupDocumentsInfo: GroupDocumentInfo[] = groupDocuments.map(document => ({
             id: document.id,
             groupId: document.groupId,
             documentName: document.documentName
         }));
-        response.json(groupDocumentInfo);
+        response.json(groupDocumentsInfo);
     } catch (error) {
         next(error); 
     };
 };
 
-export default { createOne, getAllDocumentInfo };
+const getSingleDocumentInfo = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const documentId: string = request.params.documentId;
+        const groupDocument: GroupDocumentModel | null = await groupDocumentsService.getOneById(documentId);
+        if (!groupDocument) {
+            response.status(404).json({ error: 'document not found' });
+            return;
+        };
+        const groupDocumentInfo: GroupDocumentInfo = {
+            id: groupDocument.id,
+            groupId: groupDocument.groupId,
+            documentName: groupDocument.documentName
+        };
+        response.json(groupDocumentInfo);
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { createOne, getAllDocumentInfo, getSingleDocumentInfo };

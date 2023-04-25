@@ -8,4 +8,6 @@ groupDocumentsRouter.post('/group/:groupId', upload.single('file'), groupDocumen
 
 groupDocumentsRouter.get('/group/:groupId', groupDocumentsController.getAllDocumentInfo);
 
+groupDocumentsRouter.get('/:documentId', groupDocumentsController.getSingleDocumentInfo);
+
 export default groupDocumentsRouter;
