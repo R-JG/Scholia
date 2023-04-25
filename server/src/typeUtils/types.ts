@@ -41,3 +41,16 @@ export interface GroupMembership {
 export type NewGroupMembership = Omit<GroupMembership, 'id'>;
 
 export interface GroupMembershipModel extends GroupMembership, Model {};
+
+export interface GroupDocument {
+    id: number,
+    groupId: number | string,
+    documentName: string,
+    filePath: string
+};
+
+export type NewGroupDocument = Omit<GroupDocument, 'id'>;
+
+export type GroupDocumentInfo = Omit<GroupDocument, 'filePath'>;
+
+export interface GroupDocumentModel extends GroupDocument, Model {};

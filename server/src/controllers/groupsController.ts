@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserModel, GroupEntry, GroupModel } from '../typeUtils/types';
 import { parseGroupEntry } from '../typeUtils/validation';
-import groupService from '../database/services/groupService';
+import groupsService from '../database/services/groupsService';
 
 const createOne = async (
         request: Request, response: Response, next: NextFunction
@@ -9,7 +9,7 @@ const createOne = async (
     try {
         const authenticatedUser: UserModel = response.locals.authenticatedUser;
         const groupEntry: GroupEntry = parseGroupEntry(request.body);
-        const createdGroup: GroupModel = await groupService.createOne(
+        const createdGroup: GroupModel = await groupsService.createOne(
             groupEntry, authenticatedUser.id
         );
         response.json(createdGroup);
@@ -23,7 +23,7 @@ const getSomeByUser = async (
     ): Promise<void> => {
     try {
         const authenticatedUser: UserModel = response.locals.authenticatedUser;
-        const groups: GroupModel[] = await groupService.getSomeByUser(authenticatedUser.id);
+        const groups: GroupModel[] = await groupsService.getSomeByUser(authenticatedUser.id);
         response.json(groups);
     } catch (error) {
         next(error);

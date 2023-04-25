@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { UserEntry, UserModel } from '../typeUtils/types';
 import { parseUserEntry } from '../typeUtils/validation';
 import { comparePasswordHash, createToken } from '../serverUtils/encryption';
-import userService from '../database/services/userService';
+import userService from '../database/services/usersService';
 
 const login = async (
         request: Request, response: Response, next: NextFunction

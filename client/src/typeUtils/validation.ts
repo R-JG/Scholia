@@ -81,13 +81,13 @@ export const parseGroupArray = (params: unknown): Group[] => {
 
 export const parseGroupDocumentInfo = (params: unknown): GroupDocumentInfo => {
     if (!params || (typeof params !== 'object') 
-    || !(('id' in params) && ('groupId' in params) && ('name' in params))) {
+    || !(('id' in params) && ('groupId' in params) && ('documentName' in params))) {
         throw new Error('missing or incorrectly formatted data for GroupDocument info');
     };
     const groupDocumentInfo: GroupDocumentInfo = {
         id: parseNumberProp(params.id),
         groupId: parseNumberProp(params.groupId),
-        name: parseStringProp(params.name)
+        documentName: parseStringProp(params.documentName)
     };
     return groupDocumentInfo;
 };

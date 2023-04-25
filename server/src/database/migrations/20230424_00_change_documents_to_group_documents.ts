@@ -1,6 +1,6 @@
 import { DataTypes, QueryInterface } from 'sequelize';
 
-export const migration = {
+const migration = {
     up: async ({ context: queryInterface }: { context: QueryInterface }): Promise<void> => {
         await queryInterface.dropTable('documents');
         await queryInterface.createTable('group_documents', {
@@ -8,7 +8,7 @@ export const migration = {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
                 allowNull: false,
-                primaryKey: false
+                primaryKey: true
             },
             group_id: {
                 type: DataTypes.INTEGER,
@@ -32,7 +32,7 @@ export const migration = {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
                 allowNull: false,
-                primaryKey: false
+                primaryKey: true
             },
             file_path: {
                 type: DataTypes.STRING,
@@ -46,3 +46,5 @@ export const migration = {
         });
     }
 };
+
+export = migration;

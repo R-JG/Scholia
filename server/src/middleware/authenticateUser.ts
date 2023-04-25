@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Token, UserModel } from '../typeUtils/types';
 import { parseToken } from '../typeUtils/validation';
 import { verifyToken } from '../serverUtils/encryption';
-import userService from '../database/services/userService';
+import usersService from '../database/services/usersService';
 
 const authenticateUser = async (
         request: Request, response: Response, next: NextFunction
@@ -15,7 +15,7 @@ const authenticateUser = async (
     try {
         const requestToken: string = authorization.replace('Bearer ', '');
         const decodedToken: Token = parseToken(verifyToken(requestToken));
-        const authenticatedUser: UserModel | null = await userService.getOneByUsername(
+        const authenticatedUser: UserModel | null = await usersService.getOneByUsername(
             decodedToken.username
         );
         if (!authenticatedUser) {

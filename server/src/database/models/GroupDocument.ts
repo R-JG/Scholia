@@ -1,12 +1,13 @@
 import { DataTypes } from 'sequelize';
+import { GroupDocumentModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
 
-const GroupDocument = database.define('GroupDocument', {
+const GroupDocument = database.define<GroupDocumentModel>('GroupDocument', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
-        primaryKey: false
+        primaryKey: true
     },
     groupId: {
         type: DataTypes.INTEGER,

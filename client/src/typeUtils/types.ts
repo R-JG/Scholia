@@ -24,7 +24,7 @@ export interface Group {
 export interface GroupDocument {
     id: number,
     groupId: number,
-    name: string,
+    documentName: string,
     file: File
 };
 

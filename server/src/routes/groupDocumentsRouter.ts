@@ -4,6 +4,6 @@ import groupDocumentsController from '../controllers/groupDocumentsController';
 
 const groupDocumentsRouter = Router();
 
-groupDocumentsRouter.post('/', upload.single('file'), groupDocumentsController.createOne);
+groupDocumentsRouter.post('/group/:groupId', upload.single('file'), groupDocumentsController.createOne);
 
 export default groupDocumentsRouter;

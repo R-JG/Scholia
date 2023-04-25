@@ -13,6 +13,10 @@ const createOne = async (newGroupData: NewGroup, userId: number): Promise<GroupM
     return createdGroup;
 };
 
+const getOneById = async (groupId: number | string): Promise<GroupModel | null> => {
+    return await Group.findByPk(groupId);
+};
+
 const getSomeByUser = async (userId: number): Promise<GroupModel[]> => {
     const groupMemberships: GroupMembershipModel[] = await GroupMembership.findAll(
         { where: { userId } }
@@ -22,4 +26,11 @@ const getSomeByUser = async (userId: number): Promise<GroupModel[]> => {
     return groups;
 };
 
-export default { createOne, getSomeByUser };
+const getAllMemberIds = async (groupId: number | string): Promise<number[]> => {
+    const allMemberships: GroupMembershipModel[] = await GroupMembership.findAll(
+        { where: { groupId } }
+    );
+    return allMemberships.map(membership => membership.userId);
+};
+
+export default { createOne, getOneById, getSomeByUser, getAllMemberIds };

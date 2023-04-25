@@ -37,7 +37,7 @@ const migration = {
                 type: DataTypes.INTEGER,
                 autoIncrement: true,
                 allowNull: false,
-                primaryKey: false
+                primaryKey: true
             },
             file_path: {
                 type: DataTypes.STRING,
