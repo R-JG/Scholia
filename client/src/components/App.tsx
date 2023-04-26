@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LoggedInUser, Group, GroupDocument, GroupDocumentInfo } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocument, GroupDocumentState } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute } from '../routesConfig';
 import groupsService from '../services/groupsService';
@@ -13,7 +13,7 @@ const App = () => {
 
     const [user, setUser] = useState<LoggedInUser | null>(null);
     const [userGroups, setUserGroups] = useState<Group[]>([]);
-    const [documents, setDocuments] = useState<(GroupDocument | GroupDocumentInfo)[]>([]);
+    const [groupDocuments, setGroupDocuments] = useState<GroupDocumentState>([]);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -25,9 +25,12 @@ const App = () => {
 
     useEffect(() => {
         if (!user) return;
-        groupsService.getGroupsByUser(user.token).then(groups => 
-            setUserGroups(groups)
-        );
+        groupsService.getGroupsByUser(user.token)
+        .then(groups => {
+            setUserGroups(groups);
+            const groupIds: number[] = groups.map(group => group.id);
+            return groupDocumentsService.getAllDocumentsForGroups(groupIds, user.token);
+        }).then(groupDocumentsInfo => console.log(groupDocumentsInfo));
     }, [user]);
 
     const updateUser = (userData: LoggedInUser | null): void => {
@@ -49,18 +52,26 @@ const App = () => {
 
     const uploadDocument = (document: File, groupId: number): void => {
         if (!user) return;
-        groupDocumentsService.addDocument(document, groupId, user.token).then(addedDocument => {
-            if (!addedDocument) return;
-            const groupDocument: GroupDocument = {
-                ...addedDocument,
+        groupDocumentsService.addDocument(document, groupId, user.token).then(addedDocumentInfo => {
+            if (!addedDocumentInfo) return;
+            const newGroupDocument: GroupDocument = {
+                ...addedDocumentInfo,
                 file: document
             };
-            setDocuments(documents.concat(groupDocument));
-            localStorage.setItem('documents', JSON.stringify(documents));
+            setGroupDocuments(groupDocuments.map(group => {
+                return (group.groupId === addedDocumentInfo.groupId) 
+                    ? { 
+                        groupId: group.groupId, 
+                        documents: group.documents.concat(newGroupDocument) 
+                    } 
+                    : group
+            }));
+            const storageDocuments: string = JSON.stringify(groupDocuments);
+            localStorage.setItem('group-documents', storageDocuments);
         });
     };
 
-    console.log(documents);
+    console.log(groupDocuments);
 
     return (
         <div className='App'>

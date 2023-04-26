@@ -75,8 +75,7 @@ export const parseGroupArray = (params: unknown): Group[] => {
     if (!params || !Array.isArray(params)) {
         throw new Error('missing or incorrectly formatted data for Group array');
     };
-    const groupArray: Group[] = params.map(element => parseGroup(element));
-    return groupArray;
+    return params.map(element => parseGroup(element));
 };
 
 export const parseGroupDocumentInfo = (params: unknown): GroupDocumentInfo => {
@@ -90,6 +89,13 @@ export const parseGroupDocumentInfo = (params: unknown): GroupDocumentInfo => {
         documentName: parseStringProp(params.documentName)
     };
     return groupDocumentInfo;
+};
+
+export const parseGroupDocumentInfoArray = (params: unknown): GroupDocumentInfo[] => {
+    if (!params || !Array.isArray(params)) {
+        throw new Error('missing or incorrectly formatted data for GroupDocumentInfo array');
+    };
+    return params.map(element => parseGroupDocumentInfo(element));
 };
 
 export const parseGroupDocument = (params: unknown): GroupDocument => {

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserModel, NewGroupDocument, GroupDocumentInfo, GroupDocumentModel } from '../typeUtils/types';
+import { parseQueryParams } from '../typeUtils/validation';
 import groupDocumentsService from '../database/services/groupDocumentsService';
 import groupsService from '../database/services/groupsService';
 
@@ -37,12 +38,14 @@ const createOne = async (
     };
 };
 
-const getAllDocumentInfo = async (
+const getAllDocumentInfoByGroup = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void>  => {
     try {
-        const groupId: string = request.params.groupId;
-        const groupDocuments: GroupDocumentModel[] = await groupDocumentsService.getAll(groupId);
+        const groupIdQueryParams: string[] = parseQueryParams(request.query.groupId);
+        const groupDocuments: GroupDocumentModel[] = await groupDocumentsService.getAllByGroup(
+            groupIdQueryParams
+        );
         const groupDocumentsInfo: GroupDocumentInfo[] = groupDocuments.map(document => ({
             id: document.id,
             groupId: document.groupId,
@@ -75,4 +78,4 @@ const getSingleDocumentInfo = async (
     };
 };
 
-export default { createOne, getAllDocumentInfo, getSingleDocumentInfo };
+export default { createOne, getAllDocumentInfoByGroup, getSingleDocumentInfo };

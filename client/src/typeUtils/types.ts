@@ -29,3 +29,10 @@ export interface GroupDocument {
 };
 
 export type GroupDocumentInfo = Omit<GroupDocument, 'file'>;
+
+interface GroupDocumentStateElement {
+    groupId: number,
+    documents: (GroupDocument | GroupDocumentInfo)[]
+};
+
+export type GroupDocumentState = GroupDocumentStateElement[];

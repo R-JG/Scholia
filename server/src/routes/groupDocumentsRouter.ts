@@ -4,9 +4,9 @@ import groupDocumentsController from '../controllers/groupDocumentsController';
 
 const groupDocumentsRouter = Router();
 
-groupDocumentsRouter.post('/group/:groupId', upload.single('file'), groupDocumentsController.createOne);
+groupDocumentsRouter.post('/groups/:groupId', upload.single('file'), groupDocumentsController.createOne);
 
-groupDocumentsRouter.get('/group/:groupId', groupDocumentsController.getAllDocumentInfo);
+groupDocumentsRouter.get('/groups', groupDocumentsController.getAllDocumentInfoByGroup);
 
 groupDocumentsRouter.get('/:documentId', groupDocumentsController.getSingleDocumentInfo);
 
