@@ -78,4 +78,20 @@ const getSingleDocumentInfo = async (
     };
 };
 
-export default { createOne, getAllDocumentInfoByGroup, getSingleDocumentInfo };
+const getSingleDocumentFile = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const documentId: string = request.params.documentId;
+        const groupDocument: GroupDocumentModel | null = await groupDocumentsService.getOneById(documentId);
+        if (!groupDocument) {
+            response.status(404).json({ error: 'document not found' });
+            return;
+        };
+        response.sendFile(groupDocument.filePath);
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { createOne, getAllDocumentInfoByGroup, getSingleDocumentInfo, getSingleDocumentFile };

@@ -10,4 +10,6 @@ groupDocumentsRouter.get('/groups', groupDocumentsController.getAllDocumentInfoB
 
 groupDocumentsRouter.get('/:documentId', groupDocumentsController.getSingleDocumentInfo);
 
+groupDocumentsRouter.get('/:documentId/file', groupDocumentsController.getSingleDocumentFile);
+
 export default groupDocumentsRouter;
