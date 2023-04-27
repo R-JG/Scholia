@@ -32,8 +32,8 @@ const getAllDocumentsForGroups = async (
             `${baseUrl}/groups${queryParams}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
-        const groupDocumentsInfo: GroupDocumentInfo[] = parseGroupDocumentInfoArray(response.data);
-        return groupDocumentsInfo;
+        const groupDocuments: GroupDocumentInfo[] = parseGroupDocumentInfoArray(response.data);
+        return groupDocuments;
     } catch (error) {
         console.error(error);
         return [];
