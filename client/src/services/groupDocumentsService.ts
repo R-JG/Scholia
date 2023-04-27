@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GroupDocumentInfo } from '../typeUtils/types';
-import { parseGroupDocumentInfo, parseGroupDocumentInfoArray } from '../typeUtils/validation';
+import { parseGroupDocumentInfo, parseGroupDocumentInfoArray, parseBlob } from '../typeUtils/validation';
 
 const baseUrl: string = '/api/v1/documents';
 
@@ -40,4 +40,18 @@ const getAllDocumentsForGroups = async (
     };
 };
 
-export default { addDocument, getAllDocumentsForGroups };
+const getSingleDocumentFile = async (documentId: number, token: string): Promise<Blob | null> => {
+    try {
+        const response = await axios.get(
+            `${baseUrl}/${documentId}/file`,
+            { headers: { Authorization: `Bearer ${token}` }, responseType: 'blob' }
+        );
+        const documentBlob = parseBlob(response.data);
+        return documentBlob;
+    } catch (error) {
+        console.error(error);
+        return null;
+    };
+};
+
+export default { addDocument, getAllDocumentsForGroups, getSingleDocumentFile };

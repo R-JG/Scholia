@@ -29,6 +29,13 @@ const parseFile = (params: unknown): File => {
     return params;
 };
 
+export const parseBlob = (params: unknown): Blob => {
+    if (!params || !(params instanceof Blob)) {
+        throw new Error('missing or incorrectly formatted data for type Blob');
+    };
+    return params;
+};
+
 export const parseUser = (params: unknown): User => {
     if (!params || (typeof params !== 'object') || !('username' in params)) {
         throw new Error('missing or incorrectly formatted data for type User');

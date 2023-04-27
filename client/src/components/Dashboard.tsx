@@ -35,6 +35,7 @@ const Dashboard = ({
             />
             {selectedGroup && 
             <GroupContentPanel 
+                user={user}
                 selectedGroup={selectedGroup}
                 selectedGroupDocuments={groupDocuments.filter(groupDocument => 
                     groupDocument.groupId === selectedGroup.id
