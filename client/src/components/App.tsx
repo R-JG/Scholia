@@ -58,8 +58,6 @@ const App = () => {
         });
     };
 
-    console.log(groupDocuments);
-
     return (
         <div className='App'>
             <BrowserRouter>
@@ -75,6 +73,7 @@ const App = () => {
                         ? <Dashboard 
                             user={user} 
                             userGroups={userGroups}
+                            groupDocuments={groupDocuments}
                             updateUser={updateUser}
                             createGroup={createGroup}
                             uploadDocument={uploadDocument}
