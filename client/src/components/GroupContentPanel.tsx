@@ -1,17 +1,20 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
+import DocumentSelector from './DocumentSelector';
 
 interface Props {
     user: LoggedInUser | null,
     selectedGroup: Group | null,
-    selectedGroupDocuments: GroupDocumentInfo[],
+    documentsOfGroup: GroupDocumentInfo[],
+    setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void
 };
 
 const GroupContentPanel = ({ 
     user,
     selectedGroup, 
-    selectedGroupDocuments, 
+    documentsOfGroup, 
+    setSelectedDocument,
     uploadDocument }: Props) => {
     
     if (!user || !selectedGroup) return <div className='GroupContentPanel'></div>;
@@ -33,8 +36,11 @@ const GroupContentPanel = ({
         <div className='GroupContentPanel'>
             <div className='group-documents-section'>
                 <div className='group-documents-list'>
-                    {selectedGroupDocuments.map(groupDocument => 
-                    <h4>{groupDocument.documentName}</h4>)}
+                    {documentsOfGroup.map(document => 
+                    <DocumentSelector 
+                        documentInfo={document}
+                        setSelectedDocument={setSelectedDocument}
+                    />)}
                 </div>
                 <form 
                     className='form--document-upload'

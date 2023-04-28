@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
-import { homeRoute, dashboardRoute } from '../routesConfig';
+import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
 import groupsService from '../services/groupsService';
 import groupDocumentsService from '../services/groupDocumentsService';
 import Home from './Home';
 import Dashboard from './Dashboard';
+import CommentaryTool from './CommentaryTool';
 import '../css/App.css';
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
     const [user, setUser] = useState<LoggedInUser | null>(null);
     const [userGroups, setUserGroups] = useState<Group[]>([]);
     const [groupDocuments, setGroupDocuments] = useState<GroupDocumentInfo[]>([]);
+    const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -76,9 +78,18 @@ const App = () => {
                             groupDocuments={groupDocuments}
                             updateUser={updateUser}
                             createGroup={createGroup}
+                            setSelectedDocument={setSelectedDocument}
                             uploadDocument={uploadDocument}
                         /> 
                         : <Navigate replace to={homeRoute} />
+                    } />
+                    <Route path={commentaryToolRoute} element={
+                        (selectedDocument) 
+                        ? <CommentaryTool 
+                            user={user}
+                            selectedDocument={selectedDocument}
+                        /> 
+                        : <Navigate replace to={dashboardRoute} />
                     } />
                 </Routes>
             </BrowserRouter>

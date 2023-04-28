@@ -11,6 +11,7 @@ interface Props {
     groupDocuments: GroupDocumentInfo[],
     updateUser: (userData: LoggedInUser | null) => void,
     createGroup: (groupName: string) => void,
+    setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void
 };
 
@@ -20,8 +21,9 @@ const Dashboard = ({
     groupDocuments, 
     updateUser,
     createGroup,
+    setSelectedDocument,
     uploadDocument
-}: Props) => {
+    }: Props) => {
 
     if (!user) return <div className='Dashboard'></div>;
 
@@ -37,9 +39,10 @@ const Dashboard = ({
             <GroupContentPanel 
                 user={user}
                 selectedGroup={selectedGroup}
-                selectedGroupDocuments={groupDocuments.filter(groupDocument => 
+                documentsOfGroup={groupDocuments.filter(groupDocument => 
                     groupDocument.groupId === selectedGroup.id
                 )}
+                setSelectedDocument={setSelectedDocument}
                 uploadDocument={uploadDocument}
             />}
             <NetworkPanel 

@@ -1,0 +1,4 @@
+.DocumentSelector {
+    color: var(--font-color);
+    border: 0.1em solid var(--font-color);
+}
