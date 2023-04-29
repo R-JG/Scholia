@@ -3,6 +3,7 @@ import requestLogger from './middleware/requestLogger';
 import unknownEndpoint from './middleware/unknownEndpoint';
 import errorHandler from './middleware/errorHandler';
 import authenticateUser from './middleware/authenticateUser';
+import servePDFWorker from './middleware/servePDFWorker';
 import usersRouter from './routes/usersRouter';
 import loginRouter from './routes/loginRouter';
 import groupsRouter from './routes/groupsRouter';
@@ -18,6 +19,8 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/login', loginRouter);
 app.use('/api/v1/groups', authenticateUser, groupsRouter);
 app.use('/api/v1/documents', authenticateUser, groupDocumentsRouter);
+
+app.get('/pdf.worker.js', servePDFWorker);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
