@@ -8,18 +8,18 @@ const isNumber = (params: unknown): params is number => {
     return ((typeof params === 'number') || (params instanceof Number));
 };
 
-const parseStringProp = (prop: unknown): string => {
-    if (!isString(prop)) {
-        throw new Error(`property ${prop} is not of type string`);
+const parseString = (params: unknown): string => {
+    if (!isString(params)) {
+        throw new Error(`value: ${params} is not of type string`);
     };
-    return prop;
+    return params;
 };
 
-const parseNumberProp = (prop: unknown): number => {
-    if (!isNumber(prop)) {
-        throw new Error(`property ${prop} is not of type number`);
+const parseNumber = (params: unknown): number => {
+    if (!isNumber(params)) {
+        throw new Error(`value: ${params} is not of type number`);
     };
-    return prop;
+    return params;
 };
 
 const parseFile = (params: unknown): File => {
@@ -41,7 +41,7 @@ export const parseUser = (params: unknown): User => {
         throw new Error('missing or incorrectly formatted data for type User');
     };
     const user: User = {
-        username: parseStringProp(params.username)
+        username: parseString(params.username)
     };
     return user;
 };
@@ -60,8 +60,8 @@ export const parseLoggedInUser = (params: unknown): LoggedInUser => {
         throw new Error('missing or incorrectly formatted data for type LoggedInUser');
     };
     const loggedInUser: LoggedInUser = {
-        username: parseStringProp(params.username),
-        token: parseStringProp(params.token)
+        username: parseString(params.username),
+        token: parseString(params.token)
     };
     return loggedInUser;
 };
@@ -72,8 +72,8 @@ export const parseGroup = (params: unknown): Group => {
         throw new Error('missing or incorrectly formatted data for type Group');
     };
     const group: Group = {
-        id: parseNumberProp(params.id),
-        groupName: parseStringProp(params.groupName)
+        id: parseNumber(params.id),
+        groupName: parseString(params.groupName)
     };
     return group;
 };
@@ -91,9 +91,9 @@ export const parseGroupDocumentInfo = (params: unknown): GroupDocumentInfo => {
         throw new Error('missing or incorrectly formatted data for GroupDocument info');
     };
     const groupDocumentInfo: GroupDocumentInfo = {
-        id: parseNumberProp(params.id),
-        groupId: parseNumberProp(params.groupId),
-        documentName: parseStringProp(params.documentName)
+        id: parseNumber(params.id),
+        groupId: parseNumber(params.groupId),
+        documentName: parseString(params.documentName)
     };
     return groupDocumentInfo;
 };
