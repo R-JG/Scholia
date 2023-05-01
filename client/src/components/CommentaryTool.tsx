@@ -16,7 +16,7 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
 
     const [documentBlob, setDocumentBlob] = useState<Blob | null>(null);
     const [documentIsLoaded, setDocumentIsLoaded] = useState<boolean>(false);
-    const [pageIsLoaded, setPageIsLoaded] = useState<boolean>(false);
+    const [initialPageIsLoaded, setInitialPageIsLoaded] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [pageHeight, setPageHeight] = useState<number | null>(null);
     const [initialPageNum] = useState<number>(20);
@@ -31,11 +31,11 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
     }, []);
 
     useEffect(() => {
-        if (!documentIsLoaded || !pageIsLoaded || !pageHeight) return;
+        if (!documentIsLoaded || !initialPageIsLoaded || !pageHeight) return;
         expandNextPages();
         expandPreviousPages();
-        documentContainerRef.current?.scrollBy(0, (pageHeight * 3));
-    }, [pageIsLoaded]);
+        documentContainerRef.current?.scrollBy(0, 1);
+    }, [initialPageIsLoaded]);
 
     const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
@@ -44,8 +44,6 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
         const amountToAdd: number = (unrenderedPages < 3) ? unrenderedPages : 3;
         return amountToAdd;
     };
-
-    // one of the sides is generating a duplicate page
 
     const expandPreviousPages = (): void => {
         setPreviousPagesToRender(previousPagesToRender + calculatePagesToAdd('before-initial'));
@@ -66,8 +64,6 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
         && (e.currentTarget.scrollTop <= pageHeight)) {
             expandPreviousPages();
         };
-
-        // prevent loading too many pages at once when agressively scrolling
     };
 
     const createPages = (direction: 'before-initial' | 'after-initial'): JSX.Element[] => {
@@ -94,10 +90,6 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
         );
     };
 
-    console.log('TOTAL PAGES:   ', totalPages);
-    console.log('PREVIOUS:   ', previousPagesToRender);
-    console.log('NEXT:   ', nextPagesToRender);
-
     return (
         <div className='CommentaryTool'>
             <div 
@@ -123,7 +115,7 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
                         width={documentContainerRef.current?.clientWidth}
                         onLoadSuccess={(page) => {
                             setPageHeight(page.height);
-                            setPageIsLoaded(true);
+                            setInitialPageIsLoaded(true);
                         }}
                     />
                     {createPages('after-initial')}
