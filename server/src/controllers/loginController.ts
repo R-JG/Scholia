@@ -28,4 +28,18 @@ const login = async (
     };
 };
 
-export default { login };
+const checkTokenValidity = async (
+        _request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        if (!response.locals.authenticatedUser) {
+            response.json({ error: 'user authentication unsuccessful' });
+            return;
+        };
+        response.send('valid');
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { login, checkTokenValidity };

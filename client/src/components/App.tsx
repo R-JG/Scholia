@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
+import loginService from '../services/loginService';
 import groupsService from '../services/groupsService';
 import groupDocumentsService from '../services/groupDocumentsService';
 import Home from './Home';
@@ -20,10 +21,15 @@ const App = () => {
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
-        if (storedUserData) {
-            const userData: LoggedInUser = parseLoggedInUser(JSON.parse(storedUserData));
-            setUser(userData);
-        };
+        if (!storedUserData) return;
+        const userData: LoggedInUser = parseLoggedInUser(JSON.parse(storedUserData));
+        loginService.checkTokenValidity(userData.token).then(tokenIsValid => {
+            if (tokenIsValid) {
+                setUser(userData);
+            } else {
+                localStorage.removeItem('user');
+            };
+        });
     }, []);
 
     useEffect(() => {

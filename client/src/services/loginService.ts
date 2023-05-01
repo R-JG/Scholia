@@ -15,4 +15,17 @@ const login = async (loginData: UserEntry): Promise<LoggedInUser | null> => {
     };
 };
 
-export default { login };
+const checkTokenValidity = async (token: string): Promise<boolean> => {
+    try {
+        const response = await axios.get(
+            baseUrl, 
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        return (response.data === 'valid');
+    } catch (error) {
+        console.error(error);
+        return false;
+    };
+};
+
+export default { login, checkTokenValidity };
