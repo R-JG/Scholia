@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
 import Header from './Header';
 import GroupContentPanel from './GroupContentPanel';
@@ -8,9 +7,11 @@ import '../css/Dashboard.css';
 interface Props {
     user: LoggedInUser | null,
     userGroups: Group[],
+    selectedGroup: Group | null,
     groupDocuments: GroupDocumentInfo[],
     updateUser: (userData: LoggedInUser | null) => void,
     createGroup: (groupName: string) => void,
+    setSelectedGroup: (group: Group) => void,
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void
 };
@@ -18,16 +19,16 @@ interface Props {
 const Dashboard = ({ 
     user, 
     userGroups,
+    selectedGroup,
     groupDocuments, 
     updateUser,
     createGroup,
+    setSelectedGroup,
     setSelectedDocument,
     uploadDocument
     }: Props) => {
 
     if (!user) return <div className='Dashboard'></div>;
-
-    const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
 
     return (
         <div className='Dashboard'>

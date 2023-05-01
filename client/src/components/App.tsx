@@ -15,6 +15,7 @@ const App = () => {
     const [user, setUser] = useState<LoggedInUser | null>(null);
     const [userGroups, setUserGroups] = useState<Group[]>([]);
     const [groupDocuments, setGroupDocuments] = useState<GroupDocumentInfo[]>([]);
+    const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
 
     useEffect(() => {
@@ -75,9 +76,11 @@ const App = () => {
                         ? <Dashboard 
                             user={user} 
                             userGroups={userGroups}
+                            selectedGroup={selectedGroup}
                             groupDocuments={groupDocuments}
                             updateUser={updateUser}
                             createGroup={createGroup}
+                            setSelectedGroup={setSelectedGroup}
                             setSelectedDocument={setSelectedDocument}
                             uploadDocument={uploadDocument}
                         /> 
