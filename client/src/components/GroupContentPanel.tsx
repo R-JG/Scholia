@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, useRef, FormEvent, ChangeEvent } from 'react';
 import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
 import DocumentSelector from './DocumentSelector';
 
@@ -21,6 +21,8 @@ const GroupContentPanel = ({
 
     const [inputFile, setInputFile] = useState<File | null>(null);
 
+    const fileInuptRef = useRef<HTMLInputElement>(null);
+
     const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         if (!e.currentTarget.files || !e.currentTarget.files[0]) return;
         setInputFile(e.currentTarget.files[0]);
@@ -30,6 +32,9 @@ const GroupContentPanel = ({
         e.preventDefault();
         if (!inputFile || !selectedGroup) return;
         uploadDocument(inputFile, selectedGroup.id);
+        if (fileInuptRef.current) {
+            fileInuptRef.current.value = '';
+        };
     };
 
     return (
@@ -47,6 +52,7 @@ const GroupContentPanel = ({
                     onSubmit={handleFormSubmit}>
                     <input 
                         className='input--document-upload' 
+                        ref={fileInuptRef}
                         type='file' 
                         accept='.pdf'
                         onChange={handleFileInputChange}
