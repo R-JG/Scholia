@@ -31,18 +31,21 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
     }, []);
 
     useEffect(() => {
-        if (!documentIsLoaded || !pageIsLoaded) return;
+        if (!documentIsLoaded || !pageIsLoaded || !pageHeight) return;
         expandNextPages();
         expandPreviousPages();
+        documentContainerRef.current?.scrollBy(0, (pageHeight * 3));
     }, [pageIsLoaded]);
 
     const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
-            ? (initialPageNum - previousPagesToRender) 
-            : (totalPages - (initialPageNum + nextPagesToRender));
+            ? (initialPageNum - previousPagesToRender - 1) 
+            : (totalPages - initialPageNum + nextPagesToRender);
         const amountToAdd: number = (unrenderedPages < 3) ? unrenderedPages : 3;
         return amountToAdd;
     };
+
+    // one of the sides is generating a duplicate page
 
     const expandPreviousPages = (): void => {
         setPreviousPagesToRender(previousPagesToRender + calculatePagesToAdd('before-initial'));
@@ -72,8 +75,8 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
             ? previousPagesToRender : nextPagesToRender;
         const getPageNum = (index: number): number => {
             return (direction === 'before-initial') 
-                ? ((initialPageNum - previousPagesToRender) + (index + 1)) 
-                : (initialPageNum + (index + 1));
+                ? (initialPageNum - previousPagesToRender + index) 
+                : (initialPageNum + index + 1);
         };
         return (
             Array.from({ length: pagesToRender }).map((_el, index) => {
