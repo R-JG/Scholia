@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef, UIEvent } from 'react';
-import { Document, Page } from 'react-pdf';
+import { useEffect, useState, useRef, UIEvent, MouseEvent } from 'react';
+import { Document, PDFPageProxy, Page } from 'react-pdf';
 import { LoggedInUser, GroupDocumentInfo } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -22,6 +22,10 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
     const [initialPageNum] = useState<number>(20);
     const [previousPagesToRender, setPreviousPagesToRender] = useState<number>(0);
     const [nextPagesToRender, setNextPagesToRender] = useState<number>(0);
+    const [coordinateSelectMode, /*setCoordinateSelectMode*/] = useState<boolean>(true);
+    // const [oneCoordinateIsSelected, setOneCoordinateIsSelected] = useState<boolean>(false);
+    // const [coordinateOne, setCoordinateOne] = useState<number | null>(null);
+    // const [coordinateTwo, setCoordinateTwo] = useState<number | null>(null);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -66,25 +70,46 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
         };
     };
 
+    const getYCoordinatePercentage = (yPixels: number, pageHeight: number): number => {
+        return Math.floor((yPixels / pageHeight) * 100);
+    };
+
+    const handlePageClick = (e: MouseEvent<Element>, page: PDFPageProxy): void => {
+        if (!coordinateSelectMode) return;
+        const targetPageNum = page.pageNumber;
+        const yCoordinatePixels: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
+        const yCoordinatePercent: number = getYCoordinatePercentage(yCoordinatePixels, page.height);
+
+        console.log('Page ', targetPageNum, ', ', yCoordinatePercent, '%');
+    };
+
+    const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
+
     const createPages = (direction: 'before-initial' | 'after-initial'): JSX.Element[] => {
         const pagesToRender: number = (direction === 'before-initial') 
             ? previousPagesToRender : nextPagesToRender;
-        const getPageNum = (index: number): number => {
+        const getPageNumber = (index: number): number => {
             return (direction === 'before-initial') 
                 ? (initialPageNum - previousPagesToRender + index) 
                 : (initialPageNum + index + 1);
         };
         return (
             Array.from({ length: pagesToRender }).map((_el, index) => {
-                const pageNum = getPageNum(index);
+                const pageNumber: number = getPageNumber(index);
+                const pageId: string = createPageId(pageNumber);
                 return (
-                    <Page 
-                        key={`${selectedDocument.documentName} page ${pageNum}`}
-                        className='document--pdf-page'
-                        pageNumber={pageNum} 
-                        renderAnnotationLayer={false}
-                        width={documentContainerRef.current?.clientWidth}
-                    />
+                    <div 
+                        key={pageId} 
+                        id={pageId}
+                        className='document-page-container'>
+                        <Page 
+                            className='document-page'
+                            pageNumber={pageNumber} 
+                            renderAnnotationLayer={false}
+                            width={documentContainerRef.current?.clientWidth}
+                            onClick={handlePageClick}
+                        />
+                    </div>
                 );
             })
         );
@@ -99,7 +124,7 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
             >
                 {documentBlob && 
                 <Document 
-                    className='document--pdf' 
+                    className='document-component' 
                     file={documentBlob}
                     onLoadSuccess={(pdf) => {
                         setTotalPages(pdf.numPages);
@@ -107,17 +132,22 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
                     }}
                 >
                     {createPages('before-initial')}
-                    <Page 
-                        key={`${selectedDocument.documentName} page ${initialPageNum}`}
-                        className='document--pdf-page'
-                        pageNumber={initialPageNum} 
-                        renderAnnotationLayer={false}
-                        width={documentContainerRef.current?.clientWidth}
-                        onLoadSuccess={(page) => {
-                            setPageHeight(page.height);
-                            setInitialPageIsLoaded(true);
-                        }}
-                    />
+                    <div 
+                        key={createPageId(initialPageNum)} 
+                        id={createPageId(initialPageNum)}
+                        className='document-page-container--initial-page'>
+                        <Page 
+                            className='document-page'
+                            pageNumber={initialPageNum} 
+                            renderAnnotationLayer={false}
+                            width={documentContainerRef.current?.clientWidth}
+                            onClick={handlePageClick}
+                            onLoadSuccess={(page) => {
+                                setPageHeight(page.height);
+                                setInitialPageIsLoaded(true);
+                            }}
+                        />
+                    </div>
                     {createPages('after-initial')}
                 </Document>}
             </div>
