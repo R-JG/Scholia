@@ -36,8 +36,8 @@ const DocumentPage = ({
     setYPercentCoordinateTwo
     }: Props) => {
 
-    const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState(0);
-    const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState(0);
+    const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number>(0);
+    const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number>(0);
 
     const getEventYPercentCoordinate = (e: MouseEvent<HTMLDivElement>): number => {
         const targetPageHeight = e.currentTarget.clientHeight;
@@ -70,6 +70,11 @@ const DocumentPage = ({
         if (!coordinateSelectMode || !userIsSelecting || (pageNumber !== pageForSelection)) return;
         setYPixelCoordinateTwo(e.clientY);
     };
+
+    const selectionBoxStyle = (yPixelCoordinateTwo === 0) ? { display: 'none' } : { 
+        top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
+        height: `${Math.abs(yPixelCoordinateOne - yPixelCoordinateTwo)}px`,
+    };
     
     return (
         <div 
@@ -80,14 +85,10 @@ const DocumentPage = ({
             onMouseUp={handlePageMouseUp}
             onMouseMove={handlePageMouseMove}
         >
-            {userIsSelecting && (pageForSelection === pageNumber) 
-            && yPixelCoordinateOne && yPixelCoordinateTwo && 
+            {userIsSelecting && (pageForSelection === pageNumber) && 
             <div 
                 className='selection-box' 
-                style={{ 
-                    top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
-                    height: `${Math.abs(yPixelCoordinateOne - yPixelCoordinateTwo)}px`,
-                }}>
+                style={selectionBoxStyle}>
             </div>}
             <Page 
                 pageNumber={pageNumber} 
