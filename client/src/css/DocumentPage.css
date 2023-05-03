@@ -1,0 +1,14 @@
+.DocumentPage {
+    height: fit-content;
+    width: fit-content;
+}
+
+.selection-box {
+    box-sizing: border-box;
+    width: 50%;
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(255, 231, 47, 0.699);
+    border: 0.2em solid gold;
+    pointer-events: none;
+}

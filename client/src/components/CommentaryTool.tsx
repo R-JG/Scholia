@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef, UIEvent, MouseEvent } from 'react';
-import { Document, Page } from 'react-pdf';
+import { useEffect, useState, useRef, UIEvent } from 'react';
+import { Document } from 'react-pdf';
 import { LoggedInUser, GroupDocumentInfo } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
+import DocumentPage from './DocumentPage';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../css/CommentaryTool.css';
 
@@ -18,18 +19,15 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
     const [documentIsLoaded, setDocumentIsLoaded] = useState<boolean>(false);
     const [initialPageIsLoaded, setInitialPageIsLoaded] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
-    const [pageHeight, setPageHeight] = useState<number | null>(null);
-    const [initialPageNum] = useState<number>(20);
+    const [initialPageHeight, setInitialPageHeight] = useState<number | null>(null);
+    const [initialPageNumber] = useState<number>(20);
     const [previousPagesToRender, setPreviousPagesToRender] = useState<number>(0);
     const [nextPagesToRender, setNextPagesToRender] = useState<number>(0);
     const [coordinateSelectMode, setCoordinateSelectMode] = useState<boolean>(false);
     const [userIsSelecting, setUserIsSelecting] = useState<boolean>(false);
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
-    const [/*coordinateOne*/, setCoordinateOne] = useState<number | null>(null);
-    const [/*coordinateTwo*/, setCoordinateTwo] = useState<number | null>(null);
-
-    const [testOne, setTestOne] = useState(0);
-    const [testTwo, setTestTwo] = useState(0);
+    const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
+    const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +37,7 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
     }, []);
 
     useEffect(() => {
-        if (!documentIsLoaded || !initialPageIsLoaded || !pageHeight) return;
+        if (!documentIsLoaded || !initialPageIsLoaded || !initialPageHeight) return;
         expandNextPages();
         expandPreviousPages();
         documentContainerRef.current?.scrollBy(0, 1);
@@ -47,8 +45,8 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
 
     const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
-            ? (initialPageNum - previousPagesToRender - 1) 
-            : (totalPages - initialPageNum + nextPagesToRender);
+            ? (initialPageNumber - previousPagesToRender - 1) 
+            : (totalPages - initialPageNumber + nextPagesToRender);
         const amountToAdd: number = (unrenderedPages < 3) ? unrenderedPages : 3;
         return amountToAdd;
     };
@@ -62,72 +60,18 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
     };
 
     const handleScroll = (e: UIEvent<HTMLDivElement>): void => {
-        if (!documentIsLoaded || !pageHeight || !documentContainerRef.current) return;
+        if (!documentIsLoaded || !initialPageHeight || !documentContainerRef.current) return;
         if ((previousPagesToRender + nextPagesToRender + 1) === totalPages) return;
-        if (((initialPageNum + nextPagesToRender) !== totalPages) 
-        && (e.currentTarget.scrollTop >= (documentContainerRef.current.scrollHeight - pageHeight))) {
+        if (((initialPageNumber + nextPagesToRender) !== totalPages) 
+        && (e.currentTarget.scrollTop >= (documentContainerRef.current.scrollHeight - initialPageHeight))) {
             expandNextPages();
         };
-        if (((initialPageNum - previousPagesToRender) !== 1) 
-        && (e.currentTarget.scrollTop <= pageHeight)) {
+        if (((initialPageNumber - previousPagesToRender) !== 1) 
+        && (e.currentTarget.scrollTop <= initialPageHeight)) {
             expandPreviousPages();
         };
     };
     
-    const getMouseEventYCoordinate = (e: MouseEvent<HTMLDivElement>): number => {
-        const targetPageHeight = e.currentTarget.clientHeight;
-        const yCoordinatePixels: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
-        const yCoordinatePercent: number = Math.floor((yCoordinatePixels / targetPageHeight) * 100);
-        return yCoordinatePercent;
-    };
-    
-    const getMouseEventPageNumber = (e: MouseEvent<HTMLDivElement>): number => {
-        const pageNumberData: string | undefined = e.currentTarget.dataset.pageNumber;
-        const pageNumber = Number(pageNumberData);
-        return pageNumber;
-    };
-
-    const handlePageMouseDown = (e: MouseEvent<HTMLDivElement>): void => {
-        if (!coordinateSelectMode) return;
-        const targetPageNumber: number = getMouseEventPageNumber(e);
-        const yCoordinatePercent: number = getMouseEventYCoordinate(e);
-        setCoordinateOne(yCoordinatePercent);
-        setUserIsSelecting(true);
-        setPageForSelection(targetPageNumber);
-
-        setTestOne(e.clientY);
-    };
-
-    const handlePageMouseUp = (e: MouseEvent<HTMLDivElement>): void => {
-        if (!coordinateSelectMode || !userIsSelecting || !pageForSelection) return;
-        const targetPageNumber: number = getMouseEventPageNumber(e);
-        const yCoordinatePercent: number = getMouseEventYCoordinate(e);
-        if (targetPageNumber === pageForSelection) setCoordinateTwo(yCoordinatePercent);
-        if (targetPageNumber > pageForSelection) setCoordinateTwo(100);
-        if (targetPageNumber < pageForSelection) setCoordinateTwo(0);
-        setUserIsSelecting(false);
-
-        setTestOne(0);
-        setTestTwo(0);
-    };
-
-    const handlePageMouseMove = (e: MouseEvent<HTMLDivElement>): void => {
-        if (!coordinateSelectMode || !userIsSelecting) return;
-        const targetPageNumber: number = getMouseEventPageNumber(e);
-        if (targetPageNumber !== pageForSelection) return;
-        setTestTwo(e.clientY);
-    };
-
-    /*
-    const endCoordinateSelection = (): void => {
-        setCoordinateOne(null);
-        setCoordinateTwo(null);
-        setPageForSelection(null);
-        setUserIsSelecting(false);
-        setCoordinateSelectMode(false);
-    };
-    */
-
     const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
 
     const createPages = (direction: 'before-initial' | 'after-initial'): JSX.Element[] => {
@@ -135,35 +79,32 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
             ? previousPagesToRender : nextPagesToRender;
         const getPageNumber = (index: number): number => {
             return (direction === 'before-initial') 
-                ? (initialPageNum - previousPagesToRender + index) 
-                : (initialPageNum + index + 1);
+                ? (initialPageNumber - previousPagesToRender + index) 
+                : (initialPageNumber + index + 1);
         };
         return (
             Array.from({ length: pagesToRender }).map((_el, index) => {
                 const pageNumber: number = getPageNumber(index);
                 const pageId: string = createPageId(pageNumber);
                 return (
-                    <div 
-                        key={pageId} 
-                        id={pageId}
-                        data-page-number={pageNumber}
-                        className='document-page-container'
-                        onMouseDown={handlePageMouseDown}
-                        onMouseUp={handlePageMouseUp}
-                        onMouseMove={handlePageMouseMove}>
-                        {userIsSelecting && (pageForSelection === pageNumber) && testOne && testTwo 
-                        && <div className='selection-box' style={{ 
-                            top: `${Math.min(testOne, testTwo)}px`,
-                            height: `${Math.abs(testOne - testTwo)}px`,
-                        }}></div>}
-                        <Page 
-                            className='document-page'
-                            pageNumber={pageNumber} 
-                            renderAnnotationLayer={false}
-                            renderTextLayer={!coordinateSelectMode}
-                            width={documentContainerRef.current?.clientWidth}
-                        />
-                    </div>
+                    <DocumentPage 
+                        key={pageId}
+                        pageId={pageId}
+                        pageNumber={pageNumber}
+                        pageWidth={documentContainerRef.current?.clientWidth}
+                        isInitialPage={false}
+                        coordinateSelectMode={coordinateSelectMode}
+                        userIsSelecting={userIsSelecting}
+                        pageForSelection={pageForSelection}
+                        yPercentCoordinateOne={yPercentCoordinateOne}
+                        yPercentCoordinateTwo={yPercentCoordinateTwo}
+                        setInitialPageIsLoaded={setInitialPageIsLoaded}
+                        setInitialPageHeight={setInitialPageHeight}
+                        setPageForSelection={setPageForSelection}
+                        setUserIsSelecting={setUserIsSelecting}
+                        setYPercentCoordinateOne={setYPercentCoordinateOne}
+                        setYPercentCoordinateTwo={setYPercentCoordinateTwo}
+                    />
                 );
             })
         );
@@ -189,33 +130,24 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
                     }}
                 >
                     {createPages('before-initial')}
-                    <div 
-                        key={createPageId(initialPageNum)} 
-                        id={createPageId(initialPageNum)}
-                        data-page-number={initialPageNum}
-                        className='document-page-container'
-                        onMouseDown={handlePageMouseDown}
-                        onMouseUp={handlePageMouseUp}
-                        onMouseMove={handlePageMouseMove}>
-
-                        {userIsSelecting && (pageForSelection === initialPageNum) && testOne && testTwo
-                        && <div className='selection-box' style={{ 
-                            top: `${Math.min(testOne, testTwo)}px`,
-                            height: `${Math.abs(testOne - testTwo)}px`,
-                        }}></div>}
-
-                        <Page 
-                            className='document-page'
-                            pageNumber={initialPageNum} 
-                            renderAnnotationLayer={false}
-                            renderTextLayer={!coordinateSelectMode}
-                            width={documentContainerRef.current?.clientWidth}
-                            onLoadSuccess={(page) => {
-                                setPageHeight(page.height);
-                                setInitialPageIsLoaded(true);
-                            }}
-                        />
-                    </div>
+                    <DocumentPage 
+                        key={createPageId(initialPageNumber)}
+                        pageId={createPageId(initialPageNumber)}
+                        pageNumber={initialPageNumber}
+                        pageWidth={documentContainerRef.current?.clientWidth}
+                        isInitialPage={true}
+                        coordinateSelectMode={coordinateSelectMode}
+                        userIsSelecting={userIsSelecting}
+                        pageForSelection={pageForSelection}
+                        yPercentCoordinateOne={yPercentCoordinateOne}
+                        yPercentCoordinateTwo={yPercentCoordinateTwo}
+                        setInitialPageIsLoaded={setInitialPageIsLoaded}
+                        setInitialPageHeight={setInitialPageHeight}
+                        setPageForSelection={setPageForSelection}
+                        setUserIsSelecting={setUserIsSelecting}
+                        setYPercentCoordinateOne={setYPercentCoordinateOne}
+                        setYPercentCoordinateTwo={setYPercentCoordinateTwo}
+                    />
                     {createPages('after-initial')}
                 </Document>}
             </div>
