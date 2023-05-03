@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, UIEvent, MouseEvent } from 'react';
-import { Document, PDFPageProxy, Page } from 'react-pdf';
+import { Document, Page } from 'react-pdf';
 import { LoggedInUser, GroupDocumentInfo } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -22,10 +22,14 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
     const [initialPageNum] = useState<number>(20);
     const [previousPagesToRender, setPreviousPagesToRender] = useState<number>(0);
     const [nextPagesToRender, setNextPagesToRender] = useState<number>(0);
-    const [coordinateSelectMode, /*setCoordinateSelectMode*/] = useState<boolean>(true);
-    // const [oneCoordinateIsSelected, setOneCoordinateIsSelected] = useState<boolean>(false);
-    // const [coordinateOne, setCoordinateOne] = useState<number | null>(null);
-    // const [coordinateTwo, setCoordinateTwo] = useState<number | null>(null);
+    const [coordinateSelectMode, setCoordinateSelectMode] = useState<boolean>(false);
+    const [userIsSelecting, setUserIsSelecting] = useState<boolean>(false);
+    const [pageForSelection, setPageForSelection] = useState<number | null>(null);
+    const [/*coordinateOne*/, setCoordinateOne] = useState<number | null>(null);
+    const [/*coordinateTwo*/, setCoordinateTwo] = useState<number | null>(null);
+
+    const [testOne, setTestOne] = useState(0);
+    const [testTwo, setTestTwo] = useState(0);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -69,19 +73,60 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
             expandPreviousPages();
         };
     };
-
-    const getYCoordinatePercentage = (yPixels: number, pageHeight: number): number => {
-        return Math.floor((yPixels / pageHeight) * 100);
-    };
-
-    const handlePageClick = (e: MouseEvent<Element>, page: PDFPageProxy): void => {
-        if (!coordinateSelectMode) return;
-        const targetPageNum = page.pageNumber;
+    
+    const getMouseEventYCoordinate = (e: MouseEvent<HTMLDivElement>): number => {
+        const targetPageHeight = e.currentTarget.clientHeight;
         const yCoordinatePixels: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
-        const yCoordinatePercent: number = getYCoordinatePercentage(yCoordinatePixels, page.height);
-
-        console.log('Page ', targetPageNum, ', ', yCoordinatePercent, '%');
+        const yCoordinatePercent: number = Math.floor((yCoordinatePixels / targetPageHeight) * 100);
+        return yCoordinatePercent;
     };
+    
+    const getMouseEventPageNumber = (e: MouseEvent<HTMLDivElement>): number => {
+        const pageNumberData: string | undefined = e.currentTarget.dataset.pageNumber;
+        const pageNumber = Number(pageNumberData);
+        return pageNumber;
+    };
+
+    const handlePageMouseDown = (e: MouseEvent<HTMLDivElement>): void => {
+        if (!coordinateSelectMode) return;
+        const targetPageNumber: number = getMouseEventPageNumber(e);
+        const yCoordinatePercent: number = getMouseEventYCoordinate(e);
+        setCoordinateOne(yCoordinatePercent);
+        setUserIsSelecting(true);
+        setPageForSelection(targetPageNumber);
+
+        setTestOne(e.clientY);
+    };
+
+    const handlePageMouseUp = (e: MouseEvent<HTMLDivElement>): void => {
+        if (!coordinateSelectMode || !userIsSelecting || !pageForSelection) return;
+        const targetPageNumber: number = getMouseEventPageNumber(e);
+        const yCoordinatePercent: number = getMouseEventYCoordinate(e);
+        if (targetPageNumber === pageForSelection) setCoordinateTwo(yCoordinatePercent);
+        if (targetPageNumber > pageForSelection) setCoordinateTwo(100);
+        if (targetPageNumber < pageForSelection) setCoordinateTwo(0);
+        setUserIsSelecting(false);
+
+        setTestOne(0);
+        setTestTwo(0);
+    };
+
+    const handlePageMouseMove = (e: MouseEvent<HTMLDivElement>): void => {
+        if (!coordinateSelectMode || !userIsSelecting) return;
+        const targetPageNumber: number = getMouseEventPageNumber(e);
+        if (targetPageNumber !== pageForSelection) return;
+        setTestTwo(e.clientY);
+    };
+
+    /*
+    const endCoordinateSelection = (): void => {
+        setCoordinateOne(null);
+        setCoordinateTwo(null);
+        setPageForSelection(null);
+        setUserIsSelecting(false);
+        setCoordinateSelectMode(false);
+    };
+    */
 
     const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
 
@@ -101,13 +146,22 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
                     <div 
                         key={pageId} 
                         id={pageId}
-                        className='document-page-container'>
+                        data-page-number={pageNumber}
+                        className='document-page-container'
+                        onMouseDown={handlePageMouseDown}
+                        onMouseUp={handlePageMouseUp}
+                        onMouseMove={handlePageMouseMove}>
+                        {userIsSelecting && (pageForSelection === pageNumber) && testOne && testTwo 
+                        && <div className='selection-box' style={{ 
+                            top: `${Math.min(testOne, testTwo)}px`,
+                            height: `${Math.abs(testOne - testTwo)}px`,
+                        }}></div>}
                         <Page 
                             className='document-page'
                             pageNumber={pageNumber} 
                             renderAnnotationLayer={false}
+                            renderTextLayer={!coordinateSelectMode}
                             width={documentContainerRef.current?.clientWidth}
-                            onClick={handlePageClick}
                         />
                     </div>
                 );
@@ -117,6 +171,9 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
 
     return (
         <div className='CommentaryTool'>
+            <button onClick={() => setCoordinateSelectMode(!coordinateSelectMode)}>
+                {`SELECT MODE ${(coordinateSelectMode) ? 'ON' : 'OFF'}`}
+            </button>
             <div 
                 className='document-container' 
                 ref={documentContainerRef}
@@ -135,13 +192,24 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
                     <div 
                         key={createPageId(initialPageNum)} 
                         id={createPageId(initialPageNum)}
-                        className='document-page-container--initial-page'>
+                        data-page-number={initialPageNum}
+                        className='document-page-container'
+                        onMouseDown={handlePageMouseDown}
+                        onMouseUp={handlePageMouseUp}
+                        onMouseMove={handlePageMouseMove}>
+
+                        {userIsSelecting && (pageForSelection === initialPageNum) && testOne && testTwo
+                        && <div className='selection-box' style={{ 
+                            top: `${Math.min(testOne, testTwo)}px`,
+                            height: `${Math.abs(testOne - testTwo)}px`,
+                        }}></div>}
+
                         <Page 
                             className='document-page'
                             pageNumber={initialPageNum} 
                             renderAnnotationLayer={false}
+                            renderTextLayer={!coordinateSelectMode}
                             width={documentContainerRef.current?.clientWidth}
-                            onClick={handlePageClick}
                             onLoadSuccess={(page) => {
                                 setPageHeight(page.height);
                                 setInitialPageIsLoaded(true);
