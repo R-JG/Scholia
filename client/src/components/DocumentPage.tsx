@@ -42,7 +42,7 @@ const DocumentPage = ({
     const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number>(0);
 
     const getPercentCoordinate = (targetPageHeight: number, yPixelCoordinate: number): number => {
-        return Math.floor((yPixelCoordinate / targetPageHeight) * 100);
+        return (yPixelCoordinate / targetPageHeight) * 100;
     };
 
     const handlePageMouseDown = (e: MouseEvent<HTMLDivElement>): void => {
@@ -80,6 +80,7 @@ const DocumentPage = ({
             return (yPixelCoordinateTwo === 0) ? { display: 'none' } : { 
                 top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
                 height: `${Math.abs(yPixelCoordinateOne - yPixelCoordinateTwo)}px`,
+                borderColor: 'transparent'
             };
         } else if (yPercentCoordinateOne && yPercentCoordinateTwo) {
             return {
@@ -88,7 +89,7 @@ const DocumentPage = ({
             };
         } else return;
     };
-    
+
     return (
         <div 
             id={pageId}
