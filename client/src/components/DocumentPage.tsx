@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Page } from 'react-pdf';
 import '../css/DocumentPage.css';
 
@@ -28,6 +28,8 @@ const DocumentPage = ({
     coordinateSelectMode,
     userIsSelecting,
     pageForSelection,
+    yPercentCoordinateOne,
+    yPercentCoordinateTwo,
     setInitialPageIsLoaded,
     setInitialPageHeight,
     setPageForSelection,
@@ -39,28 +41,29 @@ const DocumentPage = ({
     const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number>(0);
     const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number>(0);
 
-    const getEventYPercentCoordinate = (e: MouseEvent<HTMLDivElement>): number => {
-        const targetPageHeight = e.currentTarget.clientHeight;
-        const yPixelCoordinate: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
-        const yPercentCoordinate: number = Math.floor((yPixelCoordinate / targetPageHeight) * 100);
-        return yPercentCoordinate;
+    const getPercentCoordinate = (targetPageHeight: number, yPixelCoordinate: number): number => {
+        return Math.floor((yPixelCoordinate / targetPageHeight) * 100);
     };
 
     const handlePageMouseDown = (e: MouseEvent<HTMLDivElement>): void => {
         if (!coordinateSelectMode) return;
-        const yPercentCoordinate: number = getEventYPercentCoordinate(e);
+        const targetPageHeight: number = e.currentTarget.clientHeight;
+        const yPixelCoordinate: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
+        const yPercentCoordinate: number = getPercentCoordinate(targetPageHeight, yPixelCoordinate);
         setYPercentCoordinateOne(yPercentCoordinate);
-        setYPixelCoordinateOne(e.clientY);
+        setYPixelCoordinateOne(yPixelCoordinate);
         setUserIsSelecting(true);
         setPageForSelection(pageNumber);
     };
 
     const handlePageMouseUp = (e: MouseEvent<HTMLDivElement>): void => {
         if (!coordinateSelectMode || !userIsSelecting || !pageForSelection) return;
-        const yPercentCoordinate: number = getEventYPercentCoordinate(e);
-        if (pageNumber === pageForSelection) setYPercentCoordinateTwo(yPercentCoordinate);
         if (pageNumber > pageForSelection) setYPercentCoordinateTwo(100);
-        if (pageNumber < pageForSelection) setYPercentCoordinateTwo(0);
+        if (pageNumber < pageForSelection) setYPercentCoordinateTwo(1);
+        const targetPageHeight: number = e.currentTarget.clientHeight;
+        const yPixelCoordinate: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
+        const yPercentCoordinate: number = getPercentCoordinate(targetPageHeight, yPixelCoordinate);
+        if (pageNumber === pageForSelection) setYPercentCoordinateTwo(yPercentCoordinate);
         setYPixelCoordinateOne(0);
         setYPixelCoordinateTwo(0);
         setUserIsSelecting(false);
@@ -68,12 +71,22 @@ const DocumentPage = ({
 
     const handlePageMouseMove = (e: MouseEvent<HTMLDivElement>): void => {
         if (!coordinateSelectMode || !userIsSelecting || (pageNumber !== pageForSelection)) return;
-        setYPixelCoordinateTwo(e.clientY);
+        const yPixelCoordinate: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
+        setYPixelCoordinateTwo(yPixelCoordinate);
     };
 
-    const selectionBoxStyle = (yPixelCoordinateTwo === 0) ? { display: 'none' } : { 
-        top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
-        height: `${Math.abs(yPixelCoordinateOne - yPixelCoordinateTwo)}px`,
+    const createSelectionBoxStyle = () => {
+        if (userIsSelecting) {
+            return (yPixelCoordinateTwo === 0) ? { display: 'none' } : { 
+                top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
+                height: `${Math.abs(yPixelCoordinateOne - yPixelCoordinateTwo)}px`,
+            };
+        } else if (yPercentCoordinateOne && yPercentCoordinateTwo) {
+            return {
+                top: `${Math.min(yPercentCoordinateOne, yPercentCoordinateTwo)}%`,
+                height: `${Math.abs(yPercentCoordinateOne - yPercentCoordinateTwo)}%`,
+            };
+        } else return;
     };
     
     return (
@@ -85,10 +98,10 @@ const DocumentPage = ({
             onMouseUp={handlePageMouseUp}
             onMouseMove={handlePageMouseMove}
         >
-            {userIsSelecting && (pageForSelection === pageNumber) && 
+            {(pageForSelection === pageNumber) && 
             <div 
                 className='selection-box' 
-                style={selectionBoxStyle}>
+                style={createSelectionBoxStyle()}>
             </div>}
             <Page 
                 pageNumber={pageNumber} 
@@ -98,7 +111,7 @@ const DocumentPage = ({
                 onLoadSuccess={isInitialPage ? (page) => {
                     setInitialPageHeight(page.height);
                     setInitialPageIsLoaded(true);
-                } : undefined}
+                } : undefined }
             />
         </div>
     );
