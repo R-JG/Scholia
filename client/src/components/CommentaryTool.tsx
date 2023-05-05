@@ -1,17 +1,26 @@
 import { useEffect, useState, useRef, UIEvent } from 'react';
 import { Document } from 'react-pdf';
-import { LoggedInUser, GroupDocumentInfo } from '../typeUtils/types';
+import { LoggedInUser, GroupDocumentInfo, Commentary, PageSelectionCoordinates } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import DocumentPage from './DocumentPage';
+import CommentaryNavigator from './CommentaryNavigator';
+import CommentaryEditBar from './CommentaryEditBar';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../css/CommentaryTool.css';
 
 interface Props {
     user: LoggedInUser | null,
-    selectedDocument: GroupDocumentInfo | null
+    selectedDocument: GroupDocumentInfo | null,
+    selectedCommentary: Commentary | null,
+    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates | null, text: string) => void,
 };
 
-const CommentaryTool = ({ user, selectedDocument }: Props) => {
+const CommentaryTool = ({ 
+    user, 
+    selectedDocument, 
+    selectedCommentary, 
+    addSectionToSelectedCommentary 
+    }: Props) => {
 
     if (!user || !selectedDocument) return <div className='CommentaryTool'></div>;
 
@@ -112,9 +121,6 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
 
     return (
         <div className='CommentaryTool'>
-            <button onClick={() => setCoordinateSelectMode(!coordinateSelectMode)}>
-                {`SELECT MODE ${(coordinateSelectMode) ? 'ON' : 'OFF'}`}
-            </button>
             <div 
                 className='document-container' 
                 ref={documentContainerRef}
@@ -151,6 +157,21 @@ const CommentaryTool = ({ user, selectedDocument }: Props) => {
                     {createPages('after-initial')}
                 </Document>}
             </div>
+            {selectedCommentary &&
+            <CommentaryNavigator 
+                selectedCommentary={selectedCommentary}
+            />}
+            {selectedCommentary && (user.id === selectedCommentary.userId) && 
+            <CommentaryEditBar 
+                user={user}
+                selectedCommentary={selectedCommentary}
+                coordinateSelectMode={coordinateSelectMode}
+                pageForSelection={pageForSelection}
+                yPercentCoordinateOne={yPercentCoordinateOne}
+                yPercentCoordinateTwo={yPercentCoordinateTwo}
+                setCoordinateSelectMode={setCoordinateSelectMode}
+                addSectionToSelectedCommentary={addSectionToSelectedCommentary}
+            />}
         </div>
     );
 };

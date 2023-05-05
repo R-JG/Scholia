@@ -22,7 +22,7 @@ const login = async (
             return;
         };
         const token: string = createToken({ username: userInDb.username });
-        response.json({ token, username: userInDb.username });
+        response.json({ id: userInDb.id, username: userInDb.username, token });
     } catch (error) {
         next(error);
     };

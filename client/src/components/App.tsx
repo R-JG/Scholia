@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocumentInfo, Commentary, PageSelectionCoordinates } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
 import loginService from '../services/loginService';
@@ -18,6 +18,14 @@ const App = () => {
     const [groupDocuments, setGroupDocuments] = useState<GroupDocumentInfo[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
+    const [selectedCommentary, setSelectedCommentary] = useState<Commentary | null>(
+        {
+            id: 1,
+            userId: 1,
+            name: 'test',
+            commentarySections: []
+        }
+    );
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -67,6 +75,18 @@ const App = () => {
         });
     };
 
+    const addSectionToSelectedCommentary = (
+        coordinates: PageSelectionCoordinates | null, text: string
+        ): void => {
+        if (!selectedCommentary) return;
+        setSelectedCommentary({ 
+            ...selectedCommentary, 
+            commentarySections: selectedCommentary.commentarySections.concat({ coordinates, text })
+        });
+    };
+
+    console.log(selectedCommentary);
+
     return (
         <div className='App'>
             <BrowserRouter>
@@ -97,6 +117,8 @@ const App = () => {
                         ? <CommentaryTool 
                             user={user}
                             selectedDocument={selectedDocument}
+                            selectedCommentary={selectedCommentary}
+                            addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                         /> 
                         : <Navigate replace to={dashboardRoute} />
                     } />

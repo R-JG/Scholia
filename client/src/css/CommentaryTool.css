@@ -11,7 +11,7 @@
 .document-container {
     width: 50%;
     height: 80%;
-    margin-top: 5%;
+    margin-top: 3%;
     border: 0.1em solid var(--background-color-two);
     overflow: scroll;
     position: relative;

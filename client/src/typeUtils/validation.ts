@@ -37,10 +37,11 @@ export const parseBlob = (params: unknown): Blob => {
 };
 
 export const parseUser = (params: unknown): User => {
-    if (!params || (typeof params !== 'object') || !('username' in params)) {
+    if (!params || (typeof params !== 'object') || !(('id' in params) && ('username' in params))) {
         throw new Error('missing or incorrectly formatted data for type User');
     };
     const user: User = {
+        id: parseNumber(params.id),
         username: parseString(params.username)
     };
     return user;
@@ -56,10 +57,11 @@ export const parseUserArray = (params: unknown): User[] => {
 
 export const parseLoggedInUser = (params: unknown): LoggedInUser => {
     if (!params || (typeof params !== 'object') 
-    || !(('username' in params) && ('token' in params))) {
+    || !(('id' in params) && ('username' in params) && ('token' in params))) {
         throw new Error('missing or incorrectly formatted data for type LoggedInUser');
     };
     const loggedInUser: LoggedInUser = {
+        id: parseNumber(params.id),
         username: parseString(params.username),
         token: parseString(params.token)
     };

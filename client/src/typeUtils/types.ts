@@ -4,10 +4,12 @@ export interface UserEntry {
 };
 
 export interface User {
+    id: number,
     username: string
 };
 
 export interface LoggedInUser {
+    id: number,
     username: string,
     token: string
 };
@@ -29,3 +31,21 @@ export interface GroupDocument {
 };
 
 export type GroupDocumentInfo = Omit<GroupDocument, 'file'>;
+
+export interface PageSelectionCoordinates {
+    pageNumber: number,
+    yTop: number,
+    yBottom: number
+};
+
+export interface CommentarySection {
+    coordinates: PageSelectionCoordinates | null,
+    text: string
+};
+
+export interface Commentary {
+    id: number,
+    userId: number,
+    name: string,
+    commentarySections: CommentarySection[]
+};

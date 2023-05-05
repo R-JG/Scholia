@@ -1,0 +1,10 @@
+.CommentaryEditBar {
+    height: 20rem;
+    width: 4rem;
+    margin-right: 1.2rem;
+    position: absolute;
+    right: 0;
+    top: 25vh;
+    z-index: 102;
+    background-color: var(--background-color-two);
+}

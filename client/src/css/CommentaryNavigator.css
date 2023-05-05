@@ -1,0 +1,9 @@
+.CommentaryNavigator {
+    height: 4rem;
+    min-width: 50rem;
+    margin-bottom: 1.2rem;
+    position: absolute;
+    bottom: 0;
+    z-index: 102;
+    background-color: var(--background-color-two);
+}
