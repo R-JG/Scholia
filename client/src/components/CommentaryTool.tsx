@@ -80,6 +80,11 @@ const CommentaryTool = ({
             expandPreviousPages();
         };
     };
+
+    const resetPercentCoordinates = (): void => {
+        setYPercentCoordinateOne(null);
+        setYPercentCoordinateTwo(null);
+    };
     
     const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
 
@@ -102,6 +107,7 @@ const CommentaryTool = ({
                         pageNumber={pageNumber}
                         pageWidth={documentContainerRef.current?.clientWidth}
                         isInitialPage={false}
+                        selectedCommentary={selectedCommentary}
                         coordinateSelectMode={coordinateSelectMode}
                         userIsSelecting={userIsSelecting}
                         pageForSelection={pageForSelection}
@@ -142,6 +148,7 @@ const CommentaryTool = ({
                         pageNumber={initialPageNumber}
                         pageWidth={documentContainerRef.current?.clientWidth}
                         isInitialPage={true}
+                        selectedCommentary={selectedCommentary}
                         coordinateSelectMode={coordinateSelectMode}
                         userIsSelecting={userIsSelecting}
                         pageForSelection={pageForSelection}
@@ -170,6 +177,7 @@ const CommentaryTool = ({
                 yPercentCoordinateOne={yPercentCoordinateOne}
                 yPercentCoordinateTwo={yPercentCoordinateTwo}
                 setCoordinateSelectMode={setCoordinateSelectMode}
+                resetPercentCoordinates={resetPercentCoordinates}
                 addSectionToSelectedCommentary={addSectionToSelectedCommentary}
             />}
         </div>

@@ -1,6 +1,7 @@
 .CommentaryEditBar {
     height: 20rem;
     width: 4rem;
+    padding: 0.6rem;
     margin-right: 1.2rem;
     position: absolute;
     right: 0;

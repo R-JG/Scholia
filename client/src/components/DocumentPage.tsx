@@ -1,5 +1,7 @@
 import { MouseEvent, useState } from 'react';
 import { Page } from 'react-pdf';
+import { Commentary } from '../typeUtils/types';
+import SelectionBoxContainer from './SelectionBoxContainer';
 import '../css/DocumentPage.css';
 
 interface Props {
@@ -7,6 +9,7 @@ interface Props {
     pageNumber: number,
     pageWidth: number | undefined,
     isInitialPage: boolean,
+    selectedCommentary: Commentary | null,
     coordinateSelectMode: boolean,
     userIsSelecting: boolean,
     pageForSelection: number | null,
@@ -25,6 +28,7 @@ const DocumentPage = ({
     pageNumber, 
     pageWidth,
     isInitialPage, 
+    selectedCommentary,
     coordinateSelectMode,
     userIsSelecting,
     pageForSelection,
@@ -75,21 +79,6 @@ const DocumentPage = ({
         setYPixelCoordinateTwo(yPixelCoordinate);
     };
 
-    const createSelectionBoxStyle = () => {
-        if (userIsSelecting) {
-            return (yPixelCoordinateTwo === 0) ? { display: 'none' } : { 
-                top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
-                height: `${Math.abs(yPixelCoordinateOne - yPixelCoordinateTwo)}px`,
-                borderColor: 'transparent'
-            };
-        } else if (yPercentCoordinateOne && yPercentCoordinateTwo) {
-            return {
-                top: `${Math.min(yPercentCoordinateOne, yPercentCoordinateTwo)}%`,
-                height: `${Math.abs(yPercentCoordinateOne - yPercentCoordinateTwo)}%`,
-            };
-        } else return;
-    };
-
     return (
         <div 
             id={pageId}
@@ -99,11 +88,17 @@ const DocumentPage = ({
             onMouseUp={handlePageMouseUp}
             onMouseMove={handlePageMouseMove}
         >
-            {(pageForSelection === pageNumber) && 
-            <div 
-                className='selection-box' 
-                style={createSelectionBoxStyle()}>
-            </div>}
+            <SelectionBoxContainer 
+                pageNumber={pageNumber}
+                selectedCommentary={selectedCommentary}
+                coordinateSelectMode={coordinateSelectMode}
+                pageForSelection={pageForSelection}
+                userIsSelecting={userIsSelecting}
+                yPercentCoordinateOne={yPercentCoordinateOne}
+                yPercentCoordinateTwo={yPercentCoordinateTwo}
+                yPixelCoordinateOne={yPixelCoordinateOne}
+                yPixelCoordinateTwo={yPixelCoordinateTwo}
+            />
             <Page 
                 pageNumber={pageNumber} 
                 renderAnnotationLayer={false}
