@@ -12,7 +12,7 @@ interface Props {
     user: LoggedInUser | null,
     selectedDocument: GroupDocumentInfo | null,
     selectedCommentary: Commentary | null,
-    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates | null, text: string) => void,
+    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates, text: string) => void,
 };
 
 const CommentaryTool = ({ 

@@ -55,7 +55,7 @@ const SelectionBoxContainer = ({
                 style={createBoxStyleForSelecting()}>
             </div>}
             {selectedCommentary && 
-            selectedCommentary.commentarySections.map(section =>
+            selectedCommentary.commentarySections.body.map(section =>
                 (section.coordinates && (section.coordinates.pageNumber === pageNumber)) ? 
                 <div 
                     className='selection-box' 

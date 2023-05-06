@@ -39,13 +39,19 @@ export interface PageSelectionCoordinates {
 };
 
 export interface CommentarySection {
-    coordinates: PageSelectionCoordinates | null,
+    coordinates: PageSelectionCoordinates,
     text: string
+};
+
+export interface CommentarySections {
+    introduction?: string,
+    body: CommentarySection[],
+    conclusion?: string
 };
 
 export interface Commentary {
     id: number,
     userId: number,
     name: string,
-    commentarySections: CommentarySection[]
+    commentarySections: CommentarySections
 };

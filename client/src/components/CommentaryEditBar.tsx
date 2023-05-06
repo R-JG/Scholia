@@ -10,7 +10,7 @@ interface Props {
     yPercentCoordinateTwo: number | null,
     setCoordinateSelectMode: (boolean: boolean) => void,
     resetPercentCoordinates: () => void,
-    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates | null, text: string) => void,
+    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates, text: string) => void,
 };
 
 const CommentaryEditBar = ({ 
@@ -39,7 +39,7 @@ const CommentaryEditBar = ({
                     yBottom: Math.max(yPercentCoordinateOne, yPercentCoordinateTwo)
                 };
                 addSectionToSelectedCommentary(coordinates, '');
-            } else addSectionToSelectedCommentary(null, '');
+            };
             resetPercentCoordinates();
             setCoordinateSelectMode(false);
         };

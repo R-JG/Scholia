@@ -23,7 +23,7 @@ const App = () => {
             id: 1,
             userId: 1,
             name: 'test',
-            commentarySections: []
+            commentarySections: { body: [] }
         }
     );
 
@@ -76,13 +76,17 @@ const App = () => {
     };
 
     const addSectionToSelectedCommentary = (
-        coordinates: PageSelectionCoordinates | null, text: string
+        coordinates: PageSelectionCoordinates, text: string
         ): void => {
         if (!selectedCommentary) return;
         setSelectedCommentary({ 
             ...selectedCommentary, 
-            commentarySections: selectedCommentary.commentarySections.concat({ coordinates, text })
+            commentarySections: {
+                ...selectedCommentary.commentarySections,
+                body: selectedCommentary.commentarySections.body.concat({ coordinates, text })
+            }
         });
+        // Instead of just concat, the added one needs to be sorted by page and ytop
     };
 
     console.log(selectedCommentary);

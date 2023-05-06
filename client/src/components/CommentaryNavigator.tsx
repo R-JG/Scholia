@@ -12,7 +12,7 @@ const CommentaryNavigator = ({ selectedCommentary }: Props) => {
     return (
         <div className='CommentaryNavigator'>
             <div className='commentary-section-display'>
-                {selectedCommentary.commentarySections.map(_section => 
+                {selectedCommentary.commentarySections.body.map(_section => 
                 <div className='commentary-section-icon'></div>)}
             </div>
         </div>
