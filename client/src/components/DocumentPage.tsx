@@ -63,7 +63,7 @@ const DocumentPage = ({
     const handlePageMouseUp = (e: MouseEvent<HTMLDivElement>): void => {
         if (!coordinateSelectMode || !userIsSelecting || !pageForSelection) return;
         if (pageNumber > pageForSelection) setYPercentCoordinateTwo(100);
-        if (pageNumber < pageForSelection) setYPercentCoordinateTwo(1);
+        if (pageNumber < pageForSelection) setYPercentCoordinateTwo(0.001);
         const targetPageHeight: number = e.currentTarget.clientHeight;
         const yPixelCoordinate: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
         const yPercentCoordinate: number = getPercentCoordinate(targetPageHeight, yPixelCoordinate);

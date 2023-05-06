@@ -79,14 +79,20 @@ const App = () => {
         coordinates: PageSelectionCoordinates, text: string
         ): void => {
         if (!selectedCommentary) return;
+        const newCommentarySectionsBody = selectedCommentary.commentarySections.body.concat(
+            { coordinates, text }
+        ).sort((a, b) => 
+            ((a.coordinates.pageNumber < b.coordinates.pageNumber) 
+            || ((a.coordinates.pageNumber === b.coordinates.pageNumber) 
+            && (a.coordinates.yTop < b.coordinates.yTop))) ? -1 : 1
+        );
         setSelectedCommentary({ 
             ...selectedCommentary, 
             commentarySections: {
                 ...selectedCommentary.commentarySections,
-                body: selectedCommentary.commentarySections.body.concat({ coordinates, text })
+                body: newCommentarySectionsBody
             }
         });
-        // Instead of just concat, the added one needs to be sorted by page and ytop
     };
 
     console.log(selectedCommentary);
