@@ -153,8 +153,6 @@ const CommentaryTool = ({
         );
     };
 
-    console.log('selectedSection: --> ', selectedSection);
-
     return (
         <div className='CommentaryTool'>
             <div 
@@ -199,6 +197,7 @@ const CommentaryTool = ({
             {selectedCommentary &&
             <CommentaryNavigator 
                 selectedCommentary={selectedCommentary}
+                selectedSection={selectedSection}
                 setSelectedSection={setSelectedSection}
                 jumpToSelection={jumpToSelection}
             />}

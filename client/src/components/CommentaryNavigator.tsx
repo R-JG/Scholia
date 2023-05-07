@@ -3,16 +3,37 @@ import '../css/CommentaryNavigator.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
+    selectedSection: { section: CommentarySection, index: number } | null,
     setSelectedSection: (section: { section: CommentarySection, index: number }) => void,
     jumpToSelection: (coordinates: PageSelectionCoordinates) => void
 };
 
-const CommentaryNavigator = ({ selectedCommentary, setSelectedSection, jumpToSelection }: Props) => {
+const CommentaryNavigator = ({ 
+    selectedCommentary, 
+    selectedSection, 
+    setSelectedSection, 
+    jumpToSelection 
+    }: Props) => {
 
     if (!selectedCommentary) return <div className='CommentaryNavigator'></div>;
 
+    const handleNavigateButton = (direction: 'previous' | 'next'): void => {
+        if (!selectedSection) return;
+        const newIndex: number = (
+            (direction === 'previous') ? selectedSection.index - 1 : selectedSection.index + 1
+        );
+        const newSelectedSection: CommentarySection | undefined = 
+        selectedCommentary.commentarySections.body[newIndex];
+        if (!newSelectedSection) return console.log('TEST!');
+        setSelectedSection({ section: newSelectedSection, index: newIndex });
+        jumpToSelection(newSelectedSection.coordinates);
+    };
+
+    console.log(selectedSection);
+
     return (
         <div className='CommentaryNavigator'>
+            <button onClick={() => handleNavigateButton('previous')}>◀</button>
             <div className='commentary-section-display'>
                 {selectedCommentary.commentarySections.body.map((section, index) => 
                 <div 
@@ -23,6 +44,7 @@ const CommentaryNavigator = ({ selectedCommentary, setSelectedSection, jumpToSel
                     }}>
                 </div>)}
             </div>
+            <button onClick={() => handleNavigateButton('next')}>▶</button>
         </div>
     );
 };
