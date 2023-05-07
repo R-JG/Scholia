@@ -1,4 +1,4 @@
-import { Commentary, PageSelectionCoordinates } from '../typeUtils/types';
+import { Commentary, CommentarySection, PageSelectionCoordinates } from '../typeUtils/types';
 import '../css/SelectionBoxContainer.css';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
     yPercentCoordinateTwo: number | null,
     yPixelCoordinateOne: number,
     yPixelCoordinateTwo: number,
+    setSelectedSection: (section: { section: CommentarySection, index: number }) => void
 };
 
 const SelectionBoxContainer = ({ 
@@ -22,7 +23,8 @@ const SelectionBoxContainer = ({
     yPercentCoordinateOne,
     yPercentCoordinateTwo,
     yPixelCoordinateOne,
-    yPixelCoordinateTwo
+    yPixelCoordinateTwo,
+    setSelectedSection
     }: Props) => {
 
     const createBoxStyleForSelecting = (): object | undefined => {
@@ -47,20 +49,25 @@ const SelectionBoxContainer = ({
         };
     };
 
+    const handleSelectionBoxClick = (section: CommentarySection, index: number): void => {
+        setSelectedSection({ section, index });
+    };
+
     return (
         <div className='SelectionBoxContainer'>
             {(coordinateSelectMode && (pageForSelection === pageNumber)) && 
             <div 
-                className='selection-box' 
+                className='selection-box--active-selection' 
                 style={createBoxStyleForSelecting()}>
             </div>}
             {selectedCommentary && 
-            selectedCommentary.commentarySections.body.map(section =>
+            selectedCommentary.commentarySections.body.map((section, index) =>
                 (section.coordinates.pageNumber === pageNumber) ? 
                 <div 
-                    className='selection-box' 
+                    className='selection-box--commentary-section' 
                     data-coordinate-top={section.coordinates.yTop}
-                    style={createBoxStyleForCommentary(section.coordinates)}>
+                    style={createBoxStyleForCommentary(section.coordinates)}
+                    onClick={() => handleSelectionBoxClick(section, index)}>
                 </div> : undefined
             )}
         </div>

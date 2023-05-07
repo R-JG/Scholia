@@ -3,7 +3,7 @@ import '../css/CommentaryNavigator.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
-    setSelectedSection: (section: CommentarySection) => void,
+    setSelectedSection: (section: { section: CommentarySection, index: number }) => void,
     jumpToSelection: (coordinates: PageSelectionCoordinates) => void
 };
 
@@ -14,11 +14,11 @@ const CommentaryNavigator = ({ selectedCommentary, setSelectedSection, jumpToSel
     return (
         <div className='CommentaryNavigator'>
             <div className='commentary-section-display'>
-                {selectedCommentary.commentarySections.body.map(section => 
+                {selectedCommentary.commentarySections.body.map((section, index) => 
                 <div 
                     className='commentary-section-icon' 
                     onClick={() => {
-                        setSelectedSection(section);
+                        setSelectedSection({ section, index });
                         jumpToSelection(section.coordinates);
                     }}>
                 </div>)}

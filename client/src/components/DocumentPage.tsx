@@ -10,7 +10,7 @@ interface Props {
     pageWidth: number | undefined,
     isInitialPage: boolean,
     selectedCommentary: Commentary | null,
-    selectedSection: CommentarySection | null,
+    selectedSection: { section: CommentarySection, index: number } | null,
     coordinateSelectMode: boolean,
     userIsSelecting: boolean,
     pageForSelection: number | null,
@@ -20,8 +20,9 @@ interface Props {
     setInitialPageHeight: (height: number) => void,
     setPageForSelection: (pageNumber: number) => void,
     setUserIsSelecting: (isSelecting: boolean) => void,
-    setYPercentCoordinateOne: (coordinate: number) => void
-    setYPercentCoordinateTwo: (coordinate: number) => void
+    setYPercentCoordinateOne: (coordinate: number) => void,
+    setYPercentCoordinateTwo: (coordinate: number) => void,
+    setSelectedSection: (section: { section: CommentarySection, index: number }) => void
 };
 
 const DocumentPage = ({ 
@@ -41,7 +42,8 @@ const DocumentPage = ({
     setPageForSelection,
     setUserIsSelecting,
     setYPercentCoordinateOne,
-    setYPercentCoordinateTwo
+    setYPercentCoordinateTwo,
+    setSelectedSection
     }: Props) => {
 
     const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number>(0);
@@ -105,6 +107,7 @@ const DocumentPage = ({
                 yPercentCoordinateTwo={yPercentCoordinateTwo}
                 yPixelCoordinateOne={yPixelCoordinateOne}
                 yPixelCoordinateTwo={yPixelCoordinateTwo}
+                setSelectedSection={setSelectedSection}
             />
             <Page 
                 pageNumber={pageNumber} 
@@ -117,9 +120,10 @@ const DocumentPage = ({
                 } : undefined }
                 onRenderSuccess={isInitialPage ? () => {
                     scrollToPage();
-                    if (selectedSection && (selectedSection.coordinates.pageNumber === pageNumber)) {
+                    if (selectedSection 
+                    && (selectedSection.section.coordinates.pageNumber === pageNumber)) {
                         pageRef.current?.children[0].querySelector(
-                            `[data-coordinate-top="${selectedSection.coordinates.yTop}"]`
+                            `[data-coordinate-top="${selectedSection.section.coordinates.yTop}"]`
                         )?.scrollIntoView({ block: 'start' });
                     };
                 } : undefined}

@@ -39,7 +39,9 @@ const CommentaryTool = ({
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
     const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
     const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
-    const [selectedSection, setSelectedSection] = useState<CommentarySection | null>(null);
+    const [selectedSection, setSelectedSection] = useState<
+        { section: CommentarySection, index: number } | null
+    >(null);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -144,11 +146,14 @@ const CommentaryTool = ({
                         setUserIsSelecting={setUserIsSelecting}
                         setYPercentCoordinateOne={setYPercentCoordinateOne}
                         setYPercentCoordinateTwo={setYPercentCoordinateTwo}
+                        setSelectedSection={setSelectedSection}
                     />
                 );
             })
         );
     };
+
+    console.log('selectedSection: --> ', selectedSection);
 
     return (
         <div className='CommentaryTool'>
@@ -186,6 +191,7 @@ const CommentaryTool = ({
                         setUserIsSelecting={setUserIsSelecting}
                         setYPercentCoordinateOne={setYPercentCoordinateOne}
                         setYPercentCoordinateTwo={setYPercentCoordinateTwo}
+                        setSelectedSection={setSelectedSection}
                     />
                     {createPages('after-initial')}
                 </Document>}
