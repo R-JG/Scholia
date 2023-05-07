@@ -1,6 +1,6 @@
 import { MouseEvent, useState, useRef } from 'react';
 import { Page } from 'react-pdf';
-import { Commentary } from '../typeUtils/types';
+import { Commentary, CommentarySection } from '../typeUtils/types';
 import SelectionBoxContainer from './SelectionBoxContainer';
 import '../css/DocumentPage.css';
 
@@ -10,6 +10,7 @@ interface Props {
     pageWidth: number | undefined,
     isInitialPage: boolean,
     selectedCommentary: Commentary | null,
+    selectedSection: CommentarySection | null,
     coordinateSelectMode: boolean,
     userIsSelecting: boolean,
     pageForSelection: number | null,
@@ -29,6 +30,7 @@ const DocumentPage = ({
     pageWidth,
     isInitialPage, 
     selectedCommentary,
+    selectedSection,
     coordinateSelectMode,
     userIsSelecting,
     pageForSelection,
@@ -113,7 +115,14 @@ const DocumentPage = ({
                     setInitialPageHeight(page.height);
                     setInitialPageIsLoaded(true);
                 } : undefined }
-                onRenderSuccess={isInitialPage ? () => scrollToPage() : undefined}
+                onRenderSuccess={isInitialPage ? () => {
+                    scrollToPage();
+                    if (selectedSection && (selectedSection.coordinates.pageNumber === pageNumber)) {
+                        pageRef.current?.children[0].querySelector(
+                            `[data-coordinate-top="${selectedSection.coordinates.yTop}"]`
+                        )?.scrollIntoView({ block: 'start' });
+                    };
+                } : undefined}
             />
         </div>
     );

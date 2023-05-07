@@ -39,7 +39,7 @@ const CommentaryTool = ({
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
     const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
     const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
-    const [/* selectedSection, setSelectedSection */] = useState<CommentarySection | null>(null);
+    const [selectedSection, setSelectedSection] = useState<CommentarySection | null>(null);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -74,6 +74,22 @@ const CommentaryTool = ({
         setPreviousPagesToRender(0);
         setNextPagesToRender(0);
         setInitialPageNumber(pageNumber);
+    };
+
+    const jumpToSelection = (coordinates: PageSelectionCoordinates): void => {
+        if ((coordinates.pageNumber > (initialPageNumber - previousPagesToRender)) 
+        && (coordinates.pageNumber < (initialPageNumber + nextPagesToRender))) {
+            const pageElement = documentContainerRef.current?.children[0].querySelector(
+                `[data-page-number="${coordinates.pageNumber}"]`
+            );
+            pageElement?.scrollIntoView();
+            const selectionElement = pageElement?.children[0].querySelector(
+                `[data-coordinate-top="${coordinates.yTop}"]`
+            );
+            selectionElement?.scrollIntoView({ block: 'start' });
+        } else {
+            jumpToNewPage(coordinates.pageNumber);
+        };
     };
 
     const handleScroll = (e: UIEvent<HTMLDivElement>): void => {
@@ -116,6 +132,7 @@ const CommentaryTool = ({
                         pageWidth={documentContainerRef.current?.clientWidth}
                         isInitialPage={false}
                         selectedCommentary={selectedCommentary}
+                        selectedSection={selectedSection}
                         coordinateSelectMode={coordinateSelectMode}
                         userIsSelecting={userIsSelecting}
                         pageForSelection={pageForSelection}
@@ -157,6 +174,7 @@ const CommentaryTool = ({
                         pageWidth={documentContainerRef.current?.clientWidth}
                         isInitialPage={true}
                         selectedCommentary={selectedCommentary}
+                        selectedSection={selectedSection}
                         coordinateSelectMode={coordinateSelectMode}
                         userIsSelecting={userIsSelecting}
                         pageForSelection={pageForSelection}
@@ -175,6 +193,8 @@ const CommentaryTool = ({
             {selectedCommentary &&
             <CommentaryNavigator 
                 selectedCommentary={selectedCommentary}
+                setSelectedSection={setSelectedSection}
+                jumpToSelection={jumpToSelection}
             />}
             {selectedCommentary && (user.id === selectedCommentary.userId) && 
             <CommentaryEditBar 

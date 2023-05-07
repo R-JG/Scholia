@@ -59,6 +59,7 @@ const SelectionBoxContainer = ({
                 (section.coordinates.pageNumber === pageNumber) ? 
                 <div 
                     className='selection-box' 
+                    data-coordinate-top={section.coordinates.yTop}
                     style={createBoxStyleForCommentary(section.coordinates)}>
                 </div> : undefined
             )}

@@ -1,19 +1,27 @@
-import { Commentary } from '../typeUtils/types';
+import { Commentary, CommentarySection, PageSelectionCoordinates } from '../typeUtils/types';
 import '../css/CommentaryNavigator.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
+    setSelectedSection: (section: CommentarySection) => void,
+    jumpToSelection: (coordinates: PageSelectionCoordinates) => void
 };
 
-const CommentaryNavigator = ({ selectedCommentary }: Props) => {
+const CommentaryNavigator = ({ selectedCommentary, setSelectedSection, jumpToSelection }: Props) => {
 
     if (!selectedCommentary) return <div className='CommentaryNavigator'></div>;
 
     return (
         <div className='CommentaryNavigator'>
             <div className='commentary-section-display'>
-                {selectedCommentary.commentarySections.body.map(_section => 
-                <div className='commentary-section-icon'></div>)}
+                {selectedCommentary.commentarySections.body.map(section => 
+                <div 
+                    className='commentary-section-icon' 
+                    onClick={() => {
+                        setSelectedSection(section);
+                        jumpToSelection(section.coordinates);
+                    }}>
+                </div>)}
             </div>
         </div>
     );
