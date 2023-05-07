@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useRef } from 'react';
 import { Page } from 'react-pdf';
 import { Commentary } from '../typeUtils/types';
 import SelectionBoxContainer from './SelectionBoxContainer';
@@ -45,6 +45,10 @@ const DocumentPage = ({
     const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number>(0);
     const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number>(0);
 
+    const pageRef = useRef<HTMLDivElement>(null);
+
+    const scrollToPage = (): void => pageRef.current?.scrollIntoView();
+
     const getPercentCoordinate = (targetPageHeight: number, yPixelCoordinate: number): number => {
         return (yPixelCoordinate / targetPageHeight) * 100;
     };
@@ -87,6 +91,7 @@ const DocumentPage = ({
             onMouseDown={handlePageMouseDown}
             onMouseUp={handlePageMouseUp}
             onMouseMove={handlePageMouseMove}
+            ref={pageRef}
         >
             <SelectionBoxContainer 
                 pageNumber={pageNumber}
@@ -108,6 +113,7 @@ const DocumentPage = ({
                     setInitialPageHeight(page.height);
                     setInitialPageIsLoaded(true);
                 } : undefined }
+                onRenderSuccess={isInitialPage ? () => scrollToPage() : undefined}
             />
         </div>
     );

@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef, UIEvent } from 'react';
 import { Document } from 'react-pdf';
-import { LoggedInUser, GroupDocumentInfo, Commentary, PageSelectionCoordinates } from '../typeUtils/types';
+import { 
+    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, PageSelectionCoordinates 
+} from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import DocumentPage from './DocumentPage';
 import CommentaryNavigator from './CommentaryNavigator';
@@ -29,7 +31,7 @@ const CommentaryTool = ({
     const [initialPageIsLoaded, setInitialPageIsLoaded] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [initialPageHeight, setInitialPageHeight] = useState<number | null>(null);
-    const [initialPageNumber] = useState<number>(20);
+    const [initialPageNumber, setInitialPageNumber] = useState<number>(20);
     const [previousPagesToRender, setPreviousPagesToRender] = useState<number>(0);
     const [nextPagesToRender, setNextPagesToRender] = useState<number>(0);
     const [coordinateSelectMode, setCoordinateSelectMode] = useState<boolean>(false);
@@ -37,6 +39,7 @@ const CommentaryTool = ({
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
     const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
     const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
+    const [/* selectedSection, setSelectedSection */] = useState<CommentarySection | null>(null);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +52,6 @@ const CommentaryTool = ({
         if (!documentIsLoaded || !initialPageIsLoaded || !initialPageHeight) return;
         expandNextPages();
         expandPreviousPages();
-        documentContainerRef.current?.scrollBy(0, 1);
     }, [initialPageIsLoaded]);
 
     const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
@@ -66,6 +68,12 @@ const CommentaryTool = ({
 
     const expandNextPages = (): void => {
         setNextPagesToRender(nextPagesToRender + calculatePagesToAdd('after-initial'));
+    };
+
+    const jumpToNewPage = (pageNumber: number) => {
+        setPreviousPagesToRender(0);
+        setNextPagesToRender(0);
+        setInitialPageNumber(pageNumber);
     };
 
     const handleScroll = (e: UIEvent<HTMLDivElement>): void => {

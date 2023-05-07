@@ -95,8 +95,6 @@ const App = () => {
         });
     };
 
-    console.log(selectedCommentary);
-
     return (
         <div className='App'>
             <BrowserRouter>
