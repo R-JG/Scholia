@@ -81,14 +81,13 @@ const CommentaryTool = ({
     const jumpToSelection = (coordinates: PageSelectionCoordinates): void => {
         if ((coordinates.pageNumber > (initialPageNumber - previousPagesToRender)) 
         && (coordinates.pageNumber < (initialPageNumber + nextPagesToRender))) {
-            const pageElement = documentContainerRef.current?.children[0].querySelector(
-                `[data-page-number="${coordinates.pageNumber}"]`
+            const pageElement = documentContainerRef.current?.querySelector(
+                `.DocumentPage[data-page-number="${coordinates.pageNumber}"]`
             );
-            pageElement?.scrollIntoView();
-            const selectionElement = pageElement?.children[0].querySelector(
-                `[data-coordinate-top="${coordinates.yTop}"]`
+            const selectionBoxElement = pageElement?.querySelector(
+                `.selection-box--commentary-section[data-coordinate-top="${coordinates.yTop}"]`
             );
-            selectionElement?.scrollIntoView({ block: 'start' });
+            selectionBoxElement?.scrollIntoView({ block: 'start' });
         } else {
             jumpToNewPage(coordinates.pageNumber);
         };

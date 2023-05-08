@@ -122,8 +122,10 @@ const DocumentPage = ({
                     scrollToPage();
                     if (selectedSection 
                     && (selectedSection.section.coordinates.pageNumber === pageNumber)) {
-                        pageRef.current?.children[0].querySelector(
-                            `[data-coordinate-top="${selectedSection.section.coordinates.yTop}"]`
+                        pageRef.current?.querySelector(
+                            `.selection-box--commentary-section[data-coordinate-top="${
+                                selectedSection.section.coordinates.yTop
+                            }"]`
                         )?.scrollIntoView({ block: 'start' });
                     };
                 } : undefined}
