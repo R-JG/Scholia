@@ -24,12 +24,10 @@ const CommentaryNavigator = ({
         );
         const newSelectedSection: CommentarySection | undefined = 
         selectedCommentary.commentarySections.body[newIndex];
-        if (!newSelectedSection) return console.log('TEST!');
+        if (!newSelectedSection) return;
         setSelectedSection({ section: newSelectedSection, index: newIndex });
         jumpToSelection(newSelectedSection.coordinates);
     };
-
-    console.log(selectedSection);
 
     return (
         <div className='CommentaryNavigator'>
