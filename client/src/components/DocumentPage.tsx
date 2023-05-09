@@ -10,7 +10,7 @@ interface Props {
     pageWidth: number | undefined,
     isInitialPage: boolean,
     selectedCommentary: Commentary | null,
-    selectedSection: { section: CommentarySection, index: number } | null,
+    selectedSection: { data: CommentarySection, index: number } | null,
     coordinateSelectMode: boolean,
     userIsSelecting: boolean,
     pageForSelection: number | null,
@@ -22,7 +22,7 @@ interface Props {
     setUserIsSelecting: (isSelecting: boolean) => void,
     setYPercentCoordinateOne: (coordinate: number) => void,
     setYPercentCoordinateTwo: (coordinate: number) => void,
-    setSelectedSection: (section: { section: CommentarySection, index: number }) => void
+    setSelectedSection: (section: { data: CommentarySection, index: number }) => void
 };
 
 const DocumentPage = ({ 
@@ -121,10 +121,10 @@ const DocumentPage = ({
                 onRenderSuccess={isInitialPage ? () => {
                     scrollToPage();
                     if (selectedSection 
-                    && (selectedSection.section.coordinates.pageNumber === pageNumber)) {
+                    && (selectedSection.data.coordinates.pageNumber === pageNumber)) {
                         pageRef.current?.querySelector(
                             `.selection-box--commentary-section[data-coordinate-top="${
-                                selectedSection.section.coordinates.yTop
+                                selectedSection.data.coordinates.yTop
                             }"]`
                         )?.scrollIntoView({ block: 'start' });
                     };

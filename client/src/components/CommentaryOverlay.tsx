@@ -1,36 +1,37 @@
-import { useState, ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 import { Commentary, CommentarySection } from '../typeUtils/types';
+import '../css/CommentaryOverlay.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
-    selectedSection: { section: CommentarySection, index: number } | null,
-    editTextMode: boolean
+    selectedSection: { data: CommentarySection, index: number } | null,
+    editTextMode: boolean,
+    updateSelectedSectionText: (updatedText: string) => void,
 };
 
 const CommentaryOverlay = ({ 
     selectedCommentary, 
     selectedSection, 
-    editTextMode 
+    editTextMode,
+    updateSelectedSectionText
     }: Props) => {
 
     if (!selectedCommentary || !selectedSection) return <div className='CommentaryOverlay'></div>
 
-    const [textAreaValue, setTextAreaValue] = useState<string>('');
-
     const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-        setTextAreaValue(e.currentTarget.value);
+        updateSelectedSectionText(e.currentTarget.value);
     };
 
     return (
         <div className='CommentaryOverlay'>
             {editTextMode 
             ? <textarea 
-                className='commentary-section-text'
-                value={textAreaValue}
+                className='commentary-section-text--edit'
+                value={selectedSection.data.text}
                 onChange={handleTextAreaChange}
             />
-            : <p className='commentary-section-text'>
-                {selectedSection.section.text}
+            : <p className='commentary-section-text--read-only'>
+                {selectedSection.data.text}
             </p>}
         </div>
     );

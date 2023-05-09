@@ -6,6 +6,7 @@ import {
 import groupDocumentsService from '../services/groupDocumentsService';
 import DocumentPage from './DocumentPage';
 import CommentaryNavigator from './CommentaryNavigator';
+import CommentaryOverlay from './CommentaryOverlay';
 import CommentaryEditBar from './CommentaryEditBar';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../css/CommentaryTool.css';
@@ -14,14 +15,14 @@ interface Props {
     user: LoggedInUser | null,
     selectedDocument: GroupDocumentInfo | null,
     selectedCommentary: Commentary | null,
-    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates, text: string) => void,
+    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates) => void,
 };
 
 const CommentaryTool = ({ 
     user, 
     selectedDocument, 
     selectedCommentary, 
-    addSectionToSelectedCommentary 
+    addSectionToSelectedCommentary,
     }: Props) => {
 
     if (!user || !selectedDocument) return <div className='CommentaryTool'></div>;
@@ -34,13 +35,14 @@ const CommentaryTool = ({
     const [initialPageNumber, setInitialPageNumber] = useState<number>(20);
     const [previousPagesToRender, setPreviousPagesToRender] = useState<number>(0);
     const [nextPagesToRender, setNextPagesToRender] = useState<number>(0);
+    const [editTextMode, setEditTextMode] = useState<boolean>(false);
     const [coordinateSelectMode, setCoordinateSelectMode] = useState<boolean>(false);
     const [userIsSelecting, setUserIsSelecting] = useState<boolean>(false);
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
     const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
     const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
     const [selectedSection, setSelectedSection] = useState<
-        { section: CommentarySection, index: number } | null
+        { data: CommentarySection, index: number } | null
     >(null);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
@@ -110,6 +112,17 @@ const CommentaryTool = ({
         setYPercentCoordinateOne(null);
         setYPercentCoordinateTwo(null);
     };
+
+    const updateSelectedSectionText = (updatedText: string): void => {
+        if (!selectedSection) return;
+        setSelectedSection({ 
+            ...selectedSection, 
+            data: { ...selectedSection.data, text: updatedText } 
+        });
+    }
+
+    console.log('M0de--> ', editTextMode);
+    console.log('T3XT--> ', selectedSection?.data.text);
     
     const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
 
@@ -200,17 +213,28 @@ const CommentaryTool = ({
                 setSelectedSection={setSelectedSection}
                 jumpToSelection={jumpToSelection}
             />}
+            {selectedCommentary && selectedSection &&
+            <CommentaryOverlay 
+                selectedCommentary={selectedCommentary}
+                selectedSection={selectedSection}
+                editTextMode={editTextMode}
+                updateSelectedSectionText={updateSelectedSectionText}
+            />}
             {selectedCommentary && (user.id === selectedCommentary.userId) && 
             <CommentaryEditBar 
                 user={user}
                 selectedCommentary={selectedCommentary}
+                selectedSection={selectedSection}
                 coordinateSelectMode={coordinateSelectMode}
                 pageForSelection={pageForSelection}
                 yPercentCoordinateOne={yPercentCoordinateOne}
                 yPercentCoordinateTwo={yPercentCoordinateTwo}
+                editTextMode={editTextMode}
                 setCoordinateSelectMode={setCoordinateSelectMode}
                 resetPercentCoordinates={resetPercentCoordinates}
                 addSectionToSelectedCommentary={addSectionToSelectedCommentary}
+                setEditTextMode={setEditTextMode}
+                updateSelectedSectionText={updateSelectedSectionText}
             />}
         </div>
     );

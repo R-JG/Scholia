@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LoggedInUser, Group, GroupDocumentInfo, Commentary, PageSelectionCoordinates } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocumentInfo, Commentary, PageSelectionCoordinates, CommentarySection } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
 import loginService from '../services/loginService';
@@ -75,12 +75,11 @@ const App = () => {
         });
     };
 
-    const addSectionToSelectedCommentary = (
-        coordinates: PageSelectionCoordinates, text: string
-        ): void => {
+    const addSectionToSelectedCommentary = (coordinates: PageSelectionCoordinates): void => {
         if (!selectedCommentary) return;
-        const newCommentarySectionsBody = selectedCommentary.commentarySections.body.concat(
-            { coordinates, text }
+        const updatedCommentaryBody: CommentarySection[] = selectedCommentary.commentarySections.body
+        .concat(
+            { coordinates, text: '' }
         ).sort((a, b) => 
             ((a.coordinates.pageNumber < b.coordinates.pageNumber) 
             || ((a.coordinates.pageNumber === b.coordinates.pageNumber) 
@@ -90,10 +89,26 @@ const App = () => {
             ...selectedCommentary, 
             commentarySections: {
                 ...selectedCommentary.commentarySections,
-                body: newCommentarySectionsBody
+                body: updatedCommentaryBody
             }
         });
     };
+    /*
+    const updateSelectedCommentaryText = (text: string, sectionIndex: number): void => {
+        if (!selectedCommentary) return;
+        const updatedCommentaryBody: CommentarySection[] = selectedCommentary.commentarySections.body
+        .map((section, index) => 
+            (index === sectionIndex) ? { ...section, text } : section
+        );
+        setSelectedCommentary({ 
+            ...selectedCommentary, 
+            commentarySections: {
+                ...selectedCommentary.commentarySections,
+                body: updatedCommentaryBody
+            }
+        });
+    };
+    */
 
     return (
         <div className='App'>

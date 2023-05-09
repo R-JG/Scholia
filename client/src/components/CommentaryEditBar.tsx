@@ -1,34 +1,48 @@
-import { LoggedInUser, Commentary, PageSelectionCoordinates } from '../typeUtils/types';
+import { LoggedInUser, Commentary, CommentarySection, PageSelectionCoordinates } from '../typeUtils/types';
 import '../css/CommentaryEditBar.css';
 
 interface Props {
     user: LoggedInUser | null,
     selectedCommentary: Commentary | null,
+    selectedSection: { data: CommentarySection, index: number } | null,
     coordinateSelectMode: boolean,
     pageForSelection: number | null,
     yPercentCoordinateOne: number | null,
     yPercentCoordinateTwo: number | null,
+    editTextMode: boolean,
     setCoordinateSelectMode: (boolean: boolean) => void,
     resetPercentCoordinates: () => void,
-    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates, text: string) => void,
+    // setSelectedSection: (section: { data: CommentarySection, index: number }) => void,
+    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates) => void,
+    setEditTextMode: (boolean: boolean) => void,
+    updateSelectedSectionText: (updatedText: string) => void
 };
 
 const CommentaryEditBar = ({ 
     user, 
     selectedCommentary, 
+    selectedSection,
     coordinateSelectMode,
     pageForSelection,
     yPercentCoordinateOne,
     yPercentCoordinateTwo,
+    editTextMode,
     setCoordinateSelectMode,
     resetPercentCoordinates,
-    addSectionToSelectedCommentary 
+    // setSelectedSection,
+    addSectionToSelectedCommentary,
+    setEditTextMode,
+    updateSelectedSectionText
     }: Props) => {
 
     if (!user || !selectedCommentary || (user.id !== selectedCommentary.userId)
     ) return <div className='CommentaryEditBar'></div>;
 
-    const handleAddSectionButton = () => {
+    const sectionTextHasBeenEdited: boolean = selectedSection ? (selectedSection.data.text !==
+        selectedCommentary.commentarySections.body[selectedSection.index].text
+    ) : false;
+
+    const handleAddSectionButton = (): void => {
         if (!coordinateSelectMode) {
             setCoordinateSelectMode(true);
         } else {
@@ -38,11 +52,19 @@ const CommentaryEditBar = ({
                     yTop: Math.min(yPercentCoordinateOne, yPercentCoordinateTwo),
                     yBottom: Math.max(yPercentCoordinateOne, yPercentCoordinateTwo)
                 };
-                addSectionToSelectedCommentary(coordinates, '');
+                addSectionToSelectedCommentary(coordinates);
             };
             resetPercentCoordinates();
             setCoordinateSelectMode(false);
         };
+    };
+
+    const handleDiscardSectionEditButton = (): void => {
+        if (!selectedSection) return;
+        if (sectionTextHasBeenEdited) updateSelectedSectionText(
+            selectedCommentary.commentarySections.body[selectedSection.index].text
+        );
+        setEditTextMode(false);
     };
 
     return (
@@ -52,6 +74,25 @@ const CommentaryEditBar = ({
                 onClick={handleAddSectionButton}>
                 {(!coordinateSelectMode) ? 'Add New Section' : '+'}
             </button>
+            {!editTextMode && 
+            (selectedCommentary.commentarySections.body.length > 0) &&
+            <button 
+                className='edit-section-button'
+                onClick={() => setEditTextMode(true)}>
+                Edit Commentary Section
+            </button>}
+            {sectionTextHasBeenEdited &&
+            <div>
+                <button 
+                    className='save-section-edit-button'>
+                    Save Changes
+                </button>
+                <button 
+                    className='discard-section-edit-button'
+                    onClick={handleDiscardSectionEditButton}>
+                    Discard Changes
+                </button>
+            </div>}
         </div>
     );
 };

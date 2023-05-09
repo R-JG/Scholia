@@ -11,7 +11,7 @@ interface Props {
     yPercentCoordinateTwo: number | null,
     yPixelCoordinateOne: number,
     yPixelCoordinateTwo: number,
-    setSelectedSection: (section: { section: CommentarySection, index: number }) => void
+    setSelectedSection: (section: { data: CommentarySection, index: number }) => void
 };
 
 const SelectionBoxContainer = ({ 
@@ -50,7 +50,7 @@ const SelectionBoxContainer = ({
     };
 
     const handleSelectionBoxClick = (section: CommentarySection, index: number): void => {
-        setSelectedSection({ section, index });
+        setSelectedSection({ data: section, index });
     };
 
     return (
