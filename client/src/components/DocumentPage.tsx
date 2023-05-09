@@ -124,7 +124,7 @@ const DocumentPage = ({
                     && (selectedSection.data.coordinates.pageNumber === pageNumber)) {
                         pageRef.current?.querySelector(
                             `.selection-box--commentary-section[data-coordinate-top="${
-                                selectedSection.data.coordinates.yTop
+                                selectedSection.data.coordinates.top
                             }"]`
                         )?.scrollIntoView({ block: 'start' });
                     };

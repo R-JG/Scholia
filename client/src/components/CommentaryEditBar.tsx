@@ -49,8 +49,8 @@ const CommentaryEditBar = ({
             if (pageForSelection && yPercentCoordinateOne && yPercentCoordinateTwo) {
                 const coordinates: PageSelectionCoordinates = {
                     pageNumber: pageForSelection,
-                    yTop: Math.min(yPercentCoordinateOne, yPercentCoordinateTwo),
-                    yBottom: Math.max(yPercentCoordinateOne, yPercentCoordinateTwo)
+                    top: Math.min(yPercentCoordinateOne, yPercentCoordinateTwo),
+                    bottom: Math.max(yPercentCoordinateOne, yPercentCoordinateTwo)
                 };
                 addSectionToSelectedCommentary(coordinates);
             };

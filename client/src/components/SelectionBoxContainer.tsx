@@ -44,8 +44,8 @@ const SelectionBoxContainer = ({
 
     const createBoxStyleForCommentary = (coordinates: PageSelectionCoordinates): object => {
         return { 
-            top: `${coordinates.yTop}%`, 
-            height: `${coordinates.yBottom - coordinates.yTop}%` 
+            top: `${coordinates.top}%`, 
+            height: `${coordinates.bottom - coordinates.top}%` 
         };
     };
 
@@ -65,7 +65,7 @@ const SelectionBoxContainer = ({
                 (section.coordinates.pageNumber === pageNumber) ? 
                 <div 
                     className='selection-box--commentary-section' 
-                    data-coordinate-top={section.coordinates.yTop}
+                    data-coordinate-top={section.coordinates.top}
                     style={createBoxStyleForCommentary(section.coordinates)}
                     onClick={() => handleSelectionBoxClick(section, index)}>
                 </div> : undefined

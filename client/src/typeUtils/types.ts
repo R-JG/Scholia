@@ -34,8 +34,8 @@ export type GroupDocumentInfo = Omit<GroupDocument, 'file'>;
 
 export interface PageSelectionCoordinates {
     pageNumber: number,
-    yTop: number,
-    yBottom: number
+    top: number,
+    bottom: number
 };
 
 export interface CommentarySection {

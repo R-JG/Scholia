@@ -83,7 +83,7 @@ const App = () => {
         ).sort((a, b) => 
             ((a.coordinates.pageNumber < b.coordinates.pageNumber) 
             || ((a.coordinates.pageNumber === b.coordinates.pageNumber) 
-            && (a.coordinates.yTop < b.coordinates.yTop))) ? -1 : 1
+            && (a.coordinates.top < b.coordinates.top))) ? -1 : 1
         );
         setSelectedCommentary({ 
             ...selectedCommentary, 

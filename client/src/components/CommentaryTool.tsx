@@ -87,7 +87,7 @@ const CommentaryTool = ({
                 `.DocumentPage[data-page-number="${coordinates.pageNumber}"]`
             );
             const selectionBoxElement = pageElement?.querySelector(
-                `.selection-box--commentary-section[data-coordinate-top="${coordinates.yTop}"]`
+                `.selection-box--commentary-section[data-coordinate-top="${coordinates.top}"]`
             );
             selectionBoxElement?.scrollIntoView({ block: 'start' });
         } else {
