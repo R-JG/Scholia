@@ -69,8 +69,7 @@ export interface CommentarySectionModel extends CommentarySection, Model {};
 export interface Commentary {
     id: number,
     userId: number,
-    name: string,
-    commentarySections: CommentarySection[],
+    commentaryName: string,
     introduction?: string,
     conclusion?: string
 };

@@ -22,10 +22,9 @@ const GroupDocument = database.define<GroupDocumentModel>('GroupDocument', {
     filePath: {
         type: DataTypes.STRING,
         allowNull: false
-    }},
-    { tableName: 'group_documents', underscored: true, timestamps: false }
-);
+    }
+}, { tableName: 'group_documents', underscored: true, timestamps: false });
 
-GroupDocument.belongsTo(Group, { foreignKey: 'groupId' });
+GroupDocument.belongsTo(Group);
 
 export default GroupDocument;

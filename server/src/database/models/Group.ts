@@ -15,12 +15,11 @@ const Group = database.define<GroupModel>('Group', {
     groupName: {
         type: DataTypes.STRING,
         allowNull: false
-    }},
-    { tableName: 'groups', underscored: true, timestamps: false }
-);
+    }
+}, { tableName: 'groups', underscored: true, timestamps: false });
 
 Group.belongsToMany(User, { through: GroupMembership });
 
-Group.hasMany(GroupDocument, { foreignKey: 'groupId' });
+Group.hasMany(GroupDocument);
 
 export default Group;
