@@ -6,9 +6,9 @@ const groupDocumentsRouter = Router();
 
 groupDocumentsRouter.post('/groups/:groupId', upload.single('file'), groupDocumentsController.createOne);
 
-groupDocumentsRouter.get('/groups', groupDocumentsController.getAllDocumentInfoByGroup);
+groupDocumentsRouter.get('/info/groups', groupDocumentsController.getAllDocumentInfoByGroup);
 
-groupDocumentsRouter.get('/:documentId', groupDocumentsController.getSingleDocumentInfo);
+groupDocumentsRouter.get('/info/:documentId', groupDocumentsController.getSingleDocumentInfo);
 
 groupDocumentsRouter.get('/:documentId/file', groupDocumentsController.getSingleDocumentFile);
 

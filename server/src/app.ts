@@ -8,6 +8,7 @@ import usersRouter from './routes/usersRouter';
 import loginRouter from './routes/loginRouter';
 import groupsRouter from './routes/groupsRouter';
 import groupDocumentsRouter from './routes/groupDocumentsRouter';
+import commentariesRouter from './routes/commentariesRouter';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/login', loginRouter);
 app.use('/api/v1/groups', authenticateUser, groupsRouter);
 app.use('/api/v1/documents', authenticateUser, groupDocumentsRouter);
+app.use('/api/v1/commentaries', authenticateUser, commentariesRouter);
 
 app.get('/pdf.worker.js', servePDFWorker);
 

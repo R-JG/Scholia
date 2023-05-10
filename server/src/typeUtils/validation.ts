@@ -1,4 +1,6 @@
-import { User, NewUser, UserEntry, Token, GroupEntry } from './types';
+import { 
+    User, NewUser, UserEntry, Token, GroupEntry, CommentaryEntry, CommentarySectionEntry 
+} from './types';
 
 const isString = (params: unknown): params is string => {
     return ((typeof params === 'string') || (params instanceof String));
@@ -85,4 +87,29 @@ export const parseGroupEntry = (params: unknown): GroupEntry => {
         groupName: parseString(params.groupName)
     };
     return groupEntry;
+};
+
+export const parseCommentaryEntry = (params: unknown): CommentaryEntry => {
+    if (!params || (typeof params !== 'object') || !('commentaryName' in params)) {
+        throw new Error('missing or incorrectly formatted data for type CommentaryEntry');
+    };
+    const commentaryEntry: CommentaryEntry = {
+        commentaryName: parseString(params.commentaryName)
+    };
+    return commentaryEntry;
+};
+
+export const parseCommentarySectionEntry = (params: unknown): CommentarySectionEntry => {
+    if (!params || (typeof params !== 'object') 
+    || !('pageNumber' in params) || !('pageCoordinateTop' in params) 
+    || !('pageCoordinateBottom' in params) || !('text' in params)) {
+        throw new Error('missing or incorrectly formatted data for type CommentarySectionEntry');
+    };
+    const commentarySectionEntry: CommentarySectionEntry = {
+        pageNumber: parseNumber(params.pageNumber),
+        pageCoordinateTop: parseNumber(params.pageCoordinateTop),
+        pageCoordinateBottom: parseNumber(params.pageCoordinateBottom),
+        text: parseString(params.text)
+    };
+    return commentarySectionEntry;
 };

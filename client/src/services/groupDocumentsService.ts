@@ -23,13 +23,13 @@ const addDocument = async (
     };
 };
 
-const getAllDocumentsForGroups = async (
+const getAllDocumentInfoForGroups = async (
         groupIds: number[], token: string
     ): Promise<GroupDocumentInfo[]> => {
     try {
         const queryParams: string = `?groupId=${groupIds.join('&groupId=')}`;
         const response = await axios.get(
-            `${baseUrl}/groups${queryParams}`,
+            `${baseUrl}/info/groups${queryParams}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
         const groupDocuments: GroupDocumentInfo[] = parseGroupDocumentInfoArray(response.data);
@@ -54,4 +54,4 @@ const getSingleDocumentFile = async (documentId: number, token: string): Promise
     };
 };
 
-export default { addDocument, getAllDocumentsForGroups, getSingleDocumentFile };
+export default { addDocument, getAllDocumentInfoForGroups, getSingleDocumentFile };

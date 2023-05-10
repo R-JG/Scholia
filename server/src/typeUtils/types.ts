@@ -64,6 +64,8 @@ export interface CommentarySection {
     text: string
 };
 
+export type CommentarySectionEntry = Omit<CommentarySection, 'id' | 'commentaryId'>;
+
 export interface CommentarySectionModel extends CommentarySection, Model {};
 
 export interface Commentary {
@@ -74,4 +76,8 @@ export interface Commentary {
     conclusion?: string
 };
 
+export type CommentaryEntry = Omit<Commentary, 'id' | 'userId' | 'introduction' | 'conclusion'>;
+
 export interface CommentaryModel extends Commentary, Model {}; 
+
+export type CommentaryInfo = Pick<Commentary, 'id' | 'userId' | 'commentaryName'>;
