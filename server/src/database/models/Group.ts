@@ -1,6 +1,9 @@
 import { DataTypes } from 'sequelize';
 import { GroupModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
+import GroupDocument from './GroupDocument';
+import GroupMembership from './GroupMembership';
+import User from './User';
 
 const Group = database.define<GroupModel>('Group', {
     id: {
@@ -15,5 +18,9 @@ const Group = database.define<GroupModel>('Group', {
     }},
     { tableName: 'groups', underscored: true, timestamps: false }
 );
+
+Group.belongsToMany(User, { through: GroupMembership });
+
+Group.hasMany(GroupDocument, { foreignKey: 'groupId' });
 
 export default Group;

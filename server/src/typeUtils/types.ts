@@ -54,3 +54,25 @@ export type NewGroupDocument = Omit<GroupDocument, 'id'>;
 export type GroupDocumentInfo = Omit<GroupDocument, 'filePath'>;
 
 export interface GroupDocumentModel extends GroupDocument, Model {};
+
+export interface CommentarySection {
+    id: number,
+    commentaryId: number,
+    pageNumber: number,
+    pageCoordinateTop: number,
+    pageCoordinateBottom: number,
+    text: string
+};
+
+export interface CommentarySectionModel extends CommentarySection, Model {};
+
+export interface Commentary {
+    id: number,
+    userId: number,
+    name: string,
+    commentarySections: CommentarySection[],
+    introduction?: string,
+    conclusion?: string
+};
+
+export interface CommentaryModel extends Commentary, Model {}; 
