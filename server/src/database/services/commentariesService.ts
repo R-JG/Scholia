@@ -4,7 +4,14 @@ import {
 import Commentary from '../models/Commentary';
 import CommentarySection from '../models/CommentarySection';
 
-const getInfoByUser = async (userId: number): Promise<CommentaryInfo[]> => {
+const verifyUserOwnsCommentary = async (
+        userId: number, commentaryId: string | number
+    ): Promise<boolean> => {
+    const commentary: CommentaryModel | null = await Commentary.findByPk(commentaryId);
+    return !(!commentary || commentary.userId !== userId);
+};
+
+const getCommentaryInfoByUser = async (userId: string | number): Promise<CommentaryInfo[]> => {
     const commentaryInfo: CommentaryInfo[] = await Commentary.findAll({ 
         where: { userId }, 
         attributes: ['id', 'userId', 'commentaryName'] 
@@ -21,9 +28,9 @@ const createCommentary = async (newCommentaryData: CommentaryEntry, userId: stri
 };
 
 const createCommentarySection = async (
-        newCommentarySection: CommentarySectionEntry
+        commentaryId:  string | number, newCommentarySection: CommentarySectionEntry
     ): Promise<CommentarySectionModel> => {
-    return await CommentarySection.create(newCommentarySection);
+    return await CommentarySection.create({ ...newCommentarySection, commentaryId });
 };
 
 const updateCommentarySectionById = async (
@@ -37,7 +44,8 @@ const updateCommentarySectionById = async (
 };
 
 export default { 
-    getInfoByUser, 
+    verifyUserOwnsCommentary,
+    getCommentaryInfoByUser, 
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 

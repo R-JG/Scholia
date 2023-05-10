@@ -11,7 +11,7 @@ const getAllCommentaryInfoByUser = async (
     try {
         const authenticatedUser: UserModel = response.locals.authenticatedUser;
         const commentaryInfo: CommentaryInfo[] = await commentariesService
-        .getInfoByUser(authenticatedUser.id);
+        .getCommentaryInfoByUser(authenticatedUser.id);
         response.json(commentaryInfo);
     } catch (error) {
         next(error);
@@ -53,9 +53,17 @@ const createCommentarySection = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
     try {
+        const authenticatedUser: UserModel = response.locals.authenticatedUser;
+        const commentaryId: string = request.params.commentaryId;
+        const userOwnsCommentary: boolean = await commentariesService
+        .verifyUserOwnsCommentary(authenticatedUser.id, commentaryId);
+        if (!userOwnsCommentary) {
+            response.status(403).json({ error: 'user does not have write access to this commentary' });
+            return;
+        };
         const newCommentarySection: CommentarySectionEntry = parseCommentarySectionEntry(request.body);
         const createdCommentarySection: CommentarySectionModel = await commentariesService
-        .createCommentarySection(newCommentarySection);
+        .createCommentarySection(commentaryId, newCommentarySection);
         response.json(createdCommentarySection);
     } catch (error) {
         next(error);
@@ -66,6 +74,14 @@ const updateCommentarySectionById = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
     try {
+        const authenticatedUser: UserModel = response.locals.authenticatedUser;
+        const commentaryId: string = request.params.commentaryId;
+        const userOwnsCommentary: boolean = await commentariesService
+        .verifyUserOwnsCommentary(authenticatedUser.id, commentaryId);
+        if (!userOwnsCommentary) {
+            response.status(403).json({ error: 'user does not have write access to this commentary' });
+            return;
+        };
         const sectionId: string = request.params.sectionId;
         const sectionUpdateData: CommentarySectionEntry = parseCommentarySectionEntry(request.body);
         const updatedSection: CommentarySectionModel = await commentariesService

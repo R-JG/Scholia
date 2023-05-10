@@ -9,8 +9,8 @@ commentariesRouter.get('/:commentaryId', commentariesController.getCommentaryByI
 
 commentariesRouter.post('/', commentariesController.createCommentary);
 
-commentariesRouter.post('/sections', commentariesController.createCommentarySection);
+commentariesRouter.post('/:commentaryId/sections', commentariesController.createCommentarySection);
 
-commentariesRouter.put('/sections/:sectionId', commentariesController.updateCommentarySectionById);
+commentariesRouter.put('/:commentaryId/sections/:sectionId', commentariesController.updateCommentarySectionById);
 
 export default commentariesRouter;
