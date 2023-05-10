@@ -1,4 +1,6 @@
-import { User, LoggedInUser, Group, GroupDocument, GroupDocumentInfo } from './types';
+import { 
+    User, LoggedInUser, Group, GroupDocument, GroupDocumentInfo, CommentaryInfo, Commentary, CommentarySection 
+} from './types';
 
 const isString = (params: unknown): params is string => {
     return ((typeof params === 'string') || (params instanceof String));
@@ -117,4 +119,62 @@ export const parseGroupDocument = (params: unknown): GroupDocument => {
         file: parseFile(params.file)
     };
     return groupDocument;
+};
+
+export const parseCommentaryInfo = (params: unknown): CommentaryInfo => {
+    if (!params || (typeof params !== 'object') 
+    || !('id' in params) || !('userId' in params) || !('commentaryName' in params)) {
+        throw new Error('missing or incorrectly formatted data for type CommentaryInfo');
+    };
+    const commentaryInfo: CommentaryInfo = {
+        id: parseNumber(params.id),
+        userId: parseNumber(params.userId),
+        commentaryName: parseString(params.commentaryName)
+    };
+    return commentaryInfo;
+};
+
+export const parseCommentaryInfoArray = (params: unknown): CommentaryInfo[] => {
+    if (!params || !Array.isArray(params)) {
+        throw new Error('missing or incorrectly formatted data for CommentaryInfo array');
+    };
+    return params.map(element => parseCommentaryInfo(element));
+};
+
+export const parseCommentarySection = (params: unknown): CommentarySection => {
+    if (!params || (typeof params !== 'object') 
+    || !('id' in params) || !('commentaryId' in params) || !('pageNumber' in params) 
+    || !('pageCoordinateTop' in params) || !('pageCoordinateBottom' in params) || !('text' in params)) {
+        throw new Error('missing or incorrectly formatted data for type CommentarySection');
+    };
+    const commentarySection: CommentarySection = {
+        id: parseNumber(params.id),
+        commentaryId: parseNumber(params.commentaryId),
+        pageNumber: parseNumber(params.pageNumber),
+        pageCoordinateTop: parseNumber(params.pageCoordinateTop),
+        pageCoordinateBottom: parseNumber(params.pageCoordinateBottom),
+        text: parseString(params.text)
+    };
+    return commentarySection;
+};
+
+export const parseCommentarySectionArray = (params: unknown): CommentarySection[] => {
+    if (!params || !Array.isArray(params)) {
+        throw new Error('missing or incorrectly formatted data for CommentarySection array');
+    };
+    return params.map(element => parseCommentarySection(element));
+};
+
+export const parseCommentary = (params: unknown): Commentary => {
+    if (!params || (typeof params !== 'object') || !('id' in params) 
+    || !('userId' in params) || !('commentaryName' in params) || !('commentarySections' in params)) {
+        throw new Error('missing or incorrectly formatted data for type Commentary');
+    };
+    const commentary: Commentary = {
+        id: parseNumber(params.id),
+        userId: parseNumber(params.userId),
+        commentaryName: parseString(params.commentaryName),
+        commentarySections: parseCommentarySectionArray(params.commentarySections)
+    };
+    return commentary;
 };

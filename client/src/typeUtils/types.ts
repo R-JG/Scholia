@@ -69,13 +69,17 @@ export interface CommentarySection {
     text: string
 };
 
-export type NewCommentarySection = Omit<CommentarySection, 'id' | 'commentaryId'>;
+export type CommentarySectionEntry = Omit<CommentarySection, 'id' | 'commentaryId'>;
 
 export interface Commentary {
     id: number,
     userId: number,
-    name: string,
+    commentaryName: string,
     commentarySections: CommentarySection[],
     introduction?: string,
     conclusion?: string
 };
+
+export type CommentaryEntry = Omit<Commentary, 'id' | 'userId' | 'introduction' | 'conclusion' | 'commentarySections'>;
+
+export type CommentaryInfo = Pick<Commentary, 'id' | 'userId' | 'commentaryName'>;
