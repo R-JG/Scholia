@@ -14,7 +14,7 @@ const verifyUserOwnsCommentary = async (
 const getCommentaryInfoByUser = async (userId: string | number): Promise<CommentaryInfo[]> => {
     const commentaryInfo: CommentaryInfo[] = await Commentary.findAll({ 
         where: { userId }, 
-        attributes: ['id', 'userId', 'commentaryName'] 
+        attributes: ['id', 'userId', 'documentId', 'commentaryName'] 
     });
     return commentaryInfo;
 };

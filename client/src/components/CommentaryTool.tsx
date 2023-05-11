@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, UIEvent } from 'react';
 import { Document } from 'react-pdf';
 import { 
-    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, PageSelectionCoordinates 
+    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection 
 } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import DocumentPage from './DocumentPage';
@@ -15,6 +15,7 @@ interface Props {
     user: LoggedInUser | null,
     selectedDocument: GroupDocumentInfo | null,
     selectedCommentary: Commentary | null,
+    createCommentary: (documentId: number, commentaryName: string) => void,
     addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates) => void,
 };
 
@@ -22,6 +23,7 @@ const CommentaryTool = ({
     user, 
     selectedDocument, 
     selectedCommentary, 
+    createCommentary,
     addSectionToSelectedCommentary,
     }: Props) => {
 
@@ -206,13 +208,14 @@ const CommentaryTool = ({
                     {createPages('after-initial')}
                 </Document>}
             </div>
-            {selectedCommentary &&
+            {selectedCommentary ?
             <CommentaryNavigator 
                 selectedCommentary={selectedCommentary}
                 selectedSection={selectedSection}
                 setSelectedSection={setSelectedSection}
                 jumpToSelection={jumpToSelection}
-            />}
+            />
+            : <button onClick={() => createCommentary(selectedDocument.id, 'TEST')}>TEST Create Commentary TEST</button>}
             {selectedCommentary && selectedSection &&
             <CommentaryOverlay 
                 selectedCommentary={selectedCommentary}

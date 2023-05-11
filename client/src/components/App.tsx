@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LoggedInUser, Group, GroupDocumentInfo, Commentary, CommentarySection, CommentaryInfo } from '../typeUtils/types';
+import { 
+    LoggedInUser, Group, GroupDocumentInfo, Commentary, CommentarySection, CommentaryInfo, CommentaryEntry, CommentarySectionEntry 
+} from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
 import loginService from '../services/loginService';
 import groupsService from '../services/groupsService';
 import groupDocumentsService from '../services/groupDocumentsService';
+import commentariesService from '../services/commentariesService';
 import Home from './Home';
 import Dashboard from './Dashboard';
 import CommentaryTool from './CommentaryTool';
@@ -40,8 +43,8 @@ const App = () => {
         .then(groups => {
             setUserGroups(groups);
             const groupIds: number[] = groups.map(group => group.id);
-            return groupDocumentsService.getAllDocumentsForGroups(groupIds, user.token);
-        }).then(groupDocuments => setGroupDocuments(groupDocuments));
+            return groupDocumentsService.getAllDocumentInfoForGroups(groupIds, user.token);
+        }).then(groupDocumentInfo => setGroupDocuments(groupDocumentInfo));
     }, [user]);
 
     const updateUser = (userData: LoggedInUser | null): void => {
@@ -69,40 +72,62 @@ const App = () => {
         });
     };
 
-    const addSectionToSelectedCommentary = (coordinates: PageSelectionCoordinates): void => {
-        if (!selectedCommentary) return;
-        const updatedCommentaryBody: CommentarySection[] = selectedCommentary.commentarySections.body
-        .concat(
-            { coordinates, text: '' }
-        ).sort((a, b) => 
-            ((a.coordinates.pageNumber < b.coordinates.pageNumber) 
-            || ((a.coordinates.pageNumber === b.coordinates.pageNumber) 
-            && (a.coordinates.top < b.coordinates.top))) ? -1 : 1
-        );
-        setSelectedCommentary({ 
-            ...selectedCommentary, 
-            commentarySections: {
-                ...selectedCommentary.commentarySections,
-                body: updatedCommentaryBody
-            }
+    const createCommentary = (documentId: number, commentaryName: string): void => {
+        if (!user) return;
+        const commentaryEntry: CommentaryEntry = { documentId, commentaryName };
+        commentariesService.createCommentary(user.token, commentaryEntry)
+        .then(createdCommentary => {
+            if (!createdCommentary) return;
+            const createdCommentaryInfo: CommentaryInfo = {
+                id: createdCommentary.id,
+                userId: createdCommentary.userId,
+                documentId: createdCommentary.documentId,
+                commentaryName: createdCommentary.commentaryName
+            };
+            setUserCommentaries(userCommentaries.concat(createdCommentaryInfo))
+            setSelectedCommentary(createdCommentary);
         });
     };
-    /*
-    const updateSelectedCommentaryText = (text: string, sectionIndex: number): void => {
-        if (!selectedCommentary) return;
-        const updatedCommentaryBody: CommentarySection[] = selectedCommentary.commentarySections.body
-        .map((section, index) => 
-            (index === sectionIndex) ? { ...section, text } : section
-        );
-        setSelectedCommentary({ 
-            ...selectedCommentary, 
-            commentarySections: {
-                ...selectedCommentary.commentarySections,
-                body: updatedCommentaryBody
-            }
+
+    const addSectionToSelectedCommentary = (
+            commentaryId: number, 
+            pageNumber: number, 
+            pageCoordinateTop: number, 
+            pageCoordinateBottom: number
+        ): void => {
+        if (!user || !selectedCommentary) return;
+        const commentarySectionData: CommentarySectionEntry = {
+            pageNumber, pageCoordinateTop, pageCoordinateBottom, text: ''
+        };
+        commentariesService.createCommentarySection(user.token, commentaryId, commentarySectionData)
+        .then(createdSection => {
+            if (!createdSection) return;
+            const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
+            .concat(createdSection).sort((a, b) => 
+                ((a.pageNumber < b.pageNumber) || ((a.pageNumber === b.pageNumber) 
+                && (a.pageCoordinateTop < b.pageCoordinateTop))) ? -1 : 1
+            );
+            setSelectedCommentary({ 
+                ...selectedCommentary, 
+                commentarySections: updatedCommentarySections
+            });
         });
     };
-    */
+    
+    const updateCommentarySectionText = (commentarySection: CommentarySection): void => {
+        if (!user || !selectedCommentary) return;
+        const { id, commentaryId, ...sectionData } = commentarySection;
+        commentariesService.updateCommentarySectionById(user.token, commentaryId, id, sectionData)
+        .then(updatedSection => {
+            if (!updatedSection) return;
+            const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
+            .map(section => (section.id === updatedSection.id) ? updatedSection : section);
+            setSelectedCommentary({ 
+                ...selectedCommentary, 
+                commentarySections: updatedCommentarySections
+            });
+        });
+    };
 
     return (
         <div className='App'>
@@ -135,6 +160,7 @@ const App = () => {
                             user={user}
                             selectedDocument={selectedDocument}
                             selectedCommentary={selectedCommentary}
+                            createCommentary={createCommentary}
                             addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                         /> 
                         : <Navigate replace to={dashboardRoute} />

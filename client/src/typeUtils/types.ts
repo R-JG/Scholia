@@ -55,4 +55,4 @@ export interface Commentary {
 
 export type CommentaryEntry = Omit<Commentary, 'id' | 'userId' | 'introduction' | 'conclusion' | 'commentarySections'>;
 
-export type CommentaryInfo = Pick<Commentary, 'id' | 'userId' | 'commentaryName'>;
+export type CommentaryInfo = Pick<Commentary, 'id' | 'userId' | 'documentId' | 'commentaryName'>;

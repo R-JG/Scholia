@@ -123,12 +123,14 @@ export const parseGroupDocument = (params: unknown): GroupDocument => {
 
 export const parseCommentaryInfo = (params: unknown): CommentaryInfo => {
     if (!params || (typeof params !== 'object') 
-    || !('id' in params) || !('userId' in params) || !('commentaryName' in params)) {
+    || !('id' in params) || !('userId' in params) 
+    || !('documentId' in params) || !('commentaryName' in params)) {
         throw new Error('missing or incorrectly formatted data for type CommentaryInfo');
     };
     const commentaryInfo: CommentaryInfo = {
         id: parseNumber(params.id),
         userId: parseNumber(params.userId),
+        documentId: parseNumber(params.documentId),
         commentaryName: parseString(params.commentaryName)
     };
     return commentaryInfo;
