@@ -14,6 +14,11 @@ const migration = {
                 allowNull: false,
                 references: { model: 'users', key: 'id' }
             },
+            document_id: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: { model: 'group_documents', key: 'id' }
+            },
             commentary_name: {
                 type: DataTypes.STRING,
                 allowNull: false

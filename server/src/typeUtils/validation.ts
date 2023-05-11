@@ -90,10 +90,12 @@ export const parseGroupEntry = (params: unknown): GroupEntry => {
 };
 
 export const parseCommentaryEntry = (params: unknown): CommentaryEntry => {
-    if (!params || (typeof params !== 'object') || !('commentaryName' in params)) {
+    if (!params || (typeof params !== 'object') 
+    || !('documentId' in params) || !('commentaryName' in params)) {
         throw new Error('missing or incorrectly formatted data for type CommentaryEntry');
     };
     const commentaryEntry: CommentaryEntry = {
+        documentId: parseNumber(params.documentId),
         commentaryName: parseString(params.commentaryName)
     };
     return commentaryEntry;

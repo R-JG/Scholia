@@ -16,6 +16,11 @@ const Commentary = database.define<CommentaryModel>('Commentary', {
         allowNull: false,
         references: { model: 'users', key: 'id' }
     },
+    documentId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'group_documents', key: 'id' }
+    },
     commentaryName: {
         type: DataTypes.STRING,
         allowNull: false

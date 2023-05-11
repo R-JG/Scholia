@@ -167,12 +167,14 @@ export const parseCommentarySectionArray = (params: unknown): CommentarySection[
 
 export const parseCommentary = (params: unknown): Commentary => {
     if (!params || (typeof params !== 'object') || !('id' in params) 
-    || !('userId' in params) || !('commentaryName' in params) || !('commentarySections' in params)) {
+    || !('userId' in params) || !('documentId' in params) || !('commentaryName' in params) 
+    || !('commentarySections' in params)) {
         throw new Error('missing or incorrectly formatted data for type Commentary');
     };
     const commentary: Commentary = {
         id: parseNumber(params.id),
         userId: parseNumber(params.userId),
+        documentId: parseNumber(params.documentId),
         commentaryName: parseString(params.commentaryName),
         commentarySections: parseCommentarySectionArray(params.commentarySections)
     };

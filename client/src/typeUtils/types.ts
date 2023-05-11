@@ -32,34 +32,6 @@ export interface GroupDocument {
 
 export type GroupDocumentInfo = Omit<GroupDocument, 'file'>;
 
-/*
-*** Old Commentary Types:
-
-export interface PageSelectionCoordinates {
-    pageNumber: number,
-    top: number,
-    bottom: number
-};
-
-export interface CommentarySection {
-    coordinates: PageSelectionCoordinates,
-    text: string
-};
-
-export interface CommentarySections {
-    introduction?: string,
-    body: CommentarySection[],
-    conclusion?: string
-};
-
-export interface Commentary {
-    id: number,
-    userId: number,
-    name: string,
-    commentarySections: CommentarySections
-};
-*/
-
 export interface CommentarySection {
     id: number,
     commentaryId: number,
@@ -74,6 +46,7 @@ export type CommentarySectionEntry = Omit<CommentarySection, 'id' | 'commentaryI
 export interface Commentary {
     id: number,
     userId: number,
+    documentId: number,
     commentaryName: string,
     commentarySections: CommentarySection[],
     introduction?: string,

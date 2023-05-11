@@ -20,7 +20,7 @@ const getCommentaryInfoByUser = async (userId: string | number): Promise<Comment
 };
 
 const getCommentaryById = async (commentaryId: string | number): Promise<CommentaryModel | null> => {
-    return await Commentary.findByPk(commentaryId);
+    return await Commentary.findByPk(commentaryId, { include: CommentarySection });
 };
 
 const createCommentary = async (newCommentaryData: CommentaryEntry, userId: string | number) => {

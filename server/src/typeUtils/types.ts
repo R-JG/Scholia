@@ -71,12 +71,14 @@ export interface CommentarySectionModel extends CommentarySection, Model {};
 export interface Commentary {
     id: number,
     userId: number,
+    documentId: number,
     commentaryName: string,
+    commentarySections: CommentarySection[],
     introduction?: string,
     conclusion?: string
 };
 
-export type CommentaryEntry = Omit<Commentary, 'id' | 'userId' | 'introduction' | 'conclusion'>;
+export type CommentaryEntry = Omit<Commentary, 'id' | 'userId' | 'introduction' | 'conclusion' | 'commentarySections'>;
 
 export interface CommentaryModel extends Commentary, Model {}; 
 

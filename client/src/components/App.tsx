@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { LoggedInUser, Group, GroupDocumentInfo, Commentary, PageSelectionCoordinates, CommentarySection } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocumentInfo, Commentary, CommentarySection, CommentaryInfo } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
 import loginService from '../services/loginService';
@@ -15,17 +15,11 @@ const App = () => {
 
     const [user, setUser] = useState<LoggedInUser | null>(null);
     const [userGroups, setUserGroups] = useState<Group[]>([]);
+    const [userCommentaries, setUserCommentaries] = useState<CommentaryInfo[]>([]);
     const [groupDocuments, setGroupDocuments] = useState<GroupDocumentInfo[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
-    const [selectedCommentary, setSelectedCommentary] = useState<Commentary | null>(
-        {
-            id: 1,
-            userId: 1,
-            name: 'test',
-            commentarySections: { body: [] }
-        }
-    );
+    const [selectedCommentary, setSelectedCommentary] = useState<Commentary | null>(null);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
