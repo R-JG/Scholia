@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, UIEvent } from 'react';
 import { Document } from 'react-pdf';
 import { 
-    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection 
+    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
 } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import DocumentPage from './DocumentPage';
@@ -15,8 +15,15 @@ interface Props {
     user: LoggedInUser | null,
     selectedDocument: GroupDocumentInfo | null,
     selectedCommentary: Commentary | null,
+    selectedSection: SelectedSection | null,
+    setSelectedSection: (section: SelectedSection) => void,
     createCommentary: (documentId: number, commentaryName: string) => void,
-    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates) => void,
+    addSectionToSelectedCommentary: (
+        commentaryId: number, 
+        pageNumber: number, 
+        pageCoordinateTop: number, 
+        pageCoordinateBottom: number
+    ) => void,
 };
 
 const CommentaryTool = ({ 
@@ -43,9 +50,6 @@ const CommentaryTool = ({
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
     const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
     const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
-    const [selectedSection, setSelectedSection] = useState<
-        { data: CommentarySection, index: number } | null
-    >(null);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { 
-    LoggedInUser, Group, GroupDocumentInfo, Commentary, CommentarySection, CommentaryInfo, CommentaryEntry, CommentarySectionEntry 
+    LoggedInUser, Group, GroupDocumentInfo, Commentary, CommentarySection, CommentaryInfo, 
+    CommentaryEntry, CommentarySectionEntry, SelectedSection
 } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
 import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
@@ -23,6 +24,7 @@ const App = () => {
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
     const [selectedCommentary, setSelectedCommentary] = useState<Commentary | null>(null);
+    const [selectedSection, setSelectedSection] = useState<SelectedSection | null>(null);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -45,6 +47,8 @@ const App = () => {
             const groupIds: number[] = groups.map(group => group.id);
             return groupDocumentsService.getAllDocumentInfoForGroups(groupIds, user.token);
         }).then(groupDocumentInfo => setGroupDocuments(groupDocumentInfo));
+        commentariesService.getAllCommentaryInfoByUser(user.token)
+        .then(userCommentaryInfo => setUserCommentaries(userCommentaryInfo));
     }, [user]);
 
     const updateUser = (userData: LoggedInUser | null): void => {
@@ -90,10 +94,8 @@ const App = () => {
     };
 
     const addSectionToSelectedCommentary = (
-            commentaryId: number, 
-            pageNumber: number, 
-            pageCoordinateTop: number, 
-            pageCoordinateBottom: number
+            commentaryId: number, pageNumber: number, 
+            pageCoordinateTop: number, pageCoordinateBottom: number
         ): void => {
         if (!user || !selectedCommentary) return;
         const commentarySectionData: CommentarySectionEntry = {
@@ -102,15 +104,21 @@ const App = () => {
         commentariesService.createCommentarySection(user.token, commentaryId, commentarySectionData)
         .then(createdSection => {
             if (!createdSection) return;
-            const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
-            .concat(createdSection).sort((a, b) => 
-                ((a.pageNumber < b.pageNumber) || ((a.pageNumber === b.pageNumber) 
-                && (a.pageCoordinateTop < b.pageCoordinateTop))) ? -1 : 1
+            const newSectionIndex: number = 1 + selectedCommentary.commentarySections.findIndex(section => 
+                ((section.pageNumber < createdSection.pageNumber) 
+                || ((section.pageNumber === createdSection.pageNumber) 
+                && (section.pageCoordinateTop < createdSection.pageCoordinateTop)))
             );
+            const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
+            .reduce((acc: CommentarySection[], section: CommentarySection, index: number) => {
+                if (index === newSectionIndex) return acc.concat(createdSection, section);
+                return acc.concat(section);
+            }, []);
             setSelectedCommentary({ 
                 ...selectedCommentary, 
                 commentarySections: updatedCommentarySections
             });
+            setSelectedSection({ data: createdSection, index: newSectionIndex });
         });
     };
     
@@ -160,6 +168,8 @@ const App = () => {
                             user={user}
                             selectedDocument={selectedDocument}
                             selectedCommentary={selectedCommentary}
+                            selectedSection={selectedSection}
+                            setSelectedSection={setSelectedSection}
                             createCommentary={createCommentary}
                             addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                         /> 

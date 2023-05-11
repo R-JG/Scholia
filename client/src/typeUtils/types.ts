@@ -43,6 +43,11 @@ export interface CommentarySection {
 
 export type CommentarySectionEntry = Omit<CommentarySection, 'id' | 'commentaryId'>;
 
+export interface SelectedSection {
+    data: CommentarySection, 
+    index: number
+};
+
 export interface Commentary {
     id: number,
     userId: number,

@@ -1,10 +1,10 @@
-import { LoggedInUser, Commentary, CommentarySection, PageSelectionCoordinates } from '../typeUtils/types';
+import { LoggedInUser, Commentary, SelectedSection } from '../typeUtils/types';
 import '../css/CommentaryEditBar.css';
 
 interface Props {
     user: LoggedInUser | null,
     selectedCommentary: Commentary | null,
-    selectedSection: { data: CommentarySection, index: number } | null,
+    selectedSection: SelectedSection | null,
     coordinateSelectMode: boolean,
     pageForSelection: number | null,
     yPercentCoordinateOne: number | null,
@@ -12,8 +12,12 @@ interface Props {
     editTextMode: boolean,
     setCoordinateSelectMode: (boolean: boolean) => void,
     resetPercentCoordinates: () => void,
-    // setSelectedSection: (section: { data: CommentarySection, index: number }) => void,
-    addSectionToSelectedCommentary: (coordinates: PageSelectionCoordinates) => void,
+    addSectionToSelectedCommentary: (
+        commentaryId: number, 
+        pageNumber: number, 
+        pageCoordinateTop: number, 
+        pageCoordinateBottom: number
+    ) => void,
     setEditTextMode: (boolean: boolean) => void,
     updateSelectedSectionText: (updatedText: string) => void
 };
@@ -29,7 +33,6 @@ const CommentaryEditBar = ({
     editTextMode,
     setCoordinateSelectMode,
     resetPercentCoordinates,
-    // setSelectedSection,
     addSectionToSelectedCommentary,
     setEditTextMode,
     updateSelectedSectionText
@@ -39,7 +42,7 @@ const CommentaryEditBar = ({
     ) return <div className='CommentaryEditBar'></div>;
 
     const sectionTextHasBeenEdited: boolean = selectedSection ? (selectedSection.data.text !==
-        selectedCommentary.commentarySections.body[selectedSection.index].text
+        selectedCommentary.commentarySections[selectedSection.index].text
     ) : false;
 
     const handleAddSectionButton = (): void => {
@@ -47,12 +50,16 @@ const CommentaryEditBar = ({
             setCoordinateSelectMode(true);
         } else {
             if (pageForSelection && yPercentCoordinateOne && yPercentCoordinateTwo) {
-                const coordinates: PageSelectionCoordinates = {
-                    pageNumber: pageForSelection,
-                    top: Math.min(yPercentCoordinateOne, yPercentCoordinateTwo),
-                    bottom: Math.max(yPercentCoordinateOne, yPercentCoordinateTwo)
-                };
-                addSectionToSelectedCommentary(coordinates);
+                const pageNumber: number = pageForSelection;
+                const pageCoordinateTop: number = Math.min(
+                    yPercentCoordinateOne, yPercentCoordinateTwo
+                );
+                const pageCoordinateBottom: number = Math.max(
+                    yPercentCoordinateOne, yPercentCoordinateTwo
+                );
+                addSectionToSelectedCommentary(
+                    selectedCommentary.id, pageNumber, pageCoordinateTop, pageCoordinateBottom
+                );
             };
             resetPercentCoordinates();
             setCoordinateSelectMode(false);
@@ -62,7 +69,7 @@ const CommentaryEditBar = ({
     const handleDiscardSectionEditButton = (): void => {
         if (!selectedSection) return;
         if (sectionTextHasBeenEdited) updateSelectedSectionText(
-            selectedCommentary.commentarySections.body[selectedSection.index].text
+            selectedCommentary.commentarySections[selectedSection.index].text
         );
         setEditTextMode(false);
     };
@@ -75,7 +82,7 @@ const CommentaryEditBar = ({
                 {(!coordinateSelectMode) ? 'Add New Section' : '+'}
             </button>
             {!editTextMode && 
-            (selectedCommentary.commentarySections.body.length > 0) &&
+            (selectedCommentary.commentarySections.length > 0) &&
             <button 
                 className='edit-section-button'
                 onClick={() => setEditTextMode(true)}>
