@@ -1,4 +1,4 @@
-import { LoggedInUser, Commentary, SelectedSection } from '../typeUtils/types';
+import { LoggedInUser, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import '../css/CommentaryEditBar.css';
 
 interface Props {
@@ -19,7 +19,8 @@ interface Props {
         pageCoordinateBottom: number
     ) => void,
     setEditTextMode: (boolean: boolean) => void,
-    updateSelectedSectionText: (updatedText: string) => void
+    updateSelectedSectionText: (updatedText: string) => void,
+    saveSectionTextToCommentary: (commentarySection: CommentarySection) => void
 };
 
 const CommentaryEditBar = ({ 
@@ -35,7 +36,8 @@ const CommentaryEditBar = ({
     resetPercentCoordinates,
     addSectionToSelectedCommentary,
     setEditTextMode,
-    updateSelectedSectionText
+    updateSelectedSectionText,
+    saveSectionTextToCommentary
     }: Props) => {
 
     if (!user || !selectedCommentary || (user.id !== selectedCommentary.userId)
@@ -66,6 +68,11 @@ const CommentaryEditBar = ({
         };
     };
 
+    const handleSaveSectionEditButton = () => {
+        if (!selectedSection) return;
+        if (sectionTextHasBeenEdited) saveSectionTextToCommentary(selectedSection.data);
+    };
+
     const handleDiscardSectionEditButton = (): void => {
         if (!selectedSection) return;
         if (sectionTextHasBeenEdited) updateSelectedSectionText(
@@ -91,7 +98,8 @@ const CommentaryEditBar = ({
             {sectionTextHasBeenEdited &&
             <div>
                 <button 
-                    className='save-section-edit-button'>
+                    className='save-section-edit-button'
+                    onClick={handleSaveSectionEditButton}>
                     Save Changes
                 </button>
                 <button 

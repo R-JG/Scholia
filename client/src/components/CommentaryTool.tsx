@@ -1,8 +1,6 @@
 import { useEffect, useState, useRef, UIEvent } from 'react';
 import { Document } from 'react-pdf';
-import { 
-    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
-} from '../typeUtils/types';
+import { LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import DocumentPage from './DocumentPage';
 import CommentaryNavigator from './CommentaryNavigator';
@@ -24,14 +22,20 @@ interface Props {
         pageCoordinateTop: number, 
         pageCoordinateBottom: number
     ) => void,
+    updateSelectedSectionText: (updatedText: string) => void,
+    saveSectionTextToCommentary: (commentarySection: CommentarySection) => void
 };
 
 const CommentaryTool = ({ 
     user, 
     selectedDocument, 
     selectedCommentary, 
+    selectedSection,
+    setSelectedSection,
     createCommentary,
     addSectionToSelectedCommentary,
+    updateSelectedSectionText,
+    saveSectionTextToCommentary
     }: Props) => {
 
     if (!user || !selectedDocument) return <div className='CommentaryTool'></div>;
@@ -86,18 +90,18 @@ const CommentaryTool = ({
         setInitialPageNumber(pageNumber);
     };
 
-    const jumpToSelection = (coordinates: PageSelectionCoordinates): void => {
-        if ((coordinates.pageNumber > (initialPageNumber - previousPagesToRender)) 
-        && (coordinates.pageNumber < (initialPageNumber + nextPagesToRender))) {
+    const jumpToSelection = (pageNumber: number, pageCoordinateTop: number): void => {
+        if ((pageNumber > (initialPageNumber - previousPagesToRender)) 
+        && (pageNumber < (initialPageNumber + nextPagesToRender))) {
             const pageElement = documentContainerRef.current?.querySelector(
-                `.DocumentPage[data-page-number="${coordinates.pageNumber}"]`
+                `.DocumentPage[data-page-number="${pageNumber}"]`
             );
             const selectionBoxElement = pageElement?.querySelector(
-                `.selection-box--commentary-section[data-coordinate-top="${coordinates.top}"]`
+                `.selection-box--commentary-section[data-coordinate-top="${pageCoordinateTop}"]`
             );
             selectionBoxElement?.scrollIntoView({ block: 'start' });
         } else {
-            jumpToNewPage(coordinates.pageNumber);
+            jumpToNewPage(pageNumber);
         };
     };
 
@@ -118,17 +122,6 @@ const CommentaryTool = ({
         setYPercentCoordinateOne(null);
         setYPercentCoordinateTwo(null);
     };
-
-    const updateSelectedSectionText = (updatedText: string): void => {
-        if (!selectedSection) return;
-        setSelectedSection({ 
-            ...selectedSection, 
-            data: { ...selectedSection.data, text: updatedText } 
-        });
-    }
-
-    console.log('M0de--> ', editTextMode);
-    console.log('T3XT--> ', selectedSection?.data.text);
     
     const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
 
@@ -242,6 +235,7 @@ const CommentaryTool = ({
                 addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                 setEditTextMode={setEditTextMode}
                 updateSelectedSectionText={updateSelectedSectionText}
+                saveSectionTextToCommentary={saveSectionTextToCommentary}
             />}
         </div>
     );

@@ -121,8 +121,16 @@ const App = () => {
             setSelectedSection({ data: createdSection, index: newSectionIndex });
         });
     };
+
+    const updateSelectedSectionText = (updatedText: string): void => {
+        if (!selectedSection) return;
+        setSelectedSection({ 
+            ...selectedSection, 
+            data: { ...selectedSection.data, text: updatedText } 
+        });
+    }
     
-    const updateCommentarySectionText = (commentarySection: CommentarySection): void => {
+    const saveSectionTextToCommentary = (commentarySection: CommentarySection): void => {
         if (!user || !selectedCommentary) return;
         const { id, commentaryId, ...sectionData } = commentarySection;
         commentariesService.updateCommentarySectionById(user.token, commentaryId, id, sectionData)
@@ -172,6 +180,8 @@ const App = () => {
                             setSelectedSection={setSelectedSection}
                             createCommentary={createCommentary}
                             addSectionToSelectedCommentary={addSectionToSelectedCommentary}
+                            updateSelectedSectionText={updateSelectedSectionText}
+                            saveSectionTextToCommentary={saveSectionTextToCommentary}
                         /> 
                         : <Navigate replace to={dashboardRoute} />
                     } />

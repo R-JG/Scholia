@@ -1,11 +1,11 @@
-import { Commentary, CommentarySection, PageSelectionCoordinates } from '../typeUtils/types';
+import { Commentary, CommentarySection } from '../typeUtils/types';
 import '../css/CommentaryNavigator.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
     selectedSection: { data: CommentarySection, index: number } | null,
     setSelectedSection: (section: { data: CommentarySection, index: number }) => void,
-    jumpToSelection: (coordinates: PageSelectionCoordinates) => void
+    jumpToSelection: (pageNumber: number, pageCoordinateTop: number) => void
 };
 
 const CommentaryNavigator = ({ 
@@ -23,22 +23,22 @@ const CommentaryNavigator = ({
             (direction === 'previous') ? selectedSection.index - 1 : selectedSection.index + 1
         );
         const newSelectedSection: CommentarySection | undefined = 
-        selectedCommentary.commentarySections.body[newIndex];
+        selectedCommentary.commentarySections[newIndex];
         if (!newSelectedSection) return;
         setSelectedSection({ data: newSelectedSection, index: newIndex });
-        jumpToSelection(newSelectedSection.coordinates);
+        jumpToSelection(newSelectedSection.pageNumber, newSelectedSection.pageCoordinateTop);
     };
 
     return (
         <div className='CommentaryNavigator'>
             <button onClick={() => handleNavigateButton('previous')}>◀</button>
             <div className='commentary-section-display'>
-                {selectedCommentary.commentarySections.body.map((section, index) => 
+                {selectedCommentary.commentarySections.map((section, index) => 
                 <div 
                     className='commentary-section-icon' 
                     onClick={() => {
                         setSelectedSection({ data: section, index });
-                        jumpToSelection(section.coordinates);
+                        jumpToSelection(section.pageNumber, section.pageCoordinateTop);
                     }}>
                 </div>)}
             </div>
