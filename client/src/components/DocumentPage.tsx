@@ -121,10 +121,10 @@ const DocumentPage = ({
                 onRenderSuccess={isInitialPage ? () => {
                     scrollToPage();
                     if (selectedSection 
-                    && (selectedSection.data.coordinates.pageNumber === pageNumber)) {
+                    && (selectedSection.data.pageNumber === pageNumber)) {
                         pageRef.current?.querySelector(
                             `.selection-box--commentary-section[data-coordinate-top="${
-                                selectedSection.data.coordinates.top
+                                selectedSection.data.pageCoordinateTop
                             }"]`
                         )?.scrollIntoView({ block: 'start' });
                     };

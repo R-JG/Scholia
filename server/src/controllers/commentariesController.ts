@@ -43,7 +43,7 @@ const createCommentary = async (
         const newCommentaryData: CommentaryEntry = parseCommentaryEntry(request.body);
         const createdCommentary: CommentaryModel = await commentariesService
         .createCommentary(newCommentaryData, authenticatedUser.id);
-        response.json({ ...createdCommentary, commentarySections: [] });
+        response.json({ ...createdCommentary.get(), commentarySections: [] });
     } catch (error) {
         next(error);
     };

@@ -23,12 +23,15 @@ const getCommentaryById = async (commentaryId: string | number): Promise<Comment
     return await Commentary.findByPk(commentaryId, { 
         include: { 
             model: CommentarySection, 
+            as: 'commentarySections',
             order: [['pageNumber', 'ASC'], ['pageCoordinateTop', 'ASC']] 
         }
     });
 };
 
-const createCommentary = async (newCommentaryData: CommentaryEntry, userId: string | number) => {
+const createCommentary = async (
+        newCommentaryData: CommentaryEntry, userId: string | number
+    ): Promise<CommentaryModel> => {
     return await Commentary.create({ ...newCommentaryData, userId });
 };
 

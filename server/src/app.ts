@@ -1,4 +1,5 @@
 import express from 'express';
+import associateModels from './database/models/associateModels';
 import requestLogger from './middleware/requestLogger';
 import unknownEndpoint from './middleware/unknownEndpoint';
 import errorHandler from './middleware/errorHandler';
@@ -9,6 +10,8 @@ import loginRouter from './routes/loginRouter';
 import groupsRouter from './routes/groupsRouter';
 import groupDocumentsRouter from './routes/groupDocumentsRouter';
 import commentariesRouter from './routes/commentariesRouter';
+
+associateModels();
 
 const app = express();
 

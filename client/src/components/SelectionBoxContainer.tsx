@@ -1,4 +1,4 @@
-import { Commentary, CommentarySection, PageSelectionCoordinates } from '../typeUtils/types';
+import { Commentary, CommentarySection } from '../typeUtils/types';
 import '../css/SelectionBoxContainer.css';
 
 interface Props {
@@ -42,10 +42,12 @@ const SelectionBoxContainer = ({
         } else return;
     };
 
-    const createBoxStyleForCommentary = (coordinates: PageSelectionCoordinates): object => {
+    const createBoxStyleForCommentary = (
+            pageCoordinateTop: number, pageCoordinateBottom: number
+        ): object => {
         return { 
-            top: `${coordinates.top}%`, 
-            height: `${coordinates.bottom - coordinates.top}%` 
+            top: `${pageCoordinateTop}%`, 
+            height: `${pageCoordinateBottom - pageCoordinateTop}%` 
         };
     };
 
@@ -61,12 +63,14 @@ const SelectionBoxContainer = ({
                 style={createBoxStyleForSelecting()}>
             </div>}
             {selectedCommentary && 
-            selectedCommentary.commentarySections.body.map((section, index) =>
-                (section.coordinates.pageNumber === pageNumber) ? 
+            selectedCommentary.commentarySections.map((section, index) =>
+                (section.pageNumber === pageNumber) ? 
                 <div 
                     className='selection-box--commentary-section' 
-                    data-coordinate-top={section.coordinates.top}
-                    style={createBoxStyleForCommentary(section.coordinates)}
+                    data-coordinate-top={section.pageCoordinateTop}
+                    style={createBoxStyleForCommentary(
+                        section.pageCoordinateTop, section.pageCoordinateBottom
+                    )}
                     onClick={() => handleSelectionBoxClick(section, index)}>
                 </div> : undefined
             )}

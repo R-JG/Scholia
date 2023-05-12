@@ -1,7 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { CommentarySectionModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
-import Commentary from './Commentary';
 
 const CommentarySection = database.define<CommentarySectionModel>('CommentarySection', {
     id: {
@@ -32,7 +31,5 @@ const CommentarySection = database.define<CommentarySectionModel>('CommentarySec
         allowNull: false
     }
 }, { tableName: 'commentary_sections', underscored: true, timestamps: false });
-
-CommentarySection.belongsTo(Commentary);
 
 export default CommentarySection;

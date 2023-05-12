@@ -76,6 +76,15 @@ const App = () => {
         });
     };
 
+    const getCommentaryForSelection = (commentaryId: number): void => {
+        if (!user) return;
+        commentariesService.getCommentaryById(user.token, commentaryId)
+        .then(commentary => {
+            if (!commentary) return;
+            setSelectedCommentary(commentary);
+        });
+    };
+
     const createCommentary = (documentId: number, commentaryName: string): void => {
         if (!user) return;
         const commentaryEntry: CommentaryEntry = { documentId, commentaryName };
@@ -145,6 +154,10 @@ const App = () => {
         });
     };
 
+    console.log('userCommentaries ---> ', userCommentaries);
+    console.log('selectedCommentary ---> ', selectedCommentary);
+    console.log('selectedSection ---> ', selectedSection);
+
     return (
         <div className='App'>
             <BrowserRouter>
@@ -160,6 +173,7 @@ const App = () => {
                         ? <Dashboard 
                             user={user} 
                             userGroups={userGroups}
+                            userCommentaries={userCommentaries}
                             selectedGroup={selectedGroup}
                             groupDocuments={groupDocuments}
                             updateUser={updateUser}
@@ -167,6 +181,7 @@ const App = () => {
                             setSelectedGroup={setSelectedGroup}
                             setSelectedDocument={setSelectedDocument}
                             uploadDocument={uploadDocument}
+                            getCommentaryForSelection={getCommentaryForSelection}
                         /> 
                         : <Navigate replace to={homeRoute} />
                     } />

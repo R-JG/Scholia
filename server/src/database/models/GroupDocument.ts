@@ -1,7 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { GroupDocumentModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
-import Group from './Group';
 
 const GroupDocument = database.define<GroupDocumentModel>('GroupDocument', {
     id: {
@@ -24,7 +23,5 @@ const GroupDocument = database.define<GroupDocumentModel>('GroupDocument', {
         allowNull: false
     }
 }, { tableName: 'group_documents', underscored: true, timestamps: false });
-
-GroupDocument.belongsTo(Group);
 
 export default GroupDocument;

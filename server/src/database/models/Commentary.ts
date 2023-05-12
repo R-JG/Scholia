@@ -1,8 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { CommentaryModel } from '../../typeUtils/types';
 import { database } from '../connectDatabase';
-import CommentarySection from './CommentarySection';
-import User from './User';
 
 const Commentary = database.define<CommentaryModel>('Commentary', {
     id: {
@@ -34,9 +32,5 @@ const Commentary = database.define<CommentaryModel>('Commentary', {
         allowNull: true
     }
 }, { tableName: 'commentaries', underscored: true, timestamps: false });
-
-Commentary.belongsTo(User);
-
-Commentary.hasMany(CommentarySection);
 
 export default Commentary;
