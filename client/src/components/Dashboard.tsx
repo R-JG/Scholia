@@ -1,13 +1,15 @@
-import { LoggedInUser, Group, GroupDocumentInfo, CommentaryInfo } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocumentInfo, CommentaryInfo, Commentary } from '../typeUtils/types';
 import Header from './Header';
 import GroupContentPanel from './GroupContentPanel';
 import NetworkPanel from './NetworkPanel';
+import CommentarySelector from './CommentarySelector';
 import '../css/Dashboard.css';
 
 interface Props {
     user: LoggedInUser | null,
     userGroups: Group[],
     userCommentaries: CommentaryInfo[],
+    selectedCommentary: Commentary | null,
     selectedGroup: Group | null,
     groupDocuments: GroupDocumentInfo[],
     updateUser: (userData: LoggedInUser | null) => void,
@@ -15,13 +17,15 @@ interface Props {
     setSelectedGroup: (group: Group) => void,
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void,
-    getCommentaryForSelection: (commentaryId: number) => void
+    getCommentaryForSelection: (commentaryId: number) => void,
+    setSelectedCommentary: (commentary: Commentary | null) => void
 };
 
 const Dashboard = ({ 
     user, 
     userGroups,
     userCommentaries,
+    selectedCommentary, 
     selectedGroup,
     groupDocuments, 
     updateUser,
@@ -29,7 +33,8 @@ const Dashboard = ({
     setSelectedGroup,
     setSelectedDocument,
     uploadDocument,
-    getCommentaryForSelection
+    getCommentaryForSelection, 
+    setSelectedCommentary
     }: Props) => {
 
     if (!user) return <div className='Dashboard'></div>;
@@ -40,7 +45,15 @@ const Dashboard = ({
                 user={user} 
                 updateUser={updateUser}
             />
-            <div className='TEST-TEST-TEST'>{userCommentaries.map(commentaryInfo => <div onClick={() => getCommentaryForSelection(commentaryInfo.id)}>{commentaryInfo.commentaryName}</div>)}</div>
+            <div className='TEST-TEST-TEST'>
+                {userCommentaries.map(commentaryInfo => 
+                <CommentarySelector 
+                    commentaryInfo={commentaryInfo}
+                    groupDocuments={groupDocuments}
+                    setSelectedDocument={setSelectedDocument}
+                    getCommentaryForSelection={getCommentaryForSelection} 
+                />)}
+            </div>
             {selectedGroup && 
             <GroupContentPanel 
                 user={user}
@@ -48,8 +61,10 @@ const Dashboard = ({
                 documentsOfGroup={groupDocuments.filter(groupDocument => 
                     groupDocument.groupId === selectedGroup.id
                 )}
+                selectedCommentary={selectedCommentary}
                 setSelectedDocument={setSelectedDocument}
                 uploadDocument={uploadDocument}
+                setSelectedCommentary={setSelectedCommentary}
             />}
             <NetworkPanel 
                 user={user} 

@@ -45,7 +45,7 @@ const CommentaryTool = ({
     const [initialPageIsLoaded, setInitialPageIsLoaded] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [initialPageHeight, setInitialPageHeight] = useState<number | null>(null);
-    const [initialPageNumber, setInitialPageNumber] = useState<number>(20);
+    const [initialPageNumber, setInitialPageNumber] = useState<number>(1);
     const [previousPagesToRender, setPreviousPagesToRender] = useState<number>(0);
     const [nextPagesToRender, setNextPagesToRender] = useState<number>(0);
     const [editTextMode, setEditTextMode] = useState<boolean>(false);
@@ -61,6 +61,17 @@ const CommentaryTool = ({
         groupDocumentsService.getSingleDocumentFile(selectedDocument.id, user.token)
         .then(blob => setDocumentBlob(blob));
     }, []);
+
+    useEffect(() => {
+        if (!documentIsLoaded) return;
+        if (selectedCommentary && !selectedSection) {
+            if (selectedCommentary.commentarySections.length > 0) {
+                const firstSection: CommentarySection = selectedCommentary.commentarySections[0];
+                setInitialPageNumber(firstSection.pageNumber);
+                setSelectedSection({ data: firstSection, index: 0 });
+            };
+        };
+    }, [documentIsLoaded]);
 
     useEffect(() => {
         if (!documentIsLoaded || !initialPageIsLoaded || !initialPageHeight) return;

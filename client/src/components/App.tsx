@@ -174,6 +174,7 @@ const App = () => {
                             user={user} 
                             userGroups={userGroups}
                             userCommentaries={userCommentaries}
+                            selectedCommentary={selectedCommentary}
                             selectedGroup={selectedGroup}
                             groupDocuments={groupDocuments}
                             updateUser={updateUser}
@@ -182,6 +183,7 @@ const App = () => {
                             setSelectedDocument={setSelectedDocument}
                             uploadDocument={uploadDocument}
                             getCommentaryForSelection={getCommentaryForSelection}
+                            setSelectedCommentary={setSelectedCommentary}
                         /> 
                         : <Navigate replace to={homeRoute} />
                     } />

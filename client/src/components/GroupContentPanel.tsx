@@ -1,21 +1,26 @@
 import { useState, useRef, FormEvent, ChangeEvent } from 'react';
-import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocumentInfo, Commentary } from '../typeUtils/types';
 import DocumentSelector from './DocumentSelector';
 
 interface Props {
     user: LoggedInUser | null,
     selectedGroup: Group | null,
     documentsOfGroup: GroupDocumentInfo[],
+    selectedCommentary: Commentary | null,
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
-    uploadDocument: (document: File, groupId: number) => void
+    uploadDocument: (document: File, groupId: number) => void,
+    setSelectedCommentary: (commentary: Commentary | null) => void
 };
 
 const GroupContentPanel = ({ 
     user,
     selectedGroup, 
     documentsOfGroup, 
+    selectedCommentary,
     setSelectedDocument,
-    uploadDocument }: Props) => {
+    uploadDocument,
+    setSelectedCommentary
+    }: Props) => {
     
     if (!user || !selectedGroup) return <div className='GroupContentPanel'></div>;
 
@@ -44,7 +49,9 @@ const GroupContentPanel = ({
                     {documentsOfGroup.map(document => 
                     <DocumentSelector 
                         documentInfo={document}
+                        selectedCommentary={selectedCommentary}
                         setSelectedDocument={setSelectedDocument}
+                        setSelectedCommentary={setSelectedCommentary}
                     />)}
                 </div>
                 <form 

@@ -1,19 +1,27 @@
 import { useNavigate } from 'react-router-dom';
-import { GroupDocumentInfo } from '../typeUtils/types';
+import { GroupDocumentInfo, Commentary } from '../typeUtils/types';
 import { commentaryToolRoute } from '../routesConfig';
 import '../css/DocumentSelector.css';
 
 interface Props {
     documentInfo: GroupDocumentInfo,
-    setSelectedDocument: (documentInfo: GroupDocumentInfo) => void
+    selectedCommentary: Commentary | null,
+    setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
+    setSelectedCommentary: (commentary: Commentary | null) => void
 };
 
-const DocumentSelector = ({ documentInfo, setSelectedDocument }: Props) => {
+const DocumentSelector = ({ 
+    documentInfo, 
+    selectedCommentary, 
+    setSelectedDocument, 
+    setSelectedCommentary 
+    }: Props) => {
 
     const navigate = useNavigate();
 
     const handleClick = () => {
         setSelectedDocument(documentInfo);
+        if (selectedCommentary) setSelectedCommentary(null);
         navigate(commentaryToolRoute);
     };
 
