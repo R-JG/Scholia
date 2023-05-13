@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { LoggedInUser, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import '../css/CommentaryEditBar.css';
 
@@ -43,9 +44,17 @@ const CommentaryEditBar = ({
     if (!user || !selectedCommentary || (user.id !== selectedCommentary.userId)
     ) return <div className='CommentaryEditBar'></div>;
 
-    const sectionTextHasBeenEdited: boolean = selectedSection ? (selectedSection.data.text !==
-        selectedCommentary.commentarySections[selectedSection.index].text
-    ) : false;
+    const [sectionTextHasBeenEdited, setSectionTextHasBeenEdited] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!selectedSection) return;
+        const sectionInCommentary: CommentarySection | undefined = selectedCommentary.commentarySections
+        .find(section => section.id === selectedSection.data.id);
+        if (!sectionInCommentary) return;
+        if (sectionInCommentary.text !== selectedSection.data.text) {
+            setSectionTextHasBeenEdited(true)
+        } else setSectionTextHasBeenEdited(false);
+    }, [selectedSection]);
 
     const handleAddSectionButton = (): void => {
         if (!coordinateSelectMode) {
