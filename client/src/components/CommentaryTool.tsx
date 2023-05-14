@@ -80,8 +80,6 @@ const CommentaryTool = ({
         expandPreviousPages();
     }, [initialPageIsLoaded]);
 
-    console.log(`>>>${initialPageNumber}<<<`);
-
     const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
             ? (initialPageNumber - previousPagesToRender - 1) 

@@ -54,7 +54,7 @@ const CommentaryEditBar = ({
         if (sectionInCommentary.text !== selectedSection.data.text) {
             setSectionTextHasBeenEdited(true)
         } else setSectionTextHasBeenEdited(false);
-    }, [selectedSection]);
+    }, [selectedCommentary, selectedSection]);
 
     const handleAddSectionButton = (): void => {
         if (!coordinateSelectMode) {
@@ -80,6 +80,7 @@ const CommentaryEditBar = ({
     const handleSaveSectionEditButton = () => {
         if (!selectedSection) return;
         if (sectionTextHasBeenEdited) saveSectionTextToCommentary(selectedSection.data);
+        setEditTextMode(false);
     };
 
     const handleDiscardSectionEditButton = (): void => {
@@ -97,12 +98,12 @@ const CommentaryEditBar = ({
                 onClick={handleAddSectionButton}>
                 {(!coordinateSelectMode) ? 'Add New Section' : '+'}
             </button>
-            {!editTextMode && 
-            (selectedCommentary.commentarySections.length > 0) &&
+            {(selectedCommentary.commentarySections.length > 0) 
+            && !sectionTextHasBeenEdited &&
             <button 
                 className='edit-section-button'
-                onClick={() => setEditTextMode(true)}>
-                Edit Commentary Section
+                onClick={() => setEditTextMode(!editTextMode)}>
+                {!editTextMode ? 'Edit Commentary Section' : 'Cancel Edit'}
             </button>}
             {sectionTextHasBeenEdited &&
             <div>

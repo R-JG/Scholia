@@ -118,6 +118,9 @@ const App = () => {
                 || ((section.pageNumber === createdSection.pageNumber) 
                 && (section.pageCoordinateTop < createdSection.pageCoordinateTop)))
             );
+
+            console.log(`[[[${newSectionIndex}]]]`);
+
             const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
             .reduce((acc: CommentarySection[], section: CommentarySection, index: number) => {
                 if (index === newSectionIndex) return acc.concat(createdSection, section);
@@ -154,9 +157,7 @@ const App = () => {
         });
     };
 
-    console.log('userCommentaries ---> ', userCommentaries);
-    console.log('selectedCommentary ---> ', selectedCommentary);
-    console.log('selectedSection ---> ', selectedSection);
+    console.log('SECTIONS>>>', selectedCommentary?.commentarySections);
 
     return (
         <div className='App'>
