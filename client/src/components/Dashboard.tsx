@@ -1,4 +1,4 @@
-import { LoggedInUser, Group, GroupDocumentInfo, CommentaryInfo, Commentary } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocumentInfo, CommentaryInfo, Commentary, SelectedSection } from '../typeUtils/types';
 import Header from './Header';
 import GroupContentPanel from './GroupContentPanel';
 import NetworkPanel from './NetworkPanel';
@@ -10,6 +10,7 @@ interface Props {
     userGroups: Group[],
     userCommentaries: CommentaryInfo[],
     selectedCommentary: Commentary | null,
+    selectedSection: SelectedSection | null,
     selectedGroup: Group | null,
     groupDocuments: GroupDocumentInfo[],
     updateUser: (userData: LoggedInUser | null) => void,
@@ -18,7 +19,8 @@ interface Props {
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void,
     getCommentaryForSelection: (commentaryId: number) => void,
-    setSelectedCommentary: (commentary: Commentary | null) => void
+    setSelectedCommentary: (commentary: Commentary | null) => void, 
+    setSelectedSection: (section: SelectedSection | null) => void
 };
 
 const Dashboard = ({ 
@@ -26,6 +28,7 @@ const Dashboard = ({
     userGroups,
     userCommentaries,
     selectedCommentary, 
+    selectedSection, 
     selectedGroup,
     groupDocuments, 
     updateUser,
@@ -34,7 +37,8 @@ const Dashboard = ({
     setSelectedDocument,
     uploadDocument,
     getCommentaryForSelection, 
-    setSelectedCommentary
+    setSelectedCommentary, 
+    setSelectedSection
     }: Props) => {
 
     if (!user) return <div className='Dashboard'></div>;
@@ -52,6 +56,7 @@ const Dashboard = ({
                     groupDocuments={groupDocuments}
                     setSelectedDocument={setSelectedDocument}
                     getCommentaryForSelection={getCommentaryForSelection} 
+                    setSelectedSection={setSelectedSection}
                 />)}
             </div>
             {selectedGroup && 
@@ -62,9 +67,11 @@ const Dashboard = ({
                     groupDocument.groupId === selectedGroup.id
                 )}
                 selectedCommentary={selectedCommentary}
+                selectedSection={selectedSection}
                 setSelectedDocument={setSelectedDocument}
                 uploadDocument={uploadDocument}
                 setSelectedCommentary={setSelectedCommentary}
+                setSelectedSection={setSelectedSection}
             />}
             <NetworkPanel 
                 user={user} 

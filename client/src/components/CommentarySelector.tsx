@@ -1,19 +1,21 @@
 import { useNavigate } from 'react-router-dom';
-import { GroupDocumentInfo, CommentaryInfo } from '../typeUtils/types';
+import { GroupDocumentInfo, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../routesConfig';
 
 interface Props {
     commentaryInfo: CommentaryInfo,
     groupDocuments: GroupDocumentInfo[],
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
-    getCommentaryForSelection: (commentaryId: number) => void
+    getCommentaryForSelection: (commentaryId: number) => void, 
+    setSelectedSection: (section: SelectedSection | null) => void
 };
 
 const CommentarySelector = ({
     commentaryInfo,
     groupDocuments,
     setSelectedDocument,
-    getCommentaryForSelection
+    getCommentaryForSelection,
+    setSelectedSection
     }: Props) => {
 
     const navigate = useNavigate();
@@ -25,6 +27,7 @@ const CommentarySelector = ({
         if (!commentaryDocument) return;
         setSelectedDocument(commentaryDocument);
         getCommentaryForSelection(commentaryInfo.id);
+        setSelectedSection(null);
         navigate(commentaryToolRoute);
     };
 

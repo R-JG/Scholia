@@ -1,20 +1,24 @@
 import { useNavigate } from 'react-router-dom';
-import { GroupDocumentInfo, Commentary } from '../typeUtils/types';
+import { GroupDocumentInfo, Commentary, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../routesConfig';
 import '../css/DocumentSelector.css';
 
 interface Props {
     documentInfo: GroupDocumentInfo,
     selectedCommentary: Commentary | null,
+    selectedSection: SelectedSection | null,
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
-    setSelectedCommentary: (commentary: Commentary | null) => void
+    setSelectedCommentary: (commentary: Commentary | null) => void,
+    setSelectedSection: (section: SelectedSection | null) => void
 };
 
 const DocumentSelector = ({ 
     documentInfo, 
     selectedCommentary, 
+    selectedSection, 
     setSelectedDocument, 
-    setSelectedCommentary 
+    setSelectedCommentary, 
+    setSelectedSection
     }: Props) => {
 
     const navigate = useNavigate();
@@ -22,6 +26,7 @@ const DocumentSelector = ({
     const handleClick = () => {
         setSelectedDocument(documentInfo);
         if (selectedCommentary) setSelectedCommentary(null);
+        if (selectedSection) setSelectedSection(null);
         navigate(commentaryToolRoute);
     };
 

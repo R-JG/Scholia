@@ -17,10 +17,8 @@ interface Props {
     setSelectedSection: (section: SelectedSection) => void,
     createCommentary: (documentId: number, commentaryName: string) => void,
     addSectionToSelectedCommentary: (
-        commentaryId: number, 
-        pageNumber: number, 
-        pageCoordinateTop: number, 
-        pageCoordinateBottom: number
+        commentaryId: number, pageNumber: number, 
+        pageCoordinateTop: number, pageCoordinateBottom: number
     ) => void,
     updateSelectedSectionText: (updatedText: string) => void,
     saveSectionTextToCommentary: (commentarySection: CommentarySection) => void
@@ -71,6 +69,9 @@ const CommentaryTool = ({
                 setSelectedSection({ data: firstSection, index: 0 });
             };
         };
+        if (selectedCommentary && selectedSection) {
+            setInitialPageNumber(selectedSection.data.pageNumber);
+        };
     }, [documentIsLoaded]);
 
     useEffect(() => {
@@ -78,6 +79,8 @@ const CommentaryTool = ({
         expandNextPages();
         expandPreviousPages();
     }, [initialPageIsLoaded]);
+
+    console.log(`>>>${initialPageNumber}<<<`);
 
     const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
