@@ -11,6 +11,7 @@ interface Props {
     yPercentCoordinateOne: number | null,
     yPercentCoordinateTwo: number | null,
     editTextMode: boolean,
+    setSelectedSection: (section: SelectedSection | null) => void,
     setCoordinateSelectMode: (boolean: boolean) => void,
     resetPercentCoordinates: () => void,
     addSectionToSelectedCommentary: (
@@ -33,6 +34,7 @@ const CommentaryEditBar = ({
     yPercentCoordinateOne,
     yPercentCoordinateTwo,
     editTextMode,
+    setSelectedSection, 
     setCoordinateSelectMode,
     resetPercentCoordinates,
     addSectionToSelectedCommentary,
@@ -58,6 +60,7 @@ const CommentaryEditBar = ({
 
     const handleAddSectionButton = (): void => {
         if (!coordinateSelectMode) {
+            setSelectedSection(null);
             setCoordinateSelectMode(true);
         } else {
             if (pageForSelection && yPercentCoordinateOne && yPercentCoordinateTwo) {

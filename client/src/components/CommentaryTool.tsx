@@ -14,7 +14,7 @@ interface Props {
     selectedDocument: GroupDocumentInfo | null,
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
-    setSelectedSection: (section: SelectedSection) => void,
+    setSelectedSection: (section: SelectedSection | null) => void,
     createCommentary: (documentId: number, commentaryName: string) => void,
     addSectionToSelectedCommentary: (
         commentaryId: number, pageNumber: number, 
@@ -242,6 +242,7 @@ const CommentaryTool = ({
                 yPercentCoordinateOne={yPercentCoordinateOne}
                 yPercentCoordinateTwo={yPercentCoordinateTwo}
                 editTextMode={editTextMode}
+                setSelectedSection={setSelectedSection}
                 setCoordinateSelectMode={setCoordinateSelectMode}
                 resetPercentCoordinates={resetPercentCoordinates}
                 addSectionToSelectedCommentary={addSectionToSelectedCommentary}

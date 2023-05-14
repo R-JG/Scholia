@@ -113,19 +113,16 @@ const App = () => {
         commentariesService.createCommentarySection(user.token, commentaryId, commentarySectionData)
         .then(createdSection => {
             if (!createdSection) return;
-            const newSectionIndex: number = 1 + selectedCommentary.commentarySections.findIndex(section => 
-                ((section.pageNumber < createdSection.pageNumber) 
-                || ((section.pageNumber === createdSection.pageNumber) 
-                && (section.pageCoordinateTop < createdSection.pageCoordinateTop)))
-            );
-
-            console.log(`[[[${newSectionIndex}]]]`);
-
             const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
-            .reduce((acc: CommentarySection[], section: CommentarySection, index: number) => {
-                if (index === newSectionIndex) return acc.concat(createdSection, section);
-                return acc.concat(section);
-            }, []);
+            .concat(createdSection)
+            .sort((a, b) => 
+                ((a.pageNumber < b.pageNumber) 
+                || ((a.pageNumber === b.pageNumber) 
+                && (a.pageCoordinateTop < b.pageCoordinateTop))) ? -1 : 1
+            );
+            const newSectionIndex: number = updatedCommentarySections.findIndex(section => 
+                (section.id === createdSection.id)
+            );
             setSelectedCommentary({ 
                 ...selectedCommentary, 
                 commentarySections: updatedCommentarySections
