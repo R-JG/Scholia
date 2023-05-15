@@ -24,6 +24,7 @@ const getCommentaryById = async (commentaryId: string | number): Promise<Comment
         include: { 
             model: CommentarySection, 
             as: 'commentarySections',
+            separate: true,
             order: [['pageNumber', 'ASC'], ['pageCoordinateTop', 'ASC']] 
         }
     });
