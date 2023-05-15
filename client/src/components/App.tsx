@@ -154,8 +154,6 @@ const App = () => {
         });
     };
 
-    console.log('SECTIONS>>>', selectedCommentary?.commentarySections);
-
     return (
         <div className='App'>
             <BrowserRouter>

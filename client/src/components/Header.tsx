@@ -6,7 +6,7 @@ interface Props {
     updateUser: (userData: LoggedInUser | null) => void
 };
 
-const UserHeader = ({ user, updateUser }: Props) => {
+const Header = ({ user, updateUser }: Props) => {
 
     const logout = (): void => updateUser(null);
 
@@ -18,4 +18,4 @@ const UserHeader = ({ user, updateUser }: Props) => {
     );
 };
 
-export default UserHeader;
+export default Header;

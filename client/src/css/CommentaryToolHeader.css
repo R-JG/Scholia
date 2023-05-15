@@ -1,0 +1,12 @@
+.CommentaryToolHeader {
+    box-sizing: border-box;
+    height: 3.5rem;
+    width: 100%;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: var(--font-color);
+    background-color: var(--background-color-two);
+}

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, UIEvent } from 'react';
 import { Document } from 'react-pdf';
 import { LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
+import CommentaryToolHeader from './CommentaryToolHeader';
 import DocumentPage from './DocumentPage';
 import CommentaryNavigator from './CommentaryNavigator';
 import CommentaryOverlay from './CommentaryOverlay';
@@ -197,6 +198,10 @@ const CommentaryTool = ({
 
     return (
         <div className='CommentaryTool'>
+            <CommentaryToolHeader 
+                selectedDocument={selectedDocument}
+                selectedCommentary={selectedCommentary}
+            />
             <div 
                 className='document-container' 
                 ref={documentContainerRef}
