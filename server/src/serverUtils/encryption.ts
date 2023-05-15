@@ -14,7 +14,7 @@ export const comparePasswordHash =
 );
 
 export const createToken = (payload: string | object): string => jwt.sign(
-    payload, JWT_SECRET, { expiresIn: 60*60 }
+    payload, JWT_SECRET, { expiresIn: '1d' }
 );
 
 export const verifyToken = (token: string): JwtPayload | string => jwt.verify(
