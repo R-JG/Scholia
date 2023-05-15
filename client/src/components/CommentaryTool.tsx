@@ -52,6 +52,7 @@ const CommentaryTool = ({
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
     const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
     const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
+    const [sectionTextHasBeenEdited, setSectionTextHasBeenEdited] = useState<boolean>(false);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
@@ -79,6 +80,16 @@ const CommentaryTool = ({
         expandNextPages();
         expandPreviousPages();
     }, [initialPageIsLoaded]);
+
+    useEffect(() => {
+        if (!selectedCommentary || !selectedSection) return;
+        const sectionInCommentary: CommentarySection | undefined = selectedCommentary.commentarySections
+        .find(section => section.id === selectedSection.data.id);
+        if (!sectionInCommentary) return;
+        if (sectionInCommentary.text !== selectedSection.data.text) {
+            setSectionTextHasBeenEdited(true)
+        } else setSectionTextHasBeenEdited(false);
+    }, [selectedCommentary, selectedSection]);
 
     const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
@@ -133,6 +144,14 @@ const CommentaryTool = ({
     const resetPercentCoordinates = (): void => {
         setYPercentCoordinateOne(null);
         setYPercentCoordinateTwo(null);
+    };
+
+    const cancelSectionTextEdit = (): void => {
+        if (!selectedCommentary || !selectedSection) return;
+        if (sectionTextHasBeenEdited) updateSelectedSectionText(
+            selectedCommentary.commentarySections[selectedSection.index].text
+        );
+        setEditTextMode(false);
     };
     
     const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
@@ -230,7 +249,9 @@ const CommentaryTool = ({
                 selectedCommentary={selectedCommentary}
                 selectedSection={selectedSection}
                 editTextMode={editTextMode}
+                setSelectedSection={setSelectedSection}
                 updateSelectedSectionText={updateSelectedSectionText}
+                cancelSectionTextEdit={cancelSectionTextEdit}
             />}
             {selectedCommentary && (user.id === selectedCommentary.userId) && 
             <CommentaryEditBar 
@@ -247,8 +268,8 @@ const CommentaryTool = ({
                 resetPercentCoordinates={resetPercentCoordinates}
                 addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                 setEditTextMode={setEditTextMode}
-                updateSelectedSectionText={updateSelectedSectionText}
                 saveSectionTextToCommentary={saveSectionTextToCommentary}
+                cancelSectionTextEdit={cancelSectionTextEdit}
             />}
         </div>
     );

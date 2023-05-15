@@ -21,8 +21,8 @@ interface Props {
         pageCoordinateBottom: number
     ) => void,
     setEditTextMode: (boolean: boolean) => void,
-    updateSelectedSectionText: (updatedText: string) => void,
-    saveSectionTextToCommentary: (commentarySection: CommentarySection) => void
+    saveSectionTextToCommentary: (commentarySection: CommentarySection) => void, 
+    cancelSectionTextEdit: () => void
 };
 
 const CommentaryEditBar = ({ 
@@ -39,8 +39,8 @@ const CommentaryEditBar = ({
     resetPercentCoordinates,
     addSectionToSelectedCommentary,
     setEditTextMode,
-    updateSelectedSectionText,
-    saveSectionTextToCommentary
+    saveSectionTextToCommentary, 
+    cancelSectionTextEdit
     }: Props) => {
 
     if (!user || !selectedCommentary || (user.id !== selectedCommentary.userId)
@@ -87,11 +87,7 @@ const CommentaryEditBar = ({
     };
 
     const handleDiscardSectionEditButton = (): void => {
-        if (!selectedSection) return;
-        if (sectionTextHasBeenEdited) updateSelectedSectionText(
-            selectedCommentary.commentarySections[selectedSection.index].text
-        );
-        setEditTextMode(false);
+        cancelSectionTextEdit();
     };
 
     return (
@@ -102,13 +98,13 @@ const CommentaryEditBar = ({
                 {(!coordinateSelectMode) ? 'Add New Section' : '+'}
             </button>
             {(selectedCommentary.commentarySections.length > 0) 
-            && !sectionTextHasBeenEdited &&
+            && selectedSection && !sectionTextHasBeenEdited &&
             <button 
                 className='edit-section-button'
                 onClick={() => setEditTextMode(!editTextMode)}>
                 {!editTextMode ? 'Edit Commentary Section' : 'Cancel Edit'}
             </button>}
-            {sectionTextHasBeenEdited &&
+            {editTextMode && sectionTextHasBeenEdited &&
             <div>
                 <button 
                     className='save-section-edit-button'

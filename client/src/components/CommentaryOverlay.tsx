@@ -1,19 +1,23 @@
 import { ChangeEvent } from 'react';
-import { Commentary, CommentarySection } from '../typeUtils/types';
+import { Commentary, CommentarySection,SelectedSection } from '../typeUtils/types';
 import '../css/CommentaryOverlay.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
     selectedSection: { data: CommentarySection, index: number } | null,
     editTextMode: boolean,
+    setSelectedSection: (section: SelectedSection | null) => void, 
     updateSelectedSectionText: (updatedText: string) => void,
+    cancelSectionTextEdit: () => void
 };
 
 const CommentaryOverlay = ({ 
     selectedCommentary, 
     selectedSection, 
     editTextMode,
-    updateSelectedSectionText
+    setSelectedSection, 
+    updateSelectedSectionText, 
+    cancelSectionTextEdit
     }: Props) => {
 
     if (!selectedCommentary || !selectedSection) return <div className='CommentaryOverlay'></div>
@@ -22,8 +26,18 @@ const CommentaryOverlay = ({
         updateSelectedSectionText(e.currentTarget.value);
     };
 
+    const handleCloseButton = () => {
+        cancelSectionTextEdit();
+        setSelectedSection(null);
+    };
+
     return (
         <div className='CommentaryOverlay'>
+            <button 
+                className='commentary-section-close-button'
+                onClick={handleCloseButton}>
+                ×
+            </button>
             {editTextMode 
             ? <textarea 
                 className='commentary-section-text--edit'
