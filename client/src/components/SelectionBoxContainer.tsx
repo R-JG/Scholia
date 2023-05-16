@@ -52,6 +52,7 @@ const SelectionBoxContainer = ({
     };
 
     const handleSelectionBoxClick = (section: CommentarySection, index: number): void => {
+        if (coordinateSelectMode) return;
         setSelectedSection({ data: section, index });
     };
 

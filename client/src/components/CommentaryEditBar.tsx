@@ -98,7 +98,7 @@ const CommentaryEditBar = ({
     return (
         <div className='CommentaryEditBar'>
             <div className='add-new-commentary-section-buttons-container'>
-                {!coordinateSelectMode && 
+                {!coordinateSelectMode && !editTextMode &&
                 <button 
                     className='add-new-commentary-section-button'
                     onClick={handleAddNewSectionButton}>
