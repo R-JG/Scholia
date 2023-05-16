@@ -41,6 +41,8 @@ export interface CommentarySection {
     text: string
 };
 
+export type SectionCoordinates = Pick<CommentarySection, 'pageNumber' | 'pageCoordinateTop' | 'pageCoordinateBottom'>;
+
 export type CommentarySectionEntry = Omit<CommentarySection, 'id' | 'commentaryId'>;
 
 export interface SelectedSection {

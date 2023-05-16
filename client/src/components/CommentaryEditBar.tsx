@@ -58,29 +58,34 @@ const CommentaryEditBar = ({
         } else setSectionTextHasBeenEdited(false);
     }, [selectedCommentary, selectedSection]);
 
-    const handleAddSectionButton = (): void => {
-        if (!coordinateSelectMode) {
-            setSelectedSection(null);
-            setCoordinateSelectMode(true);
-        } else {
-            if (pageForSelection && yPercentCoordinateOne && yPercentCoordinateTwo) {
-                const pageNumber: number = pageForSelection;
-                const pageCoordinateTop: number = Math.min(
-                    yPercentCoordinateOne, yPercentCoordinateTwo
-                );
-                const pageCoordinateBottom: number = Math.max(
-                    yPercentCoordinateOne, yPercentCoordinateTwo
-                );
-                addSectionToSelectedCommentary(
-                    selectedCommentary.id, pageNumber, pageCoordinateTop, pageCoordinateBottom
-                );
-            };
-            resetPercentCoordinates();
-            setCoordinateSelectMode(false);
-        };
+    const handleAddNewSectionButton = (): void => {
+        setSelectedSection(null);
+        setCoordinateSelectMode(true);
     };
 
-    const handleSaveSectionEditButton = () => {
+    const handleSaveNewSectionButton = (): void => {
+        if (pageForSelection && yPercentCoordinateOne && yPercentCoordinateTwo) {
+            const pageNumber: number = pageForSelection;
+            const pageCoordinateTop: number = Math.min(
+                yPercentCoordinateOne, yPercentCoordinateTwo
+            );
+            const pageCoordinateBottom: number = Math.max(
+                yPercentCoordinateOne, yPercentCoordinateTwo
+            );
+            addSectionToSelectedCommentary(
+                selectedCommentary.id, pageNumber, pageCoordinateTop, pageCoordinateBottom
+            );
+        };
+        resetPercentCoordinates();
+        setCoordinateSelectMode(false);
+    };
+
+    const handleDiscardNewSectionButton = (): void => {
+        resetPercentCoordinates();
+        setCoordinateSelectMode(false);
+    };
+
+    const handleSaveSectionEditButton = (): void => {
         if (!selectedSection) return;
         if (sectionTextHasBeenEdited) saveSectionTextToCommentary(selectedSection.data);
         setEditTextMode(false);
@@ -92,31 +97,50 @@ const CommentaryEditBar = ({
 
     return (
         <div className='CommentaryEditBar'>
-            <button 
-                className='add-commentary-section-button'
-                onClick={handleAddSectionButton}>
-                {(!coordinateSelectMode) ? 'Add New Section' : '+'}
-            </button>
-            {(selectedCommentary.commentarySections.length > 0) 
-            && selectedSection && !sectionTextHasBeenEdited &&
-            <button 
-                className='edit-section-button'
-                onClick={() => setEditTextMode(!editTextMode)}>
-                {!editTextMode ? 'Edit Commentary Section' : 'Cancel Edit'}
-            </button>}
-            {editTextMode && sectionTextHasBeenEdited &&
-            <div>
+            <div className='add-new-commentary-section-buttons-container'>
+                {!coordinateSelectMode && 
                 <button 
-                    className='save-section-edit-button'
-                    onClick={handleSaveSectionEditButton}>
-                    Save Changes
-                </button>
+                    className='add-new-commentary-section-button'
+                    onClick={handleAddNewSectionButton}>
+                    Add New Section
+                </button>}
+                {coordinateSelectMode && 
+                <div>
+                    {yPercentCoordinateOne && yPercentCoordinateTwo &&
+                    <button 
+                        className='save-new-commentary-section-button'
+                        onClick={handleSaveNewSectionButton}>
+                        Add
+                    </button>}
+                    <button
+                        className='discard-new-commentary-section-button'
+                        onClick={handleDiscardNewSectionButton}>
+                        Cancel
+                    </button>
+                </div>}
+            </div>
+            <div className='edit-commentary-section-buttons-container'>
+                {(selectedCommentary.commentarySections.length > 0) 
+                && selectedSection && !sectionTextHasBeenEdited &&
                 <button 
-                    className='discard-section-edit-button'
-                    onClick={handleDiscardSectionEditButton}>
-                    Discard Changes
-                </button>
-            </div>}
+                    className='edit-commentary-section-button'
+                    onClick={() => setEditTextMode(!editTextMode)}>
+                    {!editTextMode ? 'Edit Commentary Section' : 'Cancel Edit'}
+                </button>}
+                {editTextMode && sectionTextHasBeenEdited &&
+                <div>
+                    <button 
+                        className='save-edited-commentary-section-button'
+                        onClick={handleSaveSectionEditButton}>
+                        Save Changes
+                    </button>
+                    <button 
+                        className='discard-edited-commentary-section-button'
+                        onClick={handleDiscardSectionEditButton}>
+                        Discard Changes
+                    </button>
+                </div>}
+            </div>
         </div>
     );
 };
