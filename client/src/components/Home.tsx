@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { LoggedInUser } from '../typeUtils/types';
-import { dashboardRoute } from '../routesConfig';
+import { dashboardRoute } from '../config';
 import LoginForm from './LoginForm';
 import Header from './Header';
 import '../css/Home.css';

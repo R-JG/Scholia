@@ -5,7 +5,7 @@ import {
     CommentaryEntry, CommentarySectionEntry, SelectedSection
 } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
-import { homeRoute, dashboardRoute, commentaryToolRoute } from '../routesConfig';
+import { homeRoute, dashboardRoute, commentaryToolRoute } from '../config';
 import loginService from '../services/loginService';
 import groupsService from '../services/groupsService';
 import groupDocumentsService from '../services/groupDocumentsService';

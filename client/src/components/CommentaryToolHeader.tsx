@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { GroupDocumentInfo, Commentary } from '../typeUtils/types';
-import { dashboardRoute } from '../routesConfig';
+import { dashboardRoute } from '../config';
 import '../css/CommentaryToolHeader.css';
 
 interface Props {

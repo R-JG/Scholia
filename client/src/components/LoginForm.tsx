@@ -1,7 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoggedInUser } from '../typeUtils/types';
-import { dashboardRoute } from '../routesConfig';
+import { dashboardRoute } from '../config';
 import usersService from '../services/usersService';
 import loginService from '../services/loginService';
 import '../css/LoginForm.css';

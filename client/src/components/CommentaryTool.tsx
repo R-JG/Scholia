@@ -3,6 +3,7 @@ import { Document } from 'react-pdf';
 import { 
     LoggedInUser, PageDirection, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
 } from '../typeUtils/types';
+import { pageAmountToRenderOnScroll } from '../config';
 import groupDocumentsService from '../services/groupDocumentsService';
 import CommentaryToolHeader from './CommentaryToolHeader';
 import DocumentPage from './DocumentPage';
@@ -98,7 +99,8 @@ const CommentaryTool = ({
         const unrenderedPages: number = (direction === 'before-initial') 
             ? (initialPageNumber - previousPagesToRender - 1) 
             : (totalPages - initialPageNumber + nextPagesToRender);
-        const amountToAdd: number = (unrenderedPages < 3) ? unrenderedPages : 3;
+        const amountToAdd: number = (unrenderedPages < pageAmountToRenderOnScroll) 
+        ? unrenderedPages : pageAmountToRenderOnScroll;
         return amountToAdd;
     };
 
