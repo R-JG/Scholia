@@ -22,11 +22,22 @@
     overflow: scroll;
 }
 
-.commentary-section-icon {
+.commentary-section-icon--selected {
+    box-sizing: border-box;
     height: 1rem;
     width: 1rem;
     margin-inline: 0.2rem;
     border-radius: 1rem;
     background-color: gold;
+    cursor: pointer;
+}
+
+.commentary-section-icon--unselected {
+    box-sizing: border-box;
+    height: 0.75rem;
+    width: 0.75rem;
+    margin-inline: 0.3rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 231, 47, 0.5);
     cursor: pointer;
 }

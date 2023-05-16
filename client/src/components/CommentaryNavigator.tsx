@@ -43,7 +43,9 @@ const CommentaryNavigator = ({
             <div className='commentary-section-display'>
                 {selectedCommentary.commentarySections.map((section, index) => 
                 <div 
-                    className='commentary-section-icon' 
+                    className={(section.id === selectedSection?.data.id) 
+                        ? 'commentary-section-icon--selected'
+                        : 'commentary-section-icon--unselected'}
                     onClick={() => {
                         setSelectedSection({ data: section, index });
                         jumpToSelection(section.pageNumber, section.pageCoordinateTop);
