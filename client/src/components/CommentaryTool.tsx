@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef, UIEvent } from 'react';
 import { Document } from 'react-pdf';
-import { LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
+import { 
+    LoggedInUser, PageDirection, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
+} from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
 import CommentaryToolHeader from './CommentaryToolHeader';
 import DocumentPage from './DocumentPage';
@@ -92,7 +94,7 @@ const CommentaryTool = ({
         } else setSectionTextHasBeenEdited(false);
     }, [selectedCommentary, selectedSection]);
 
-    const calculatePagesToAdd = (direction: 'before-initial' | 'after-initial'): number => {
+    const calculatePagesToAdd = (direction: PageDirection): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
             ? (initialPageNumber - previousPagesToRender - 1) 
             : (totalPages - initialPageNumber + nextPagesToRender);
@@ -157,7 +159,7 @@ const CommentaryTool = ({
     
     const createPageId = (pageNumber: number): string => `${pageNumber} ${selectedDocument.id}`;
 
-    const createPages = (direction: 'before-initial' | 'after-initial'): JSX.Element[] => {
+    const createPages = (direction: PageDirection): JSX.Element[] => {
         const pagesToRender: number = (direction === 'before-initial') 
             ? previousPagesToRender : nextPagesToRender;
         const getPageNumber = (index: number): number => {

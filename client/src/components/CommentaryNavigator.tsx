@@ -1,4 +1,4 @@
-import { Commentary, CommentarySection } from '../typeUtils/types';
+import { Commentary, CommentarySection, NavDirection } from '../typeUtils/types';
 import '../css/CommentaryNavigator.css';
 
 interface Props {
@@ -17,7 +17,7 @@ const CommentaryNavigator = ({
 
     if (!selectedCommentary) return <div className='CommentaryNavigator'></div>;
 
-    const handleNavigateButton = (direction: 'previous' | 'next'): void => {
+    const navigateSections = (direction: NavDirection): void => {
         if (!selectedSection) return;
         const newIndex: number = (
             (direction === 'previous') ? selectedSection.index - 1 : selectedSection.index + 1
@@ -29,9 +29,17 @@ const CommentaryNavigator = ({
         jumpToSelection(newSelectedSection.pageNumber, newSelectedSection.pageCoordinateTop);
     };
 
+    const handleNavigateButton = (direction: NavDirection): void => {
+        navigateSections(direction);
+    };
+
     return (
         <div className='CommentaryNavigator'>
-            <button onClick={() => handleNavigateButton('previous')}>◀</button>
+            {selectedSection && (selectedSection.index !== 0) &&
+            <button 
+                onClick={() => handleNavigateButton('previous')}>
+                ◀
+            </button>}
             <div className='commentary-section-display'>
                 {selectedCommentary.commentarySections.map((section, index) => 
                 <div 
@@ -42,7 +50,12 @@ const CommentaryNavigator = ({
                     }}>
                 </div>)}
             </div>
-            <button onClick={() => handleNavigateButton('next')}>▶</button>
+            {selectedSection && 
+            (selectedSection.index !== (selectedCommentary.commentarySections.length - 1)) &&
+            <button 
+                onClick={() => handleNavigateButton('next')}>
+                ▶
+            </button>}
         </div>
     );
 };

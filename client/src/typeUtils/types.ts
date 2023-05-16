@@ -61,3 +61,7 @@ export interface Commentary {
 export type CommentaryEntry = Omit<Commentary, 'id' | 'userId' | 'introduction' | 'conclusion' | 'commentarySections'>;
 
 export type CommentaryInfo = Pick<Commentary, 'id' | 'userId' | 'documentId' | 'commentaryName'>;
+
+export type PageDirection = 'before-initial' | 'after-initial';
+
+export type NavDirection = 'previous' | 'next';

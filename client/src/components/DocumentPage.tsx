@@ -1,6 +1,6 @@
-import { MouseEvent, useState, useRef } from 'react';
+import { useState, useEffect, useRef, MouseEvent } from 'react';
 import { Page } from 'react-pdf';
-import { Commentary, CommentarySection } from '../typeUtils/types';
+import { Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import SelectionBoxContainer from './SelectionBoxContainer';
 import '../css/DocumentPage.css';
 
@@ -46,12 +46,29 @@ const DocumentPage = ({
     setSelectedSection
     }: Props) => {
 
+    const [pageIsRendered, setPageIsRendered] = useState<boolean>(false);
     const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number>(0);
     const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number>(0);
 
     const pageRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        if (isInitialPage) {
+            if (selectedSection 
+            && (selectedSection.data.pageNumber === pageNumber)) {
+                scrollToSelectedSectionBox(selectedSection);
+            } else scrollToPage();
+        };
+    }, [pageIsRendered]);
+
     const scrollToPage = (): void => pageRef.current?.scrollIntoView();
+
+    const scrollToSelectedSectionBox = (selectedSection: SelectedSection): void => {
+        pageRef.current?.querySelector(
+            `.selection-box--commentary-section[data-coordinate-top="${
+            selectedSection.data.pageCoordinateTop}"]`
+        )?.scrollIntoView({ block: 'start' });
+    };
 
     const getPercentCoordinate = (targetPageHeight: number, yPixelCoordinate: number): number => {
         return (yPixelCoordinate / targetPageHeight) * 100;
@@ -118,17 +135,7 @@ const DocumentPage = ({
                     setInitialPageHeight(page.height);
                     setInitialPageIsLoaded(true);
                 } : undefined }
-                onRenderSuccess={isInitialPage ? () => {
-                    scrollToPage();
-                    if (selectedSection 
-                    && (selectedSection.data.pageNumber === pageNumber)) {
-                        pageRef.current?.querySelector(
-                            `.selection-box--commentary-section[data-coordinate-top="${
-                                selectedSection.data.pageCoordinateTop
-                            }"]`
-                        )?.scrollIntoView({ block: 'start' });
-                    };
-                } : undefined}
+                onRenderSuccess={() => setPageIsRendered(true)}
             />
         </div>
     );
