@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, MouseEvent } from 'react';
+import { useState, useRef, MouseEvent } from 'react';
 import { Page } from 'react-pdf';
 import { Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import SelectionBoxContainer from './SelectionBoxContainer';
@@ -46,20 +46,10 @@ const DocumentPage = ({
     setSelectedSection
     }: Props) => {
 
-    const [pageIsRendered, setPageIsRendered] = useState<boolean>(false);
     const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number>(0);
     const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number>(0);
 
     const pageRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (isInitialPage) {
-            if (selectedSection 
-            && (selectedSection.data.pageNumber === pageNumber)) {
-                scrollToSelectedSectionBox(selectedSection);
-            } else scrollToPage();
-        };
-    }, [pageIsRendered]);
 
     const scrollToPage = (): void => pageRef.current?.scrollIntoView();
 
@@ -134,8 +124,13 @@ const DocumentPage = ({
                 onLoadSuccess={isInitialPage ? (page) => {
                     setInitialPageHeight(page.height);
                     setInitialPageIsLoaded(true);
-                } : undefined }
-                onRenderSuccess={() => setPageIsRendered(true)}
+                } : undefined}
+                onRenderSuccess={isInitialPage ? () => {
+                    if (selectedSection 
+                    && (selectedSection.data.pageNumber === pageNumber)) {
+                        scrollToSelectedSectionBox(selectedSection);
+                    } else scrollToPage();
+                } : undefined}
             />
         </div>
     );
