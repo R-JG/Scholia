@@ -1,10 +1,10 @@
-import { Commentary, CommentarySection, NavDirection } from '../typeUtils/types';
+import { Commentary, CommentarySection, SelectedSection, NavDirection } from '../typeUtils/types';
 import '../css/CommentaryNavigator.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
-    selectedSection: { data: CommentarySection, index: number } | null,
-    setSelectedSection: (section: { data: CommentarySection, index: number }) => void,
+    selectedSection: SelectedSection | null,
+    setSelectedSection: (section: SelectedSection) => void,
     jumpToSelection: (pageNumber: number, pageCoordinateTop: number) => void
 };
 

@@ -1,6 +1,6 @@
 import { useState, useRef, MouseEvent } from 'react';
 import { Page } from 'react-pdf';
-import { Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
+import { Commentary, SelectedSection } from '../typeUtils/types';
 import SelectionBoxContainer from './SelectionBoxContainer';
 import '../css/DocumentPage.css';
 
@@ -10,7 +10,7 @@ interface Props {
     pageWidth: number | undefined,
     isInitialPage: boolean,
     selectedCommentary: Commentary | null,
-    selectedSection: { data: CommentarySection, index: number } | null,
+    selectedSection: SelectedSection | null,
     coordinateSelectMode: boolean,
     userIsSelecting: boolean,
     pageForSelection: number | null,
@@ -22,7 +22,7 @@ interface Props {
     setUserIsSelecting: (isSelecting: boolean) => void,
     setYPercentCoordinateOne: (coordinate: number) => void,
     setYPercentCoordinateTwo: (coordinate: number) => void,
-    setSelectedSection: (section: { data: CommentarySection, index: number }) => void
+    setSelectedSection: (section: SelectedSection) => void
 };
 
 const DocumentPage = ({ 
@@ -107,6 +107,7 @@ const DocumentPage = ({
             <SelectionBoxContainer 
                 pageNumber={pageNumber}
                 selectedCommentary={selectedCommentary}
+                selectedSection={selectedSection}
                 coordinateSelectMode={coordinateSelectMode}
                 pageForSelection={pageForSelection}
                 userIsSelecting={userIsSelecting}

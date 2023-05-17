@@ -1,9 +1,10 @@
-import { Commentary, CommentarySection } from '../typeUtils/types';
+import { Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import '../css/SelectionBoxContainer.css';
 
 interface Props {
     pageNumber: number,
     selectedCommentary: Commentary | null,
+    selectedSection: SelectedSection | null,
     coordinateSelectMode: boolean,
     pageForSelection: number | null,
     userIsSelecting: boolean,
@@ -11,12 +12,13 @@ interface Props {
     yPercentCoordinateTwo: number | null,
     yPixelCoordinateOne: number,
     yPixelCoordinateTwo: number,
-    setSelectedSection: (section: { data: CommentarySection, index: number }) => void
+    setSelectedSection: (section: SelectedSection) => void
 };
 
 const SelectionBoxContainer = ({ 
     pageNumber, 
     selectedCommentary, 
+    selectedSection, 
     coordinateSelectMode,
     pageForSelection, 
     userIsSelecting,
@@ -27,7 +29,7 @@ const SelectionBoxContainer = ({
     setSelectedSection
     }: Props) => {
 
-    const createBoxStyleForSelecting = (): object | undefined => {
+    const createBoxStyleForActiveSelection = (): object | undefined => {
         if (userIsSelecting) {
             return (yPixelCoordinateTwo === 0) ? { display: 'none' } : { 
                 top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
@@ -42,7 +44,7 @@ const SelectionBoxContainer = ({
         } else return;
     };
 
-    const createBoxStyleForCommentary = (
+    const createBoxStyleForCommentarySection = (
             pageCoordinateTop: number, pageCoordinateBottom: number
         ): object => {
         return { 
@@ -61,15 +63,17 @@ const SelectionBoxContainer = ({
             {(coordinateSelectMode && (pageForSelection === pageNumber)) && 
             <div 
                 className='selection-box--active-selection' 
-                style={createBoxStyleForSelecting()}>
+                style={createBoxStyleForActiveSelection()}>
             </div>}
             {selectedCommentary && 
             selectedCommentary.commentarySections.map((section, index) =>
                 (section.pageNumber === pageNumber) ? 
                 <div 
-                    className='selection-box--commentary-section' 
+                    className={`selection-box--commentary-section 
+                        ${(selectedSection && (section.id === selectedSection.data.id))
+                        ? 'selected' : 'unselected'}`} 
                     data-coordinate-top={section.pageCoordinateTop}
-                    style={createBoxStyleForCommentary(
+                    style={createBoxStyleForCommentarySection(
                         section.pageCoordinateTop, section.pageCoordinateBottom
                     )}
                     onClick={() => handleSelectionBoxClick(section, index)}>

@@ -1,10 +1,10 @@
 import { ChangeEvent } from 'react';
-import { Commentary, CommentarySection,SelectedSection } from '../typeUtils/types';
+import { Commentary, SelectedSection } from '../typeUtils/types';
 import '../css/CommentaryOverlay.css';
 
 interface Props {
     selectedCommentary: Commentary | null,
-    selectedSection: { data: CommentarySection, index: number } | null,
+    selectedSection: SelectedSection | null,
     editTextMode: boolean,
     setSelectedSection: (section: SelectedSection | null) => void, 
     updateSelectedSectionText: (updatedText: string) => void,
