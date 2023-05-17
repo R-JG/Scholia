@@ -1,11 +1,18 @@
 :root {
-    --background-color-one: #5f5566;
-    --background-color-two: #33202a;
-
-    --font-color: #f4edea;
+    --background-color-one: #393E46;
+    --background-color-two: #222831;
+    --font-color: #EEEEEE;
+    --accent-color-one: gold;
+    --accent-color-one--transparent: rgba(255, 231, 47, 0.5);
 }
 
 /* backgroud, light: #f4edea */
+
+/*  
+Old --background-color-one: #5f5566;
+Old --background-color-two: #33202a;
+Old --font-color: #f4edea;
+*/
 
 body {
     margin: 0;

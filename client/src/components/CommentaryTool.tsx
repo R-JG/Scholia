@@ -146,9 +146,10 @@ const CommentaryTool = ({
         };
     };
 
-    const resetPercentCoordinates = (): void => {
+    const resetSelectionCoordinates = (): void => {
         setYPercentCoordinateOne(null);
         setYPercentCoordinateTwo(null);
+        setPageForSelection(null);
     };
 
     const cancelSectionTextEdit = (): void => {
@@ -249,6 +250,7 @@ const CommentaryTool = ({
             <CommentaryNavigator 
                 selectedCommentary={selectedCommentary}
                 selectedSection={selectedSection}
+                coordinateSelectMode={coordinateSelectMode}
                 setSelectedSection={setSelectedSection}
                 jumpToSelection={jumpToSelection}
             />
@@ -274,7 +276,7 @@ const CommentaryTool = ({
                 editTextMode={editTextMode}
                 setSelectedSection={setSelectedSection}
                 setCoordinateSelectMode={setCoordinateSelectMode}
-                resetPercentCoordinates={resetPercentCoordinates}
+                resetSelectionCoordinates={resetSelectionCoordinates}
                 addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                 setEditTextMode={setEditTextMode}
                 saveSectionTextToCommentary={saveSectionTextToCommentary}

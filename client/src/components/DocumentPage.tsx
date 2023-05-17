@@ -46,8 +46,8 @@ const DocumentPage = ({
     setSelectedSection
     }: Props) => {
 
-    const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number>(0);
-    const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number>(0);
+    const [yPixelCoordinateOne, setYPixelCoordinateOne] = useState<number | null>(0);
+    const [yPixelCoordinateTwo, setYPixelCoordinateTwo] = useState<number | null>(0);
 
     const pageRef = useRef<HTMLDivElement>(null);
 
@@ -84,8 +84,8 @@ const DocumentPage = ({
         const yPixelCoordinate: number = (e.clientY - e.currentTarget.getBoundingClientRect().y);
         const yPercentCoordinate: number = getPercentCoordinate(targetPageHeight, yPixelCoordinate);
         if (pageNumber === pageForSelection) setYPercentCoordinateTwo(yPercentCoordinate);
-        setYPixelCoordinateOne(0);
-        setYPixelCoordinateTwo(0);
+        setYPixelCoordinateOne(null);
+        setYPixelCoordinateTwo(null);
         setUserIsSelecting(false);
     };
 

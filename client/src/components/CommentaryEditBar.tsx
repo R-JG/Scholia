@@ -13,7 +13,7 @@ interface Props {
     editTextMode: boolean,
     setSelectedSection: (section: SelectedSection | null) => void,
     setCoordinateSelectMode: (boolean: boolean) => void,
-    resetPercentCoordinates: () => void,
+    resetSelectionCoordinates: () => void,
     addSectionToSelectedCommentary: (
         commentaryId: number, 
         pageNumber: number, 
@@ -36,7 +36,7 @@ const CommentaryEditBar = ({
     editTextMode,
     setSelectedSection, 
     setCoordinateSelectMode,
-    resetPercentCoordinates,
+    resetSelectionCoordinates,
     addSectionToSelectedCommentary,
     setEditTextMode,
     saveSectionTextToCommentary, 
@@ -76,12 +76,12 @@ const CommentaryEditBar = ({
                 selectedCommentary.id, pageNumber, pageCoordinateTop, pageCoordinateBottom
             );
         };
-        resetPercentCoordinates();
+        resetSelectionCoordinates();
         setCoordinateSelectMode(false);
     };
 
     const handleDiscardNewSectionButton = (): void => {
-        resetPercentCoordinates();
+        resetSelectionCoordinates();
         setCoordinateSelectMode(false);
     };
 

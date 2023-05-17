@@ -4,6 +4,7 @@ import '../css/CommentaryNavigator.css';
 interface Props {
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
+    coordinateSelectMode: boolean,
     setSelectedSection: (section: SelectedSection) => void,
     jumpToSelection: (pageNumber: number, pageCoordinateTop: number) => void
 };
@@ -11,6 +12,7 @@ interface Props {
 const CommentaryNavigator = ({ 
     selectedCommentary, 
     selectedSection, 
+    coordinateSelectMode, 
     setSelectedSection, 
     jumpToSelection 
     }: Props) => {
@@ -33,6 +35,12 @@ const CommentaryNavigator = ({
         navigateSections(direction);
     };
 
+    const handleSectionIconClick = (section: CommentarySection, index: number): void => {
+        if (coordinateSelectMode) return;
+        setSelectedSection({ data: section, index });
+        jumpToSelection(section.pageNumber, section.pageCoordinateTop);
+    };
+
     return (
         <div className='CommentaryNavigator'>
             {selectedSection && (selectedSection.index !== 0) &&
@@ -46,10 +54,7 @@ const CommentaryNavigator = ({
                     className={(section.id === selectedSection?.data.id) 
                         ? 'commentary-section-icon--selected'
                         : 'commentary-section-icon--unselected'}
-                    onClick={() => {
-                        setSelectedSection({ data: section, index });
-                        jumpToSelection(section.pageNumber, section.pageCoordinateTop);
-                    }}>
+                    onClick={() => handleSectionIconClick(section, index)}>
                 </div>)}
             </div>
             {selectedSection && 

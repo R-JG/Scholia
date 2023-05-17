@@ -10,8 +10,8 @@ interface Props {
     userIsSelecting: boolean,
     yPercentCoordinateOne: number | null,
     yPercentCoordinateTwo: number | null,
-    yPixelCoordinateOne: number,
-    yPixelCoordinateTwo: number,
+    yPixelCoordinateOne: number | null,
+    yPixelCoordinateTwo: number | null,
     setSelectedSection: (section: SelectedSection) => void
 };
 
@@ -31,16 +31,20 @@ const SelectionBoxContainer = ({
 
     const createBoxStyleForActiveSelection = (): object | undefined => {
         if (userIsSelecting) {
-            return (yPixelCoordinateTwo === 0) ? { display: 'none' } : { 
+            const activeSelectionStyle = (!yPixelCoordinateOne || !yPixelCoordinateTwo) 
+            ? { display: 'none' } 
+            : { 
                 top: `${Math.min(yPixelCoordinateOne, yPixelCoordinateTwo)}px`,
                 height: `${Math.abs(yPixelCoordinateOne - yPixelCoordinateTwo)}px`,
                 borderColor: 'transparent'
             };
+            return activeSelectionStyle;
         } else if (yPercentCoordinateOne && yPercentCoordinateTwo) {
-            return {
+            const selectionResultStyle = {
                 top: `${Math.min(yPercentCoordinateOne, yPercentCoordinateTwo)}%`,
                 height: `${Math.abs(yPercentCoordinateOne - yPercentCoordinateTwo)}%`,
             };
+            return selectionResultStyle;
         } else return;
     };
 

@@ -3,8 +3,8 @@
     width: 100%;
     position: absolute;
     z-index: 100;
-    background-color: rgba(255, 231, 47, 0.5);
-    border: 0.2em solid gold;
+    background-color: var(--accent-color-one--transparent);
+    border: 0.2em solid var(--accent-color-one);
     pointer-events: none;
 }
 
@@ -13,7 +13,7 @@
     width: 100%;
     position: absolute;
     z-index: 100;
-    background-color: rgba(255, 231, 47, 0.5);
+    background-color: var(--accent-color-one--transparent);
     border: 0.2em solid transparent;
     cursor: pointer;
 }
@@ -23,7 +23,7 @@
     width: 100%;
     position: absolute;
     z-index: 100;
-    background-color: rgba(255, 231, 47, 0.5);
-    border: 0.2em solid gold;
+    background-color: var(--accent-color-one--transparent);
+    border: 0.2em solid var(--accent-color-one);
     cursor: pointer;
 }
