@@ -61,7 +61,8 @@ const DocumentPage = ({
     };
 
     const getPercentCoordinate = (targetPageHeight: number, yPixelCoordinate: number): number => {
-        return (yPixelCoordinate / targetPageHeight) * 100;
+        const percentFloat: number = (yPixelCoordinate / targetPageHeight) * 100;
+        return (Math.trunc(percentFloat * 100) / 100);
     };
 
     const handlePageMouseDown = (e: MouseEvent<HTMLDivElement>): void => {
