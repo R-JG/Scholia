@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { User, LoggedInUser, Group } from '../typeUtils/types';
-import usersService from '../services/usersService';
+import { LoggedInUser, Group } from '../typeUtils/types';
 import GroupSelector from './GroupSelector';
+import GroupSearch from './GroupSearch';
 import '../css/NetworkPanel.css';
 
 interface Props {
@@ -18,25 +18,11 @@ const NetworkPanel = ({
     selectedGroup, 
     setSelectedGroup,
     createGroup
-}: Props) => {
+    }: Props) => {
 
     if (!user) return <div className='NetworkPanel'></div>;
 
-    const [searchInputValue, setSearchInputValue] = useState('');
-    const [searchResults, setSearchResults] = useState<User[]>([]);
     const [groupNameInputValue, setGroupNameInputValue] = useState('');
-
-    const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setSearchInputValue(e.currentTarget.value);
-    };
-
-    const handleSearchFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        if (searchInputValue === '') return;
-        usersService.searchByUsername(searchInputValue, user.token).then(users => 
-            setSearchResults(users)
-        );
-    };
 
     const handleGroupNameInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setGroupNameInputValue(e.currentTarget.value);
@@ -51,10 +37,10 @@ const NetworkPanel = ({
 
     return (
         <div className='NetworkPanel'>
-            <div className='network-panel--groups'>
-                <h3>Groups</h3>
-                {(userGroups.length > 0) 
-                && <div className='network-panel--group-list'>
+            <div className='network-panel--group-membership-section'>
+                <h3>User's Groups:</h3>
+                {(userGroups.length > 0) && 
+                <div className='group-membership-list'>
                     {userGroups.map(group => 
                     <GroupSelector 
                         group={group}
@@ -62,6 +48,8 @@ const NetworkPanel = ({
                         setSelectedGroup={setSelectedGroup}
                     />)}
                 </div>}
+            </div>
+            <div className='network-panel--create-group-section'>
                 <form 
                     className='form--create-group'
                     onSubmit={handleGroupFormSubmit}
@@ -75,24 +63,11 @@ const NetworkPanel = ({
                     <button>Create Group</button>
                 </form>
             </div>
-            <h3>Search</h3>
-            <form 
-                className='form--search' 
-                onSubmit={handleSearchFormSubmit}
-            >
-                <input 
-                    className='input--search' 
-                    type='text' 
-                    value={searchInputValue}
-                    onChange={handleSearchInputChange}
-                />
-                <button>Search Users</button>
-            </form>
-            {(searchResults.length > 0) 
-            && <div className='search-results'>
-                {searchResults.map(user => 
-                <h5>{user.username}</h5>)}
-            </div>}
+            <GroupSearch 
+                user={user}
+                selectedGroup={selectedGroup}
+                setSelectedGroup={setSelectedGroup}
+            />
         </div>
     );
 };

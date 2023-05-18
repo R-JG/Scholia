@@ -33,4 +33,18 @@ const getGroupsByUser = async (token: string): Promise<Group[]> => {
     };
 };
 
-export default { createGroup, getGroupsByUser };
+const getGroupsByName = async (token: string, searchTerm: string): Promise<Group[]> => {
+    try {
+        const response = await axios.get(
+            `${baseUrl}/search/${searchTerm}`, 
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const groupsResult: Group[] = parseGroupArray(response.data);
+        return groupsResult;
+    } catch (error) {
+        console.error(error);
+        return [];
+    };
+};
+
+export default { createGroup, getGroupsByUser, getGroupsByName };
