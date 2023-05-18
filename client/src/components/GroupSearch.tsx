@@ -17,6 +17,7 @@ const GroupSearch = ({ user, selectedGroup, setSelectedGroup }: Props) => {
     const [searchResults, setSearchResults] = useState<Group[]>([]);
 
     useEffect(() => {
+        if (!searchInputValue) return;
         const searchGroupbyName = () => {
             groupsService.getGroupsByName(user.token, searchInputValue)
             .then(groupsResult => {
@@ -35,16 +36,13 @@ const GroupSearch = ({ user, selectedGroup, setSelectedGroup }: Props) => {
     return (
         <div className='GroupSearch'>
             <h4>Search for groups</h4>
-
             <input 
                 className='group-search-input' 
                 type='text' 
                 value={searchInputValue}
                 onChange={handleSearchInputChange}
             />
-            <div 
-                className='search-results'
-                style={(searchResults.length > 0) ? { display: 'none' } : undefined}>
+            <div className='search-results'>
                 {searchResults.map(group => 
                 <GroupSelector 
                     group={group}
