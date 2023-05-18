@@ -95,6 +95,29 @@ const CommentaryTool = ({
         } else setSectionTextHasBeenEdited(false);
     }, [selectedCommentary, selectedSection]);
 
+    const jumpToNewPage = (pageNumber: number) => {
+        setPreviousPagesToRender(0);
+        setNextPagesToRender(0);
+        setInitialPageNumber(pageNumber);
+    };
+
+    const jumpToSelection = (pageNumber: number, pageCoordinateTop: number): void => {
+        const selectionPageHasBeenRendered: boolean = 
+            ((pageNumber > (initialPageNumber - previousPagesToRender)) 
+            && (pageNumber < (initialPageNumber + nextPagesToRender)));
+        if (selectionPageHasBeenRendered) {
+            const pageElement = documentContainerRef.current?.querySelector(
+                `.DocumentPage[data-page-number="${pageNumber}"]`
+            );
+            const selectionBoxElement = pageElement?.querySelector(
+                `.selection-box--commentary-section[data-coordinate-top="${pageCoordinateTop}"]`
+            );
+            selectionBoxElement?.scrollIntoView({ block: 'start' });
+        } else {
+            jumpToNewPage(pageNumber);
+        };
+    };
+
     const calculatePagesToAdd = (direction: PageDirection): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
             ? (initialPageNumber - previousPagesToRender - 1) 
@@ -112,38 +135,18 @@ const CommentaryTool = ({
         setNextPagesToRender(nextPagesToRender + calculatePagesToAdd('after-initial'));
     };
 
-    const jumpToNewPage = (pageNumber: number) => {
-        setPreviousPagesToRender(0);
-        setNextPagesToRender(0);
-        setInitialPageNumber(pageNumber);
-    };
-
-    const jumpToSelection = (pageNumber: number, pageCoordinateTop: number): void => {
-        if ((pageNumber > (initialPageNumber - previousPagesToRender)) 
-        && (pageNumber < (initialPageNumber + nextPagesToRender))) {
-            const pageElement = documentContainerRef.current?.querySelector(
-                `.DocumentPage[data-page-number="${pageNumber}"]`
-            );
-            const selectionBoxElement = pageElement?.querySelector(
-                `.selection-box--commentary-section[data-coordinate-top="${pageCoordinateTop}"]`
-            );
-            selectionBoxElement?.scrollIntoView({ block: 'start' });
-        } else {
-            jumpToNewPage(pageNumber);
-        };
-    };
-
     const handleScroll = (e: UIEvent<HTMLDivElement>): void => {
         if (!documentIsLoaded || !initialPageHeight || !documentContainerRef.current) return;
-        if ((previousPagesToRender + nextPagesToRender + 1) === totalPages) return;
-        if (((initialPageNumber + nextPagesToRender) !== totalPages) 
-        && (e.currentTarget.scrollTop >= (documentContainerRef.current.scrollHeight - initialPageHeight))) {
-            expandNextPages();
-        };
-        if (((initialPageNumber - previousPagesToRender) !== 1) 
-        && (e.currentTarget.scrollTop <= initialPageHeight)) {
-            expandPreviousPages();
-        };
+        const allNextPagesAreRendered: boolean = 
+            ((initialPageNumber + nextPagesToRender) === totalPages);
+        const isScrolledNearBottom: boolean = (e.currentTarget.scrollTop 
+            >= (documentContainerRef.current.scrollHeight - initialPageHeight));
+        if (!allNextPagesAreRendered && isScrolledNearBottom) expandNextPages();
+        const allPreviousPagesAreRendered: boolean = 
+            ((initialPageNumber - previousPagesToRender) === 1);
+        const isScrolledNearTop: boolean = 
+            (e.currentTarget.scrollTop <= initialPageHeight);
+        if (!allPreviousPagesAreRendered && isScrolledNearTop) expandPreviousPages();
     };
 
     const resetSelectionCoordinates = (): void => {
