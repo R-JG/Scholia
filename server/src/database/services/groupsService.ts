@@ -26,6 +26,10 @@ const getSomeByUser = async (userId: number): Promise<GroupModel[]> => {
     return groups;
 };
 
+const getSomeByName = async (searchTerm: string): Promise<GroupModel[]> => {
+    return await Group.findAll({ where: { groupName: { [Op.iLike]: `${searchTerm}%` } } });
+};
+
 const getAllMemberIds = async (groupId: number | string): Promise<number[]> => {
     const allMemberships: GroupMembershipModel[] = await GroupMembership.findAll(
         { where: { groupId } }
@@ -33,4 +37,4 @@ const getAllMemberIds = async (groupId: number | string): Promise<number[]> => {
     return allMemberships.map(membership => membership.userId);
 };
 
-export default { createOne, getOneById, getSomeByUser, getAllMemberIds };
+export default { createOne, getOneById, getSomeByUser, getSomeByName, getAllMemberIds };

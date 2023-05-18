@@ -3,8 +3,10 @@ import groupsController from '../controllers/groupsController';
 
 const groupsRouter = Router();
 
-groupsRouter.post('/', groupsController.createOne);
+groupsRouter.get('/', groupsController.getGroupsForUser);
 
-groupsRouter.get('/', groupsController.getSomeByUser);
+groupsRouter.get('/search/:searchTerm', groupsController.getGroupsByName);
+
+groupsRouter.post('/', groupsController.createOne);
 
 export default groupsRouter;

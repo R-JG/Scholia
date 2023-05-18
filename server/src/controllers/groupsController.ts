@@ -3,6 +3,30 @@ import { UserModel, GroupEntry, GroupModel } from '../typeUtils/types';
 import { parseGroupEntry } from '../typeUtils/validation';
 import groupsService from '../database/services/groupsService';
 
+const getGroupsForUser = async (
+        _request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const authenticatedUser: UserModel = response.locals.authenticatedUser;
+        const groups: GroupModel[] = await groupsService.getSomeByUser(authenticatedUser.id);
+        response.json(groups);
+    } catch (error) {
+        next(error);
+    };
+};
+
+const getGroupsByName = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void>  => {
+    try {
+        const searchTerm: string = request.params.searchTerm;
+        const groups: GroupModel[] = await groupsService.getSomeByName(searchTerm);
+        response.json(groups);
+    } catch (error) {
+        next(error);
+    };
+};
+
 const createOne = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
@@ -18,16 +42,4 @@ const createOne = async (
     };
 };
 
-const getSomeByUser = async (
-        _request: Request, response: Response, next: NextFunction
-    ): Promise<void> => {
-    try {
-        const authenticatedUser: UserModel = response.locals.authenticatedUser;
-        const groups: GroupModel[] = await groupsService.getSomeByUser(authenticatedUser.id);
-        response.json(groups);
-    } catch (error) {
-        next(error);
-    };
-};
-
-export default { createOne, getSomeByUser }
+export default { getGroupsForUser, getGroupsByName, createOne }
