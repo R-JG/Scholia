@@ -49,37 +49,39 @@ const Dashboard = ({
                 user={user} 
                 updateUser={updateUser}
             />
-            <div className='TEST-TEST-TEST'>
-                {userCommentaries.map(commentaryInfo => 
-                <CommentarySelector 
-                    commentaryInfo={commentaryInfo}
-                    groupDocuments={groupDocuments}
+            <main className='dashboard-main'>
+                <div className='TEST-TEST-TEST'>
+                    {userCommentaries.map(commentaryInfo => 
+                    <CommentarySelector 
+                        commentaryInfo={commentaryInfo}
+                        groupDocuments={groupDocuments}
+                        setSelectedDocument={setSelectedDocument}
+                        getCommentaryForSelection={getCommentaryForSelection} 
+                        setSelectedSection={setSelectedSection}
+                    />)}
+                </div>
+                {selectedGroup && 
+                <GroupContentPanel 
+                    user={user}
+                    selectedGroup={selectedGroup}
+                    documentsOfGroup={groupDocuments.filter(groupDocument => 
+                        groupDocument.groupId === selectedGroup.id
+                    )}
+                    selectedCommentary={selectedCommentary}
+                    selectedSection={selectedSection}
                     setSelectedDocument={setSelectedDocument}
-                    getCommentaryForSelection={getCommentaryForSelection} 
+                    uploadDocument={uploadDocument}
+                    setSelectedCommentary={setSelectedCommentary}
                     setSelectedSection={setSelectedSection}
-                />)}
-            </div>
-            {selectedGroup && 
-            <GroupContentPanel 
-                user={user}
-                selectedGroup={selectedGroup}
-                documentsOfGroup={groupDocuments.filter(groupDocument => 
-                    groupDocument.groupId === selectedGroup.id
-                )}
-                selectedCommentary={selectedCommentary}
-                selectedSection={selectedSection}
-                setSelectedDocument={setSelectedDocument}
-                uploadDocument={uploadDocument}
-                setSelectedCommentary={setSelectedCommentary}
-                setSelectedSection={setSelectedSection}
-            />}
-            <NetworkPanel 
-                user={user} 
-                userGroups={userGroups}
-                selectedGroup={selectedGroup}
-                setSelectedGroup={setSelectedGroup}
-                createGroup={createGroup}
-            />
+                />}
+                <NetworkPanel 
+                    user={user} 
+                    userGroups={userGroups}
+                    selectedGroup={selectedGroup}
+                    setSelectedGroup={setSelectedGroup}
+                    createGroup={createGroup}
+                />
+            </main>
         </div>
     );
 };

@@ -5,6 +5,7 @@
     border-left: 0.2em solid var(--background-color-two);
     align-self: flex-end;
     color: var(--font-color);
+    overflow: scroll;
 }
 
 .network-panel--groups {
