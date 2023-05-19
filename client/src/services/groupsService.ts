@@ -47,4 +47,18 @@ const getGroupsByName = async (token: string, searchTerm: string): Promise<Group
     };
 };
 
-export default { createGroup, getGroupsByUser, getGroupsByName };
+const joinGroupById = async (token: string, groupId: number): Promise<Group | null> => {
+    try {
+        const response = await axios.post(
+            `${baseUrl}/join/${groupId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const joinedGroup: Group = parseGroup(response.data);
+        return joinedGroup;
+    } catch (error) {
+        console.error(error);
+        return null;
+    };
+};
+
+export default { createGroup, getGroupsByUser, getGroupsByName, joinGroupById };
