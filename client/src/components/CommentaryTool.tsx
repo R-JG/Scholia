@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef, UIEvent } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Document } from 'react-pdf';
 import { 
     LoggedInUser, PageDirection, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
 } from '../typeUtils/types';
-import { pageAmountToRenderOnScroll } from '../config';
+import { pageAmountToRenderOnScroll, pageRenderCooldownMilliseconds } from '../config';
 import groupDocumentsService from '../services/groupDocumentsService';
 import CommentaryToolHeader from './CommentaryToolHeader';
 import DocumentPage from './DocumentPage';
@@ -50,6 +50,7 @@ const CommentaryTool = ({
     const [initialPageNumber, setInitialPageNumber] = useState<number>(1);
     const [previousPagesToRender, setPreviousPagesToRender] = useState<number>(0);
     const [nextPagesToRender, setNextPagesToRender] = useState<number>(0);
+    const [pageRenderCooldown, setPageRenderCooldown] = useState<boolean>(false);
     const [editTextMode, setEditTextMode] = useState<boolean>(false);
     const [coordinateSelectMode, setCoordinateSelectMode] = useState<boolean>(false);
     const [userIsSelecting, setUserIsSelecting] = useState<boolean>(false);
@@ -59,6 +60,8 @@ const CommentaryTool = ({
     const [sectionTextHasBeenEdited, setSectionTextHasBeenEdited] = useState<boolean>(false);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
+
+    const pageExpansionTriggerHeight: number = ((initialPageHeight) ? (initialPageHeight * 2) : 2000);
 
     useEffect(() => {
         groupDocumentsService.getSingleDocumentFile(selectedDocument.id, user.token)
@@ -84,6 +87,13 @@ const CommentaryTool = ({
         expandNextPages();
         expandPreviousPages();
     }, [initialPageIsLoaded]);
+
+    useEffect(() => {
+        if (!pageRenderCooldown) return;
+        const handleCooldownEnd = () => setPageRenderCooldown(false);
+        const cooldownTimer = setTimeout(handleCooldownEnd, pageRenderCooldownMilliseconds);
+        return () => clearTimeout(cooldownTimer);
+    }, [pageRenderCooldown]);
 
     useEffect(() => {
         if (!selectedCommentary || !selectedSection) return;
@@ -118,6 +128,25 @@ const CommentaryTool = ({
         };
     };
 
+    const documentIsScrolledNearBottom = (): boolean => {
+        if (!documentContainerRef.current || !initialPageHeight) return false;
+        return (documentContainerRef.current.scrollTop 
+        >= (documentContainerRef.current.scrollHeight - pageExpansionTriggerHeight));
+    };
+
+    const documentIsScrolledNearTop = (): boolean => {
+        if (!documentContainerRef.current || !initialPageHeight) return false;
+        return (documentContainerRef.current.scrollTop <= pageExpansionTriggerHeight);
+    };
+
+    const allNextPagesAreRendered = (): boolean => {
+        return ((initialPageNumber + nextPagesToRender) === totalPages);
+    };
+
+    const allPreviousPagesAreRendered = (): boolean => {
+        return ((initialPageNumber - previousPagesToRender) === 1);
+    };
+
     const calculatePagesToAdd = (direction: PageDirection): number => {
         const unrenderedPages: number = (direction === 'before-initial') 
             ? (initialPageNumber - previousPagesToRender - 1) 
@@ -135,18 +164,17 @@ const CommentaryTool = ({
         setNextPagesToRender(nextPagesToRender + calculatePagesToAdd('after-initial'));
     };
 
-    const handleScroll = (e: UIEvent<HTMLDivElement>): void => {
+    const handleDocumentMouseWheel = (): void => {
         if (!documentIsLoaded || !initialPageHeight || !documentContainerRef.current) return;
-        const allNextPagesAreRendered: boolean = 
-            ((initialPageNumber + nextPagesToRender) === totalPages);
-        const isScrolledNearBottom: boolean = (e.currentTarget.scrollTop 
-            >= (documentContainerRef.current.scrollHeight - initialPageHeight));
-        if (!allNextPagesAreRendered && isScrolledNearBottom) expandNextPages();
-        const allPreviousPagesAreRendered: boolean = 
-            ((initialPageNumber - previousPagesToRender) === 1);
-        const isScrolledNearTop: boolean = 
-            (e.currentTarget.scrollTop <= initialPageHeight);
-        if (!allPreviousPagesAreRendered && isScrolledNearTop) expandPreviousPages();
+        if (pageRenderCooldown) return;
+        if (!allNextPagesAreRendered() && documentIsScrolledNearBottom()) {
+            expandNextPages();
+            setPageRenderCooldown(true);
+        };
+        if (!allPreviousPagesAreRendered() && documentIsScrolledNearTop()) {
+            expandPreviousPages();
+            setPageRenderCooldown(true);
+        };
     };
 
     const resetSelectionCoordinates = (): void => {
@@ -213,7 +241,8 @@ const CommentaryTool = ({
             <div 
                 className='document-container' 
                 ref={documentContainerRef}
-                onScroll={handleScroll}
+                onScroll={handleDocumentMouseWheel}
+                style={(pageRenderCooldown) ? { overflow: 'hidden' } : undefined}
             >
                 {documentBlob && 
                 <Document 
