@@ -37,4 +37,16 @@ const getAllMemberIds = async (groupId: number | string): Promise<number[]> => {
     return allMemberships.map(membership => membership.userId);
 };
 
-export default { createOne, getOneById, getSomeByUser, getSomeByName, getAllMemberIds };
+const addGroupMembership = async (userId: number, groupId: number | string): Promise<GroupModel | null> => {
+    await GroupMembership.create({ userId, groupId });
+    return await Group.findByPk(groupId);
+};
+
+export default { 
+    createOne, 
+    getOneById, 
+    getSomeByUser, 
+    getSomeByName, 
+    getAllMemberIds, 
+    addGroupMembership 
+};

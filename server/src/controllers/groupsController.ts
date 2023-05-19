@@ -42,4 +42,23 @@ const createOne = async (
     };
 };
 
-export default { getGroupsForUser, getGroupsByName, createOne }
+const joinGroupById = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const authenticatedUser: UserModel = response.locals.authenticatedUser;
+        const groupId: string = request.params.groupId;
+        const joinedGroup: GroupModel | null = await groupsService.addGroupMembership(
+            authenticatedUser.id, groupId
+        );
+        if (!joinedGroup) {
+            response.status(404).json({ error: 'group not found' });
+            return;
+        };
+        response.json(joinedGroup);
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { getGroupsForUser, getGroupsByName, createOne, joinGroupById }

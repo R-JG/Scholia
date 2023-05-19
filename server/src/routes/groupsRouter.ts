@@ -9,4 +9,6 @@ groupsRouter.get('/search/:searchTerm', groupsController.getGroupsByName);
 
 groupsRouter.post('/', groupsController.createOne);
 
+groupsRouter.post('/join/:groupId', groupsController.joinGroupById);
+
 export default groupsRouter;
