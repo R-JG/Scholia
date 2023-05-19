@@ -15,6 +15,7 @@ interface Props {
     groupDocuments: GroupDocumentInfo[],
     updateUser: (userData: LoggedInUser | null) => void,
     createGroup: (groupName: string) => void,
+    joinGroup: (groupId: number) => void, 
     setSelectedGroup: (group: Group) => void,
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void,
@@ -33,6 +34,7 @@ const Dashboard = ({
     groupDocuments, 
     updateUser,
     createGroup,
+    joinGroup, 
     setSelectedGroup,
     setSelectedDocument,
     uploadDocument,
@@ -80,6 +82,7 @@ const Dashboard = ({
                     selectedGroup={selectedGroup}
                     setSelectedGroup={setSelectedGroup}
                     createGroup={createGroup}
+                    joinGroup={joinGroup}
                 />
             </main>
         </div>

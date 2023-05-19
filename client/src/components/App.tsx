@@ -63,14 +63,25 @@ const App = () => {
 
     const createGroup = (groupName: string): void => {
         if (!user) return;
-        groupsService.createGroup({ groupName }, user.token).then(createdGroup => {
+        groupsService.createGroup({ groupName }, user.token)
+        .then(createdGroup => {
             if (createdGroup) setUserGroups(userGroups.concat(createdGroup));
+        });
+    };
+
+    const joinGroup = (groupId: number): void => {
+        if (!user) return;
+        groupsService.joinGroupById(user.token, groupId)
+        .then(joinedGroup => {
+            if (!joinedGroup) return;
+            setUserGroups(userGroups.concat(joinedGroup));
         });
     };
 
     const uploadDocument = (document: File, groupId: number): void => {
         if (!user) return;
-        groupDocumentsService.addDocument(document, groupId, user.token).then(addedDocumentInfo => {
+        groupDocumentsService.addDocument(document, groupId, user.token)
+        .then(addedDocumentInfo => {
             if (!addedDocumentInfo) return;
             setGroupDocuments(groupDocuments.concat(addedDocumentInfo));
         });
@@ -176,6 +187,7 @@ const App = () => {
                             groupDocuments={groupDocuments}
                             updateUser={updateUser}
                             createGroup={createGroup}
+                            joinGroup={joinGroup}
                             setSelectedGroup={setSelectedGroup}
                             setSelectedDocument={setSelectedDocument}
                             uploadDocument={uploadDocument}

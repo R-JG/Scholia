@@ -4,23 +4,41 @@ import '../css/GroupSelector.css';
 interface Props {
     group: Group,
     isSelected: boolean,
-    setSelectedGroup: (group: Group) => void
+    userIsAMember: boolean, 
+    setSelectedGroup: (group: Group) => void, 
+    joinGroup: (groupId: number) => void
 };
 
-const GroupSelector = ({ group, isSelected, setSelectedGroup }: Props) => {
+const GroupSelector = ({ 
+    group, 
+    isSelected, 
+    userIsAMember, 
+    setSelectedGroup, 
+    joinGroup
+    }: Props) => {
 
-    const handleClick = (): void => setSelectedGroup(group);
+    const handleSelectorClick = (): void => {
+        if (!userIsAMember) return;
+        setSelectedGroup(group)
+    };
+
+    const handleJoinButton = (): void => {
+        if (userIsAMember) return;
+        joinGroup(group.id);
+    };
 
     return (
         <div 
-            className='GroupSelector'
-            onClick={handleClick}
+            className={`GroupSelector ${isSelected ? 'selected' : ''}`}
+            onClick={handleSelectorClick}
         >
             <h5>{group.groupName}</h5>
-            {isSelected && 
-            <div>
-                <p>TEST - the group is selected</p>
-            </div>}
+            {!userIsAMember && 
+            <button 
+                className='join-group-button'
+                onClick={handleJoinButton}>
+                Join
+            </button>}
         </div>
     );
 };

@@ -9,7 +9,8 @@ interface Props {
     userGroups: Group[],
     selectedGroup: Group | null,
     setSelectedGroup: (group: Group) => void,
-    createGroup: (groupName: string) => void
+    createGroup: (groupName: string) => void, 
+    joinGroup: (groupId: number) => void
 };
 
 const NetworkPanel = ({ 
@@ -17,7 +18,8 @@ const NetworkPanel = ({
     userGroups, 
     selectedGroup, 
     setSelectedGroup,
-    createGroup
+    createGroup, 
+    joinGroup
     }: Props) => {
 
     if (!user) return <div className='NetworkPanel'></div>;
@@ -45,7 +47,9 @@ const NetworkPanel = ({
                     <GroupSelector 
                         group={group}
                         isSelected={selectedGroup?.id === group.id}
+                        userIsAMember={true}
                         setSelectedGroup={setSelectedGroup}
+                        joinGroup={joinGroup}
                     />)}
                 </div>}
             </div>
@@ -65,8 +69,10 @@ const NetworkPanel = ({
             </div>
             <GroupSearch 
                 user={user}
+                userGroups={userGroups}
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
+                joinGroup={joinGroup}
             />
         </div>
     );

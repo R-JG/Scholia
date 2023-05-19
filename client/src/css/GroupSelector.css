@@ -2,3 +2,8 @@
     margin: 0.5em;
     border: 0.1em solid var(--font-color);
 }
+
+.GroupSelector.selected {
+    border-width: 0.2em;
+    border-color: var(--accent-color-one);
+}

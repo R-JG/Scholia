@@ -50,7 +50,8 @@ const getGroupsByName = async (token: string, searchTerm: string): Promise<Group
 const joinGroupById = async (token: string, groupId: number): Promise<Group | null> => {
     try {
         const response = await axios.post(
-            `${baseUrl}/join/${groupId}`,
+            `${baseUrl}/join/${groupId}`, 
+            null,
             { headers: { Authorization: `Bearer ${token}` } }
         );
         const joinedGroup: Group = parseGroup(response.data);

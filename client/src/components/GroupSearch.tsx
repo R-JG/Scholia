@@ -5,11 +5,19 @@ import GroupSelector from './GroupSelector';
 
 interface Props {
     user: LoggedInUser | null, 
+    userGroups: Group[], 
     selectedGroup: Group | null,
-    setSelectedGroup: (group: Group) => void
+    setSelectedGroup: (group: Group) => void, 
+    joinGroup: (groupId: number) => void
 };
 
-const GroupSearch = ({ user, selectedGroup, setSelectedGroup }: Props) => {
+const GroupSearch = ({ 
+    user, 
+    userGroups, 
+    selectedGroup, 
+    setSelectedGroup, 
+    joinGroup
+    }: Props) => {
 
     if (!user) return <div className='GroupSearch'></div>;
 
@@ -47,7 +55,9 @@ const GroupSearch = ({ user, selectedGroup, setSelectedGroup }: Props) => {
                 <GroupSelector 
                     group={group}
                     isSelected={selectedGroup?.id === group.id}
+                    userIsAMember={userGroups.some(userGroup => (userGroup.id === group.id))}
                     setSelectedGroup={setSelectedGroup}
+                    joinGroup={joinGroup}
                 />)}
             </div>
         </div>
