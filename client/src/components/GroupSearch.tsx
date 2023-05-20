@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { LoggedInUser, Group } from '../typeUtils/types';
+import { groupSearchDebounceMilliseconds } from '../config';
 import groupsService from '../services/groupsService';
 import GroupSelector from './GroupSelector';
 
@@ -33,7 +34,7 @@ const GroupSearch = ({
                 setSearchResults(groupsResult);
             });
         };
-        const searchDebounce = setTimeout(searchGroupbyName, 1000);
+        const searchDebounce = setTimeout(searchGroupbyName, groupSearchDebounceMilliseconds);
         return () => clearTimeout(searchDebounce);
     }, [searchInputValue]);
 
