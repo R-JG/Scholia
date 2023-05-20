@@ -3,6 +3,7 @@ import { LoggedInUser, Group } from '../typeUtils/types';
 import { groupSearchDebounceMilliseconds } from '../config';
 import groupsService from '../services/groupsService';
 import GroupSelector from './GroupSelector';
+import '../css/GroupSearch.css';
 
 interface Props {
     user: LoggedInUser | null, 
@@ -23,21 +24,27 @@ const GroupSearch = ({
     if (!user) return <div className='GroupSearch'></div>;
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [searchInputValue, setSearchInputValue] = useState('');
-    const [searchResults, setSearchResults] = useState<Group[]>([]);
+    const [searchInputValue, setSearchInputValue] = useState<string>('');
+    const [searchResults, setSearchResults] = useState<Group[] | null>([]);
 
     useEffect(() => {
         if (!searchInputValue) return;
-        const searchGroupbyName = () => {
+        if (!searchResults) setSearchResults([]);
+        const searchGroupByName = () => {
             groupsService.getGroupsByName(user.token, searchInputValue)
             .then(groupsResult => {
-                if (!groupsResult) return;
-                setSearchResults(groupsResult);
+                const unjoinedGroups: Group[] = groupsResult.filter(group => !userIsAMember(group));
+                if (unjoinedGroups.length <= 0) setSearchResults(null);
+                if (unjoinedGroups.length > 0) setSearchResults(unjoinedGroups);
             });
         };
-        const searchDebounce = setTimeout(searchGroupbyName, groupSearchDebounceMilliseconds);
+        const searchDebounce = setTimeout(searchGroupByName, groupSearchDebounceMilliseconds);
         return () => clearTimeout(searchDebounce);
     }, [searchInputValue]);
+
+    const userIsAMember = (group: Group): boolean => userGroups.some(
+        userGroup => (userGroup.id === group.id)
+    );
 
     const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setSearchInputValue(e.currentTarget.value);
@@ -47,6 +54,7 @@ const GroupSearch = ({
 
     const handleCancelButton = (): void => {
         setSearchInputValue('');
+        setSearchResults([]);
         setIsExpanded(false);
     };
 
@@ -56,7 +64,7 @@ const GroupSearch = ({
             <button 
                 className='GroupSearch--expand-button'
                 onClick={handleExpandButton}>
-                Search for groups
+                Search for new groups
             </button>}
             <div 
                 className='GroupSearch--search-container'
@@ -75,14 +83,18 @@ const GroupSearch = ({
                     </button>
                 </div>
                 <div className='GroupSearch--search-results'>
-                    {searchResults.map(group => 
+                    {searchResults && searchResults.map(group => 
                     <GroupSelector 
                         group={group}
                         isSelected={selectedGroup?.id === group.id}
-                        userIsAMember={userGroups.some(userGroup => (userGroup.id === group.id))}
+                        userIsAMember={userIsAMember(group)}
                         setSelectedGroup={setSelectedGroup}
                         joinGroup={joinGroup}
                     />)}
+                    {(!searchResults) && (searchInputValue !== '') && 
+                    <div className='GroupSearch--results-null-message'>
+                        No results
+                    </div>}
                 </div>
             </div>
         </div>

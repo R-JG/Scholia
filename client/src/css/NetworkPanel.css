@@ -1,11 +1,12 @@
 .NetworkPanel {
     height: 100%;
-    max-width: 20%;
+    min-width: 7rem;
     padding: 1em;
     border-left: 0.2em solid var(--background-color-two);
     align-self: flex-end;
     color: var(--font-color);
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .network-panel--groups {

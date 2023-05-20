@@ -1,0 +1,5 @@
+.GroupSearch {
+    margin-block: 2rem;
+    display: flex;
+    flex-direction: column;
+}

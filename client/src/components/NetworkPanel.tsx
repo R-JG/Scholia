@@ -40,15 +40,15 @@ const NetworkPanel = ({
                     />)}
                 </div>}
             </div>
-            <GroupCreationForm 
-                createGroup={createGroup} 
-            />
             <GroupSearch 
                 user={user}
                 userGroups={userGroups}
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
                 joinGroup={joinGroup}
+            />
+            <GroupCreationForm 
+                createGroup={createGroup} 
             />
         </div>
     );

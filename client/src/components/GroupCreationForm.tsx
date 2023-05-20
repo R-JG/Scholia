@@ -7,7 +7,7 @@ interface Props {
 const GroupCreationForm = ({ createGroup }: Props) => {
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [groupNameInputValue, setGroupNameInputValue] = useState('');
+    const [groupNameInputValue, setGroupNameInputValue] = useState<string>('');
 
     const handleExpandButton = (): void => setIsExpanded(true);
 
