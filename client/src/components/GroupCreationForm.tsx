@@ -41,7 +41,13 @@ const GroupCreationForm = ({ createGroup }: Props) => {
                 style={isExpanded ? undefined : { display: 'none' }}
                 onSubmit={handleGroupFormSubmit}
             >
+                <label 
+                    className='GroupCreationForm--group-name-label' 
+                    htmlFor='GroupCreationForm--group-name-input'>
+                    Group name: 
+                </label>
                 <input 
+                    id='GroupCreationForm--group-name-input'
                     className='GroupCreationForm--group-name-input' 
                     type='text' 
                     value={groupNameInputValue}

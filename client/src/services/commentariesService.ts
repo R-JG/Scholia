@@ -20,6 +20,22 @@ const getAllCommentaryInfoByUser = async (token: string): Promise<CommentaryInfo
     };
 };
 
+const getAllCommentaryInfoByDocument = async (
+        token: string, documentId: number
+    ): Promise<CommentaryInfo[]> => {
+    try {
+        const response = await axios.get(
+            `${baseUrl}/info/document/${documentId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const commentaryInfoForDocument: CommentaryInfo[] = parseCommentaryInfoArray(response.data);
+        return commentaryInfoForDocument;
+    } catch (error) {
+        console.error(error);
+        return [];
+    };
+};
+
 const getCommentaryById = async (
         token: string, commentaryId: number
     ): Promise<Commentary | null> => {
@@ -89,6 +105,7 @@ const updateCommentarySectionById = async (
 
 export default { 
     getAllCommentaryInfoByUser, 
+    getAllCommentaryInfoByDocument, 
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 
