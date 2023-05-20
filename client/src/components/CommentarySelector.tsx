@@ -5,14 +5,16 @@ import { commentaryToolRoute } from '../config';
 interface Props {
     commentaryInfo: CommentaryInfo,
     groupDocuments: GroupDocumentInfo[],
+    selectedDocument: GroupDocumentInfo | null, 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     getCommentaryForSelection: (commentaryId: number) => void, 
     setSelectedSection: (section: SelectedSection | null) => void
 };
 
 const CommentarySelector = ({
-    commentaryInfo,
-    groupDocuments,
+    commentaryInfo, 
+    groupDocuments, 
+    selectedDocument, 
     setSelectedDocument,
     getCommentaryForSelection,
     setSelectedSection
@@ -20,12 +22,16 @@ const CommentarySelector = ({
 
     const navigate = useNavigate();
 
+    const findDocumentForCommentary = (): GroupDocumentInfo | undefined => groupDocuments.find(
+        documentInfo => (documentInfo.id === commentaryInfo.documentId)
+    );
+
     const handleClick = (): void => {
-        const commentaryDocument: GroupDocumentInfo | undefined = groupDocuments.find(
-            documentInfo => (documentInfo.id === commentaryInfo.documentId)
-        );
-        if (!commentaryDocument) return;
-        setSelectedDocument(commentaryDocument);
+        if (!selectedDocument || (commentaryInfo.documentId !== selectedDocument.id)) {
+            const commentaryDocument: GroupDocumentInfo | undefined = findDocumentForCommentary();
+            if (!commentaryDocument) return console.error('document not found for commentary');
+            setSelectedDocument(commentaryDocument);
+        };
         getCommentaryForSelection(commentaryInfo.id);
         setSelectedSection(null);
         navigate(commentaryToolRoute);

@@ -1,15 +1,16 @@
-import { LoggedInUser, Group, GroupDocumentInfo, CommentaryInfo, Commentary, SelectedSection } from '../typeUtils/types';
+import { 
+    LoggedInUser, Group, GroupDocumentInfo, Commentary, SelectedSection 
+} from '../typeUtils/types';
 import Header from './Header';
 import GroupContentPanel from './GroupContentPanel';
 import NetworkPanel from './NetworkPanel';
-import CommentarySelector from './CommentarySelector';
 import '../css/Dashboard.css';
 
 interface Props {
     user: LoggedInUser | null,
     userGroups: Group[],
-    userCommentaries: CommentaryInfo[],
-    selectedCommentary: Commentary | null,
+    selectedDocument: GroupDocumentInfo | null, 
+    selectedCommentary: Commentary | null, 
     selectedSection: SelectedSection | null,
     selectedGroup: Group | null,
     groupDocuments: GroupDocumentInfo[],
@@ -27,7 +28,7 @@ interface Props {
 const Dashboard = ({ 
     user, 
     userGroups,
-    userCommentaries,
+    selectedDocument, 
     selectedCommentary, 
     selectedSection, 
     selectedGroup,
@@ -52,27 +53,19 @@ const Dashboard = ({
                 updateUser={updateUser}
             />
             <main className='dashboard-main'>
-                <div className='TEST-TEST-TEST'>
-                    {userCommentaries.map(commentaryInfo => 
-                    <CommentarySelector 
-                        commentaryInfo={commentaryInfo}
-                        groupDocuments={groupDocuments}
-                        setSelectedDocument={setSelectedDocument}
-                        getCommentaryForSelection={getCommentaryForSelection} 
-                        setSelectedSection={setSelectedSection}
-                    />)}
-                </div>
                 {selectedGroup && 
                 <GroupContentPanel 
                     user={user}
                     selectedGroup={selectedGroup}
-                    documentsOfGroup={groupDocuments.filter(groupDocument => 
+                    documentsForGroup={groupDocuments.filter(groupDocument => 
                         groupDocument.groupId === selectedGroup.id
                     )}
+                    selectedDocument={selectedDocument}
                     selectedCommentary={selectedCommentary}
                     selectedSection={selectedSection}
                     setSelectedDocument={setSelectedDocument}
                     uploadDocument={uploadDocument}
+                    getCommentaryForSelection={getCommentaryForSelection}
                     setSelectedCommentary={setSelectedCommentary}
                     setSelectedSection={setSelectedSection}
                 />}

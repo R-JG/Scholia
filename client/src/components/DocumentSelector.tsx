@@ -23,7 +23,11 @@ const DocumentSelector = ({
 
     const navigate = useNavigate();
 
-    const handleClick = () => {
+    const handleComponentClick = (): void => {
+        setSelectedDocument(documentInfo);
+    };
+
+    const handleViewDocumentButton = (): void => {
         setSelectedDocument(documentInfo);
         if (selectedCommentary) setSelectedCommentary(null);
         if (selectedSection) setSelectedSection(null);
@@ -33,8 +37,15 @@ const DocumentSelector = ({
     return (
         <div 
             className='DocumentSelector'
-            onClick={handleClick}>
-            <h4>{documentInfo.documentName}</h4>
+            onClick={handleComponentClick}>
+            <h4 className='DocumentSelector--document-name'>
+                {documentInfo.documentName}
+            </h4>
+            <button 
+                className='DocumentSelector--view-document-button'
+                onClick={handleViewDocumentButton}>
+                View
+            </button>
         </div>
     );
 };

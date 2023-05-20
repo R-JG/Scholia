@@ -8,4 +8,4 @@ export const pageAmountToRenderOnScroll: number = 3;
 export const pageRenderCooldownMilliseconds: number = 100;
 
 // GroupSearch
-export const groupSearchDebounceMilliseconds: number = 700;
+export const groupSearchDebounceMilliseconds: number = 500;
