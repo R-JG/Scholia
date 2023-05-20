@@ -173,7 +173,9 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path={homeRoute} element={
-                        <Home 
+                        (user) 
+                        ? <Navigate replace to={dashboardRoute} /> 
+                        : <Home 
                             user={user}
                             updateUser={updateUser}
                         />

@@ -1,5 +1,5 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
 import { LoggedInUser, Group } from '../typeUtils/types';
+import GroupCreationForm from './GroupCreationForm';
 import GroupSelector from './GroupSelector';
 import GroupSearch from './GroupSearch';
 import '../css/NetworkPanel.css';
@@ -24,19 +24,6 @@ const NetworkPanel = ({
 
     if (!user) return <div className='NetworkPanel'></div>;
 
-    const [groupNameInputValue, setGroupNameInputValue] = useState('');
-
-    const handleGroupNameInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setGroupNameInputValue(e.currentTarget.value);
-    };
-
-    const handleGroupFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        if (groupNameInputValue === '') return;
-        createGroup(groupNameInputValue);
-        setGroupNameInputValue('');
-    };
-
     return (
         <div className='NetworkPanel'>
             <div className='network-panel--group-membership-section'>
@@ -53,20 +40,9 @@ const NetworkPanel = ({
                     />)}
                 </div>}
             </div>
-            <div className='network-panel--create-group-section'>
-                <form 
-                    className='form--create-group'
-                    onSubmit={handleGroupFormSubmit}
-                >
-                    <input 
-                        className='input--group-name' 
-                        type='text' 
-                        value={groupNameInputValue}
-                        onChange={handleGroupNameInputChange}
-                    />
-                    <button>Create Group</button>
-                </form>
-            </div>
+            <GroupCreationForm 
+                createGroup={createGroup} 
+            />
             <GroupSearch 
                 user={user}
                 userGroups={userGroups}
