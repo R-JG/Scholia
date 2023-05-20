@@ -22,6 +22,7 @@ const GroupSearch = ({
 
     if (!user) return <div className='GroupSearch'></div>;
 
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [searchInputValue, setSearchInputValue] = useState('');
     const [searchResults, setSearchResults] = useState<Group[]>([]);
 
@@ -42,24 +43,47 @@ const GroupSearch = ({
         setSearchInputValue(e.currentTarget.value);
     };
 
+    const handleExpandButton = (): void => setIsExpanded(true);
+
+    const handleCancelButton = (): void => {
+        setSearchInputValue('');
+        setIsExpanded(false);
+    };
+
     return (
         <div className='GroupSearch'>
-            <h4>Search for groups</h4>
-            <input 
-                className='group-search-input' 
-                type='text' 
-                value={searchInputValue}
-                onChange={handleSearchInputChange}
-            />
-            <div className='search-results'>
-                {searchResults.map(group => 
-                <GroupSelector 
-                    group={group}
-                    isSelected={selectedGroup?.id === group.id}
-                    userIsAMember={userGroups.some(userGroup => (userGroup.id === group.id))}
-                    setSelectedGroup={setSelectedGroup}
-                    joinGroup={joinGroup}
-                />)}
+            {!isExpanded && 
+            <button 
+                className='GroupSearch--expand-button'
+                onClick={handleExpandButton}>
+                Search for groups
+            </button>}
+            <div 
+                className='GroupSearch--search-container'
+                style={isExpanded ? undefined : { display: 'none' }}>
+                <div className='GroupSearch--top-bar'>
+                    <input 
+                        className='GroupSearch--search-input' 
+                        type='text' 
+                        value={searchInputValue}
+                        onChange={handleSearchInputChange}
+                    />
+                    <button 
+                        className='GroupSearch--cancel-button'
+                        onClick={handleCancelButton}>
+                        Cancel
+                    </button>
+                </div>
+                <div className='GroupSearch--search-results'>
+                    {searchResults.map(group => 
+                    <GroupSelector 
+                        group={group}
+                        isSelected={selectedGroup?.id === group.id}
+                        userIsAMember={userGroups.some(userGroup => (userGroup.id === group.id))}
+                        setSelectedGroup={setSelectedGroup}
+                        joinGroup={joinGroup}
+                    />)}
+                </div>
             </div>
         </div>
     );
