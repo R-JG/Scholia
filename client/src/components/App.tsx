@@ -42,14 +42,17 @@ const App = () => {
     useEffect(() => {
         if (!user) return;
         groupsService.getGroupsByUser(user.token)
-        .then(groups => {
-            setUserGroups(groups);
-            const groupIds: number[] = groups.map(group => group.id);
-            return groupDocumentsService.getAllDocumentInfoForGroups(groupIds, user.token);
-        }).then(groupDocumentInfo => setGroupDocuments(groupDocumentInfo));
+        .then(groups => setUserGroups(groups));
         commentariesService.getAllCommentaryInfoByUser(user.token)
         .then(userCommentaryInfo => setUserCommentaries(userCommentaryInfo));
     }, [user]);
+
+    useEffect(() => {
+        if (!user || (userGroups.length <= 0)) return;
+        const groupIds: number[] = userGroups.map(group => group.id);
+        groupDocumentsService.getAllDocumentInfoForGroups(groupIds, user.token)
+        .then(groupDocumentInfo => setGroupDocuments(groupDocumentInfo));
+    }, [userGroups]);
 
     const updateUser = (userData: LoggedInUser | null): void => {
         if (userData) {
