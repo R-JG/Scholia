@@ -5,6 +5,8 @@ const commentariesRouter = Router();
 
 commentariesRouter.get('/info', commentariesController.getAllCommentaryInfoByUser);
 
+commentariesRouter.get('/info/document/:documentId', commentariesController.getAllCommentaryInfoByDocument);
+
 commentariesRouter.get('/:commentaryId', commentariesController.getCommentaryById);
 
 commentariesRouter.post('/', commentariesController.createCommentary);

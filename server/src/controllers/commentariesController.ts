@@ -18,6 +18,19 @@ const getAllCommentaryInfoByUser = async (
     };
 };
 
+const getAllCommentaryInfoByDocument = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const documentId: string = request.params.documentId;
+        const commentaryInfo: CommentaryInfo[] = await commentariesService
+        .getCommentaryInfoByDocument(documentId);
+        response.json(commentaryInfo);
+    } catch (error) {
+        next(error);
+    };
+};
+
 const getCommentaryById = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
@@ -94,6 +107,7 @@ const updateCommentarySectionById = async (
 
 export default { 
     getAllCommentaryInfoByUser, 
+    getAllCommentaryInfoByDocument, 
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 
