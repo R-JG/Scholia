@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { LoggedInUser, Group } from '../typeUtils/types';
+import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
 import { groupSearchDebounceMilliseconds } from '../config';
 import groupsService from '../services/groupsService';
 import GroupSelector from './GroupSelector';
@@ -10,6 +10,7 @@ interface Props {
     userGroups: Group[], 
     selectedGroup: Group | null,
     setSelectedGroup: (group: Group) => void, 
+    setSelectedDocument: (documentInfo: GroupDocumentInfo | null) => void, 
     joinGroup: (groupId: number) => void
 };
 
@@ -18,6 +19,7 @@ const GroupSearch = ({
     userGroups, 
     selectedGroup, 
     setSelectedGroup, 
+    setSelectedDocument, 
     joinGroup
     }: Props) => {
 
@@ -89,6 +91,7 @@ const GroupSearch = ({
                         isSelected={selectedGroup?.id === group.id}
                         userIsAMember={userIsAMember(group)}
                         setSelectedGroup={setSelectedGroup}
+                        setSelectedDocument={setSelectedDocument}
                         joinGroup={joinGroup}
                     />)}
                     {(!searchResults) && (searchInputValue !== '') && 

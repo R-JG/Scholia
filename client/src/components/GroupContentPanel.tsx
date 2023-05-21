@@ -4,7 +4,6 @@ import {
 } from '../typeUtils/types';
 import commentariesService from '../services/commentariesService';
 import DocumentSelector from './DocumentSelector';
-import CommentarySelector from './CommentarySelector';
 import '../css/GroupContentPanel.css';
 
 interface Props {
@@ -40,14 +39,14 @@ const GroupContentPanel = ({
     if (!user || !selectedGroup) return <div className='GroupContentPanel'></div>;
 
     const [inputFile, setInputFile] = useState<File | null>(null);
-    const [commentaryList, setCommentaryList] = useState<CommentaryInfo[]>([]);
+    const [commentariesForDocument, setCommentariesForDocument] = useState<CommentaryInfo[]>([]);
 
     const fileInuptRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (!selectedDocument) return;
         commentariesService.getAllCommentaryInfoByDocument(user.token, selectedDocument.id)
-        .then(commentaryInfo => setCommentaryList(commentaryInfo));
+        .then(commentaryInfo => setCommentariesForDocument(commentaryInfo));
     }, [selectedDocument]);
 
     const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -72,25 +71,17 @@ const GroupContentPanel = ({
                     <DocumentSelector 
                         key={document.id}
                         isSelected={document.id == selectedDocument?.id}
+                        documentsForGroup={documentsForGroup}
+                        commentariesForDocument={commentariesForDocument}
                         documentInfo={document}
+                        selectedDocument={selectedDocument}
                         selectedCommentary={selectedCommentary}
                         selectedSection={selectedSection}
-                        createCommentary={createCommentary}
                         setSelectedDocument={setSelectedDocument}
                         setSelectedCommentary={setSelectedCommentary}
                         setSelectedSection={setSelectedSection}
-                    />)}
-                </div>
-                <div className='GroupContentPanel--document-commentaries-list'>
-                    {commentaryList.map(commentaryInfo => 
-                    <CommentarySelector 
-                        key={commentaryInfo.id}
-                        commentaryInfo={commentaryInfo}
-                        groupDocuments={documentsForGroup}
-                        selectedDocument={selectedDocument}
-                        setSelectedDocument={setSelectedDocument}
+                        createCommentary={createCommentary}
                         getCommentaryForSelection={getCommentaryForSelection}
-                        setSelectedSection={setSelectedSection}
                     />)}
                 </div>
                 <form 

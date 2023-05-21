@@ -49,6 +49,7 @@ const NetworkPanel = ({
                 userGroups={userGroups}
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
+                setSelectedDocument={setSelectedDocument}
                 joinGroup={joinGroup}
             />
             <GroupCreationForm 

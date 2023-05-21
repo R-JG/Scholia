@@ -1,28 +1,37 @@
 import { useNavigate } from 'react-router-dom';
-import { GroupDocumentInfo, Commentary, SelectedSection } from '../typeUtils/types';
+import { GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../config';
+import DocumentCommentaryFeature from './DocumentCommentaryFeature';
 import '../css/DocumentSelector.css';
 
 interface Props {
     isSelected: boolean, 
-    documentInfo: GroupDocumentInfo,
+    documentsForGroup: GroupDocumentInfo[], 
+    commentariesForDocument: CommentaryInfo[], 
+    documentInfo: GroupDocumentInfo, 
+    selectedDocument: GroupDocumentInfo | null, 
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
-    createCommentary: (documentId: number, commentaryName: string) => void, 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     setSelectedCommentary: (commentary: Commentary | null) => void,
-    setSelectedSection: (section: SelectedSection | null) => void
+    setSelectedSection: (section: SelectedSection | null) => void, 
+    createCommentary: (documentId: number, commentaryName: string) => void, 
+    getCommentaryForSelection: (commentaryId: number) => void
 };
 
 const DocumentSelector = ({ 
     isSelected, 
+    documentsForGroup, 
+    commentariesForDocument, 
     documentInfo, 
+    selectedDocument, 
     selectedCommentary, 
     selectedSection, 
-    createCommentary, 
     setSelectedDocument, 
     setSelectedCommentary, 
-    setSelectedSection
+    setSelectedSection, 
+    createCommentary, 
+    getCommentaryForSelection
     }: Props) => {
 
     const navigate = useNavigate();
@@ -50,6 +59,16 @@ const DocumentSelector = ({
                 onClick={handleViewDocumentButton}>
                 View
             </button>
+            {isSelected && 
+            <DocumentCommentaryFeature 
+                documentsForGroup={documentsForGroup}
+                selectedDocument={selectedDocument}
+                commentariesForDocument={commentariesForDocument}
+                setSelectedDocument={setSelectedDocument}
+                createCommentary={createCommentary}
+                getCommentaryForSelection={getCommentaryForSelection}
+                setSelectedSection={setSelectedSection}
+            />}
         </div>
     );
 };
