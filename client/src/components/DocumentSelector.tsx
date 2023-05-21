@@ -4,6 +4,7 @@ import { commentaryToolRoute } from '../config';
 import '../css/DocumentSelector.css';
 
 interface Props {
+    isSelected: boolean, 
     documentInfo: GroupDocumentInfo,
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
@@ -13,6 +14,7 @@ interface Props {
 };
 
 const DocumentSelector = ({ 
+    isSelected, 
     documentInfo, 
     selectedCommentary, 
     selectedSection, 
@@ -36,7 +38,7 @@ const DocumentSelector = ({
 
     return (
         <div 
-            className='DocumentSelector'
+            className={`DocumentSelector ${isSelected ? 'selected' : ''}`}
             onClick={handleComponentClick}>
             <h4 className='DocumentSelector--document-name'>
                 {documentInfo.documentName}

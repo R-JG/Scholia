@@ -1,4 +1,11 @@
 .DocumentSelector {
-    color: var(--font-color);
+    margin: 1rem;
     border: 0.1em solid var(--font-color);
+    color: var(--font-color);
+    cursor: pointer;
+}
+
+.DocumentSelector.selected {
+    border-width: 0.2em;
+    border-color: var(--accent-color-one);
 }

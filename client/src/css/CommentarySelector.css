@@ -1,0 +1,5 @@
+.CommentarySelector {
+    margin: 1rem;
+    color: var(--font-color);
+    cursor: pointer;
+}

@@ -68,6 +68,8 @@ const GroupContentPanel = ({
                 <div className='GroupContentPanel--group-documents-list'>
                     {documentsForGroup.map(document => 
                     <DocumentSelector 
+                        key={document.id}
+                        isSelected={document.id == selectedDocument?.id}
                         documentInfo={document}
                         selectedCommentary={selectedCommentary}
                         selectedSection={selectedSection}
@@ -79,6 +81,7 @@ const GroupContentPanel = ({
                 <div className='GroupContentPanel--document-commentaries-list'>
                     {commentaryList.map(commentaryInfo => 
                     <CommentarySelector 
+                        key={commentaryInfo.id}
                         commentaryInfo={commentaryInfo}
                         groupDocuments={documentsForGroup}
                         selectedDocument={selectedDocument}

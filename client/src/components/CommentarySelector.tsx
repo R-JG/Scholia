@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { GroupDocumentInfo, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../config';
+import '../css/CommentarySelector.css';
 
 interface Props {
     commentaryInfo: CommentaryInfo,

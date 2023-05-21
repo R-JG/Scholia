@@ -32,6 +32,7 @@ const NetworkPanel = ({
                 <div className='group-membership-list'>
                     {userGroups.map(group => 
                     <GroupSelector 
+                        key={group.id}
                         group={group}
                         isSelected={selectedGroup?.id === group.id}
                         userIsAMember={true}

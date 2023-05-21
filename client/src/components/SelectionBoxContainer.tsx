@@ -71,18 +71,18 @@ const SelectionBoxContainer = ({
             </div>}
             {selectedCommentary && 
             selectedCommentary.commentarySections.map((section, index) =>
-                (section.pageNumber === pageNumber) ? 
-                <div 
-                    className={`selection-box--commentary-section 
-                        ${(selectedSection && (section.id === selectedSection.data.id))
-                        ? 'selected' : 'unselected'}`} 
-                    data-coordinate-top={section.pageCoordinateTop}
-                    style={createBoxStyleForCommentarySection(
-                        section.pageCoordinateTop, section.pageCoordinateBottom
-                    )}
-                    onClick={() => handleSelectionBoxClick(section, index)}>
-                </div> : undefined
-            )}
+            (section.pageNumber === pageNumber) ? 
+            <div 
+                key={section.id}
+                className={`selection-box--commentary-section 
+                    ${(selectedSection && (section.id === selectedSection.data.id))
+                    ? 'selected' : 'unselected'}`} 
+                data-coordinate-top={section.pageCoordinateTop}
+                style={createBoxStyleForCommentarySection(
+                    section.pageCoordinateTop, section.pageCoordinateBottom
+                )}
+                onClick={() => handleSelectionBoxClick(section, index)}>
+            </div> : undefined)}
         </div>
     );
 };
