@@ -17,8 +17,9 @@ interface Props {
     updateUser: (userData: LoggedInUser | null) => void,
     createGroup: (groupName: string) => void,
     joinGroup: (groupId: number) => void, 
+    createCommentary: (documentId: number, commentaryName: string) => void,
     setSelectedGroup: (group: Group) => void,
-    setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
+    setSelectedDocument: (documentInfo: GroupDocumentInfo | null) => void,
     uploadDocument: (document: File, groupId: number) => void,
     getCommentaryForSelection: (commentaryId: number) => void,
     setSelectedCommentary: (commentary: Commentary | null) => void, 
@@ -36,6 +37,7 @@ const Dashboard = ({
     updateUser,
     createGroup,
     joinGroup, 
+    createCommentary, 
     setSelectedGroup,
     setSelectedDocument,
     uploadDocument,
@@ -65,6 +67,7 @@ const Dashboard = ({
                     selectedSection={selectedSection}
                     setSelectedDocument={setSelectedDocument}
                     uploadDocument={uploadDocument}
+                    createCommentary={createCommentary}
                     getCommentaryForSelection={getCommentaryForSelection}
                     setSelectedCommentary={setSelectedCommentary}
                     setSelectedSection={setSelectedSection}
@@ -74,6 +77,7 @@ const Dashboard = ({
                     userGroups={userGroups}
                     selectedGroup={selectedGroup}
                     setSelectedGroup={setSelectedGroup}
+                    setSelectedDocument={setSelectedDocument}
                     createGroup={createGroup}
                     joinGroup={joinGroup}
                 />

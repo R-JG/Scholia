@@ -193,6 +193,7 @@ const App = () => {
                             updateUser={updateUser}
                             createGroup={createGroup}
                             joinGroup={joinGroup}
+                            createCommentary={createCommentary}
                             setSelectedGroup={setSelectedGroup}
                             setSelectedDocument={setSelectedDocument}
                             uploadDocument={uploadDocument}
@@ -210,7 +211,6 @@ const App = () => {
                             selectedCommentary={selectedCommentary}
                             selectedSection={selectedSection}
                             setSelectedSection={setSelectedSection}
-                            createCommentary={createCommentary}
                             addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                             updateSelectedSectionText={updateSelectedSectionText}
                             saveSectionTextToCommentary={saveSectionTextToCommentary}

@@ -16,6 +16,7 @@ interface Props {
     selectedSection: SelectedSection | null,
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void, 
+    createCommentary: (documentId: number, commentaryName: string) => void, 
     getCommentaryForSelection: (commentaryId: number) => void, 
     setSelectedCommentary: (commentary: Commentary | null) => void, 
     setSelectedSection: (section: SelectedSection | null) => void
@@ -30,6 +31,7 @@ const GroupContentPanel = ({
     selectedSection, 
     setSelectedDocument,
     uploadDocument,
+    createCommentary, 
     getCommentaryForSelection, 
     setSelectedCommentary, 
     setSelectedSection
@@ -73,6 +75,7 @@ const GroupContentPanel = ({
                         documentInfo={document}
                         selectedCommentary={selectedCommentary}
                         selectedSection={selectedSection}
+                        createCommentary={createCommentary}
                         setSelectedDocument={setSelectedDocument}
                         setSelectedCommentary={setSelectedCommentary}
                         setSelectedSection={setSelectedSection}

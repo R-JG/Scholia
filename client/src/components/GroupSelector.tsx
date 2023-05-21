@@ -1,4 +1,4 @@
-import { Group } from '../typeUtils/types';
+import { Group, GroupDocumentInfo } from '../typeUtils/types';
 import '../css/GroupSelector.css';
 
 interface Props {
@@ -6,6 +6,7 @@ interface Props {
     isSelected: boolean,
     userIsAMember: boolean, 
     setSelectedGroup: (group: Group) => void, 
+    setSelectedDocument: (documentInfo: GroupDocumentInfo | null) => void, 
     joinGroup: (groupId: number) => void
 };
 
@@ -14,12 +15,14 @@ const GroupSelector = ({
     isSelected, 
     userIsAMember, 
     setSelectedGroup, 
+    setSelectedDocument, 
     joinGroup
     }: Props) => {
 
     const handleSelectorClick = (): void => {
         if (!userIsAMember) return;
-        setSelectedGroup(group)
+        setSelectedGroup(group);
+        setSelectedDocument(null);
     };
 
     const handleJoinButton = (): void => {

@@ -19,7 +19,6 @@ interface Props {
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
     setSelectedSection: (section: SelectedSection | null) => void,
-    createCommentary: (documentId: number, commentaryName: string) => void,
     addSectionToSelectedCommentary: (
         commentaryId: number, pageNumber: number, 
         pageCoordinateTop: number, pageCoordinateBottom: number
@@ -34,7 +33,6 @@ const CommentaryTool = ({
     selectedCommentary, 
     selectedSection,
     setSelectedSection,
-    createCommentary,
     addSectionToSelectedCommentary,
     updateSelectedSectionText,
     saveSectionTextToCommentary
@@ -278,15 +276,14 @@ const CommentaryTool = ({
                     {createPages('after-initial')}
                 </Document>}
             </div>
-            {selectedCommentary ?
+            {selectedCommentary && 
             <CommentaryNavigator 
                 selectedCommentary={selectedCommentary}
                 selectedSection={selectedSection}
                 coordinateSelectMode={coordinateSelectMode}
                 setSelectedSection={setSelectedSection}
                 jumpToSelection={jumpToSelection}
-            />
-            : <button onClick={() => createCommentary(selectedDocument.id, 'TEST')}>TEST Create Commentary TEST</button>}
+            />}
             {selectedCommentary && selectedSection &&
             <CommentaryOverlay 
                 selectedCommentary={selectedCommentary}

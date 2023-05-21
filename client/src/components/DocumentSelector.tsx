@@ -8,6 +8,7 @@ interface Props {
     documentInfo: GroupDocumentInfo,
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
+    createCommentary: (documentId: number, commentaryName: string) => void, 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     setSelectedCommentary: (commentary: Commentary | null) => void,
     setSelectedSection: (section: SelectedSection | null) => void
@@ -18,6 +19,7 @@ const DocumentSelector = ({
     documentInfo, 
     selectedCommentary, 
     selectedSection, 
+    createCommentary, 
     setSelectedDocument, 
     setSelectedCommentary, 
     setSelectedSection
