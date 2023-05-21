@@ -82,4 +82,6 @@ export type CommentaryEntry = Omit<Commentary, 'id' | 'userId' | 'introduction' 
 
 export interface CommentaryModel extends Commentary, Model {}; 
 
-export type CommentaryInfo = Pick<Commentary, 'id' | 'userId' | 'documentId' | 'commentaryName'>;
+export interface CommentaryInfo extends 
+Pick<Commentary, 'id' | 'userId' | 'documentId' | 'commentaryName'> 
+{ author: string };

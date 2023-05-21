@@ -3,8 +3,19 @@ import {
 } from '../../typeUtils/types';
 import Commentary from '../models/Commentary';
 import CommentarySection from '../models/CommentarySection';
+import User from '../models/User';
 
 const commentaryInfoAttributes: string[] = ['id', 'userId', 'documentId', 'commentaryName'];
+const commentaryInfoAuthorAssociation: object = { model: User, attributes: [['username', 'author']] };
+const getCommentaryInfoFromQuery = (queryResult: CommentaryModel[]): CommentaryInfo[] => {
+    return queryResult.map(instance => ({ 
+        id: instance.id, 
+        userId: instance.userId, 
+        documentId: instance.documentId, 
+        commentaryName: instance.commentaryName, 
+        author: instance.dataValues.User.dataValues.author
+    }));
+};
 
 const verifyUserOwnsCommentary = async (
         userId: number, commentaryId: string | number
@@ -14,18 +25,22 @@ const verifyUserOwnsCommentary = async (
 };
 
 const getCommentaryInfoByUser = async (userId: string | number): Promise<CommentaryInfo[]> => {
-    const commentaryInfo: CommentaryInfo[] = await Commentary.findAll({ 
+    const commentaryData = await Commentary.findAll({ 
         where: { userId }, 
-        attributes: commentaryInfoAttributes 
+        attributes: commentaryInfoAttributes, 
+        include: commentaryInfoAuthorAssociation 
     });
+    const commentaryInfo: CommentaryInfo[] = getCommentaryInfoFromQuery(commentaryData);
     return commentaryInfo;
 };
 
 const getCommentaryInfoByDocument = async (documentId: string | number): Promise<CommentaryInfo[]> => {
-    const commentaryInfo: CommentaryInfo[] = await Commentary.findAll({ 
+    const commentaryData = await Commentary.findAll({ 
         where: { documentId }, 
-        attributes: commentaryInfoAttributes 
+        attributes: commentaryInfoAttributes, 
+        include: commentaryInfoAuthorAssociation
     });
+    const commentaryInfo: CommentaryInfo[] = getCommentaryInfoFromQuery(commentaryData);
     return commentaryInfo;
 };
 

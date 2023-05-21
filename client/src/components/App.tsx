@@ -105,11 +105,10 @@ const App = () => {
         commentariesService.createCommentary(user.token, commentaryEntry)
         .then(createdCommentary => {
             if (!createdCommentary) return;
+            const { id, userId, documentId, commentaryName } = createdCommentary;
             const createdCommentaryInfo: CommentaryInfo = {
-                id: createdCommentary.id,
-                userId: createdCommentary.userId,
-                documentId: createdCommentary.documentId,
-                commentaryName: createdCommentary.commentaryName
+                id, userId, documentId, commentaryName, 
+                author: user.username
             };
             setUserCommentaries(userCommentaries.concat(createdCommentaryInfo))
             setSelectedCommentary(createdCommentary);
