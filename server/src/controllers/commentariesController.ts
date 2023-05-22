@@ -118,12 +118,12 @@ const deleteCommentarySectionById = async (
             return;
         };
         const sectionId: string = request.params.sectionId;
-        const deleteResult: number = await commentariesService.deleteCommentarySectionById(sectionId);
-        if (deleteResult === 0) {
+        const amountDeleted: number = await commentariesService.deleteCommentarySectionById(sectionId);
+        if (amountDeleted === 0) {
             response.status(404).json({ error: 'section not found' });
             return;
         };
-        response.send(deleteResult);
+        response.send(amountDeleted);
     } catch (error) {
         next(error);
     };

@@ -78,8 +78,8 @@ const updateCommentarySectionById = async (
 };
 
 const deleteCommentarySectionById = async (sectionId: string | number): Promise<number> => {
-    const deleteResult = await CommentarySection.destroy({ where: { id: sectionId } });
-    return deleteResult;
+    const amountDeleted = await CommentarySection.destroy({ where: { id: sectionId } });
+    return amountDeleted;
 };
 
 export default { 

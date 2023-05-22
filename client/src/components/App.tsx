@@ -167,6 +167,20 @@ const App = () => {
         });
     };
 
+    const deleteCommentarySection = (commentaryId: number, sectionId: number): void => {
+        if (!user || !selectedCommentary) return;
+        commentariesService.deleteCommentarySectionById(user.token, commentaryId, sectionId)
+        .then(sectionIsDeleted => {
+            if (!sectionIsDeleted) return;
+            const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
+            .filter(section => (section.id !== sectionId));
+            setSelectedCommentary({
+                ...selectedCommentary,
+                commentarySections: updatedCommentarySections
+            });
+        });
+    };
+
     return (
         <div className='App'>
             <BrowserRouter>

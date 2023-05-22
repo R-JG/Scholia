@@ -2,7 +2,9 @@ import axios from 'axios';
 import { 
     Commentary, CommentaryInfo, CommentaryEntry, CommentarySectionEntry, CommentarySection 
 } from '../typeUtils/types';
-import { parseCommentaryInfoArray, parseCommentary, parseCommentarySection } from '../typeUtils/validation';
+import { 
+    parseCommentaryInfoArray, parseCommentary, parseCommentarySection, parseNumber 
+} from '../typeUtils/validation';
 
 const baseUrl: string = '/api/v1/commentaries';
 
@@ -103,11 +105,29 @@ const updateCommentarySectionById = async (
     };
 };
 
+const deleteCommentarySectionById = async (
+        token: string, commentaryId: number, sectionId: number
+    ): Promise<boolean> => {
+    try {
+        const response = await axios.delete(
+            `${baseUrl}/${commentaryId}/sections/${sectionId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const amountDeleted: number = parseNumber(response.data);
+        const sectionIsDeleted: boolean = (amountDeleted > 0);
+        return sectionIsDeleted;
+    } catch (error) {
+        console.error(error);
+        return false;
+    };
+};
+
 export default { 
     getAllCommentaryInfoByUser, 
     getAllCommentaryInfoByDocument, 
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 
-    updateCommentarySectionById
+    updateCommentarySectionById, 
+    deleteCommentarySectionById
 };

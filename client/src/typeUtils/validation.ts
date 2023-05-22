@@ -17,7 +17,7 @@ const parseString = (params: unknown): string => {
     return params;
 };
 
-const parseNumber = (params: unknown): number => {
+export const parseNumber = (params: unknown): number => {
     if (!isNumber(params)) {
         throw new Error(`value: ${params} is not of type number`);
     };
