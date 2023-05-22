@@ -15,4 +15,6 @@ commentariesRouter.post('/:commentaryId/sections', commentariesController.create
 
 commentariesRouter.put('/:commentaryId/sections/:sectionId', commentariesController.updateCommentarySectionById);
 
+commentariesRouter.delete('/:commentaryId/sections/:sectionId', commentariesController.deleteCommentarySectionById);
+
 export default commentariesRouter;

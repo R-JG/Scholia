@@ -105,11 +105,36 @@ const updateCommentarySectionById = async (
     };
 };
 
+const deleteCommentarySectionById = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const authenticatedUser: UserModel = response.locals.authenticatedUser;
+        const commentaryId: string = request.params.commentaryId;
+        const userOwnsCommentary: boolean = await commentariesService
+        .verifyUserOwnsCommentary(authenticatedUser.id, commentaryId);
+        if (!userOwnsCommentary) {
+            response.status(403).json({ error: 'user does not have write access to this commentary' });
+            return;
+        };
+        const sectionId: string = request.params.sectionId;
+        const deleteResult: number = await commentariesService.deleteCommentarySectionById(sectionId);
+        if (deleteResult === 0) {
+            response.status(404).json({ error: 'section not found' });
+            return;
+        };
+        response.send(deleteResult);
+    } catch (error) {
+        next(error);
+    };
+};
+
 export default { 
     getAllCommentaryInfoByUser, 
     getAllCommentaryInfoByDocument, 
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 
-    updateCommentarySectionById
+    updateCommentarySectionById, 
+    deleteCommentarySectionById
 };

@@ -77,6 +77,11 @@ const updateCommentarySectionById = async (
     return updatedRows[0];
 };
 
+const deleteCommentarySectionById = async (sectionId: string | number): Promise<number> => {
+    const deleteResult = await CommentarySection.destroy({ where: { id: sectionId } });
+    return deleteResult;
+};
+
 export default { 
     verifyUserOwnsCommentary,
     getCommentaryInfoByUser, 
@@ -84,5 +89,6 @@ export default {
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 
-    updateCommentarySectionById
+    updateCommentarySectionById, 
+    deleteCommentarySectionById
 };
