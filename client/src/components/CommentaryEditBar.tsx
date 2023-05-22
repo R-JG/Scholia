@@ -20,6 +20,7 @@ interface Props {
         pageCoordinateTop: number, 
         pageCoordinateBottom: number
     ) => void,
+    deleteSelectedCommentarySection: () => void, 
     setEditTextMode: (boolean: boolean) => void,
     saveSectionTextToCommentary: (commentarySection: CommentarySection) => void, 
     cancelSectionTextEdit: () => void
@@ -38,6 +39,7 @@ const CommentaryEditBar = ({
     setCoordinateSelectMode,
     resetSelectionCoordinates,
     addSectionToSelectedCommentary,
+    deleteSelectedCommentarySection, 
     setEditTextMode,
     saveSectionTextToCommentary, 
     cancelSectionTextEdit
@@ -95,6 +97,12 @@ const CommentaryEditBar = ({
         cancelSectionTextEdit();
     };
 
+    const handleDeleteSectionButton = (): void => {
+        if (!selectedCommentary || !selectedSection) return;
+        deleteSelectedCommentarySection();
+        setEditTextMode(false);
+    };
+
     return (
         <div className='CommentaryEditBar'>
             <div className='add-new-commentary-section-buttons-container'>
@@ -140,6 +148,12 @@ const CommentaryEditBar = ({
                         Discard Changes
                     </button>
                 </div>}
+                {editTextMode && 
+                <button
+                    className='delete-commentary-section-button'
+                    onClick={handleDeleteSectionButton}>
+                    Delete Section
+                </button>}
             </div>
         </div>
     );

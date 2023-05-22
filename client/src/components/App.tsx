@@ -167,9 +167,10 @@ const App = () => {
         });
     };
 
-    const deleteCommentarySection = (commentaryId: number, sectionId: number): void => {
-        if (!user || !selectedCommentary) return;
-        commentariesService.deleteCommentarySectionById(user.token, commentaryId, sectionId)
+    const deleteSelectedCommentarySection = (): void => {
+        if (!user || !selectedCommentary || !selectedSection) return;
+        const sectionId: number = selectedSection.data.id;
+        commentariesService.deleteCommentarySectionById(user.token, selectedCommentary.id, sectionId)
         .then(sectionIsDeleted => {
             if (!sectionIsDeleted) return;
             const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
@@ -178,6 +179,7 @@ const App = () => {
                 ...selectedCommentary,
                 commentarySections: updatedCommentarySections
             });
+            setSelectedSection(null);
         });
     };
 
@@ -225,6 +227,7 @@ const App = () => {
                             selectedSection={selectedSection}
                             setSelectedSection={setSelectedSection}
                             addSectionToSelectedCommentary={addSectionToSelectedCommentary}
+                            deleteSelectedCommentarySection={deleteSelectedCommentarySection}
                             updateSelectedSectionText={updateSelectedSectionText}
                             saveSectionTextToCommentary={saveSectionTextToCommentary}
                         /> 

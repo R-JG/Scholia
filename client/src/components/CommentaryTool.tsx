@@ -23,6 +23,7 @@ interface Props {
         commentaryId: number, pageNumber: number, 
         pageCoordinateTop: number, pageCoordinateBottom: number
     ) => void,
+    deleteSelectedCommentarySection: () => void, 
     updateSelectedSectionText: (updatedText: string) => void,
     saveSectionTextToCommentary: (commentarySection: CommentarySection) => void
 };
@@ -33,7 +34,8 @@ const CommentaryTool = ({
     selectedCommentary, 
     selectedSection,
     setSelectedSection,
-    addSectionToSelectedCommentary,
+    addSectionToSelectedCommentary, 
+    deleteSelectedCommentarySection, 
     updateSelectedSectionText,
     saveSectionTextToCommentary
     }: Props) => {
@@ -307,6 +309,7 @@ const CommentaryTool = ({
                 setCoordinateSelectMode={setCoordinateSelectMode}
                 resetSelectionCoordinates={resetSelectionCoordinates}
                 addSectionToSelectedCommentary={addSectionToSelectedCommentary}
+                deleteSelectedCommentarySection={deleteSelectedCommentarySection}
                 setEditTextMode={setEditTextMode}
                 saveSectionTextToCommentary={saveSectionTextToCommentary}
                 cancelSectionTextEdit={cancelSectionTextEdit}

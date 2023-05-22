@@ -123,7 +123,7 @@ const deleteCommentarySectionById = async (
             response.status(404).json({ error: 'section not found' });
             return;
         };
-        response.send(amountDeleted);
+        response.json(amountDeleted);
     } catch (error) {
         next(error);
     };
