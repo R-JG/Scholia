@@ -1,5 +1,5 @@
 import { 
-    User, NewUser, UserEntry, Token, GroupEntry, CommentaryEntry, CommentarySectionEntry, CommentaryInfo 
+    User, NewUser, UserEntry, Token, GroupEntry, CommentaryEntry, CommentarySectionEntry 
 } from './types';
 
 const isString = (params: unknown): params is string => {
@@ -114,27 +114,4 @@ export const parseCommentarySectionEntry = (params: unknown): CommentarySectionE
         text: parseString(params.text)
     };
     return commentarySectionEntry;
-};
-
-export const parseCommentaryInfo = (params: unknown): CommentaryInfo => {
-    if (!params || (typeof params !== 'object') 
-    || !('id' in params) || !('userId' in params) || !('documentId' in params)  
-    || !('commentaryName' in params) || !('author' in params)) {
-        throw new Error('missing or incorrectly formatted data for type CommentaryInfo');
-    };
-    const commentaryInfo: CommentaryInfo = {
-        id: parseNumber(params.id),
-        userId: parseNumber(params.userId),
-        documentId: parseNumber(params.documentId),
-        commentaryName: parseString(params.commentaryName),
-        author: parseString(params.author)
-    };
-    return commentaryInfo;
-};
-
-export const parseCommentaryInfoArray = (params: unknown): CommentaryInfo[] => {
-    if (!params || !Array.isArray(params)) {
-        throw new Error('missing or incorrectly formatted data for CommentaryInfo array');
-    };
-    return params.map(element => parseCommentaryInfo(element));
 };

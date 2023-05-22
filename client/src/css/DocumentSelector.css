@@ -8,4 +8,5 @@
 .DocumentSelector.selected {
     border-width: 0.2em;
     border-color: var(--accent-color-one);
+    cursor: default;
 }

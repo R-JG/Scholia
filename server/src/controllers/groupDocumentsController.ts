@@ -6,7 +6,7 @@ import groupsService from '../database/services/groupsService';
 
 const createOne = async (
         request: Request, response: Response, next: NextFunction
-    ): Promise<void>  => {
+    ): Promise<void> => {
     try {
         if (!request.file) {
             response.status(500).json({ error: 'error in processing file' });

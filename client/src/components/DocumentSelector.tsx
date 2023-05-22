@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../config';
-import DocumentCommentaryFeature from './DocumentCommentaryFeature';
+import DocumentCommentaryList from './DocumentCommentaryList';
+import CommentaryCreationForm from './CommentaryCreationForm';
 import '../css/DocumentSelector.css';
 
 interface Props {
@@ -34,6 +36,8 @@ const DocumentSelector = ({
     getCommentaryForSelection
     }: Props) => {
 
+    const [createCommentaryMode, setCreateCommentaryMode] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     const handleComponentClick = (): void => {
@@ -60,14 +64,24 @@ const DocumentSelector = ({
                 View
             </button>
             {isSelected && 
-            <DocumentCommentaryFeature 
+            <DocumentCommentaryList 
                 documentsForGroup={documentsForGroup}
                 selectedDocument={selectedDocument}
                 commentariesForDocument={commentariesForDocument}
                 setSelectedDocument={setSelectedDocument}
-                createCommentary={createCommentary}
                 getCommentaryForSelection={getCommentaryForSelection}
                 setSelectedSection={setSelectedSection}
+            />}
+            {isSelected && 
+            <button 
+                className='DocumentCommentaryList--create-commentary-button'
+                onClick={() => setCreateCommentaryMode(!createCommentaryMode)}>
+                {createCommentaryMode ? 'Cancel' : 'Create Commentary'}
+            </button>}
+            {isSelected && createCommentaryMode && 
+            <CommentaryCreationForm 
+                selectedDocument={selectedDocument}
+                createCommentary={createCommentary}
             />}
         </div>
     );

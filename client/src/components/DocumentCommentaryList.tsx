@@ -1,6 +1,4 @@
-import { useState } from 'react';
 import { GroupDocumentInfo, CommentaryInfo, SelectedSection } from '../typeUtils/types';
-import CommentaryCreationForm from './CommentaryCreationForm';
 import CommentarySelector from './CommentarySelector';
 
 interface Props {
@@ -8,29 +6,25 @@ interface Props {
     selectedDocument: GroupDocumentInfo | null, 
     commentariesForDocument: CommentaryInfo[], 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void, 
-    createCommentary: (documentId: number, commentaryName: string) => void, 
     getCommentaryForSelection: (commentaryId: number) => void, 
     setSelectedSection: (section: SelectedSection | null) => void
 };
 
-const DocumentCommentaryFeature = ({
+const DocumentCommentaryList = ({
     documentsForGroup, 
     selectedDocument,
     commentariesForDocument, 
     setSelectedDocument, 
-    createCommentary, 
     getCommentaryForSelection, 
     setSelectedSection
     }: Props) => {
 
-    if (!selectedDocument) return <div className='DocumentCommentaryFeature'></div>;
-
-    const [createCommentaryMode, setCreateCommentaryMode] = useState<boolean>(false);
+    if (!selectedDocument) return <div className='DocumentCommentaryList'></div>;
 
     return (
-        <div className='DocumentCommentaryFeature'>
+        <div className='DocumentCommentaryList'>
             <h5>Commentaries: </h5>
-            <div className='DocumentCommentaryFeature--commentaries-list'>
+            <div className='DocumentCommentaryList--commentaries-list'>
                 {commentariesForDocument.map(commentaryInfo => 
                 <CommentarySelector 
                     key={commentaryInfo.id}
@@ -42,18 +36,8 @@ const DocumentCommentaryFeature = ({
                     setSelectedSection={setSelectedSection}
                 />)}
             </div>
-            <button 
-                className='DocumentCommentaryFeature--create-commentary-button'
-                onClick={() => setCreateCommentaryMode(!createCommentaryMode)}>
-                {createCommentaryMode ? 'Cancel' : 'Create Commentary'}
-            </button>
-            {createCommentaryMode && 
-            <CommentaryCreationForm 
-                documentInfo={selectedDocument}
-                createCommentary={createCommentary}
-            />}
         </div>
     );
 };
 
-export default DocumentCommentaryFeature;
+export default DocumentCommentaryList;

@@ -2,14 +2,16 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { GroupDocumentInfo } from '../typeUtils/types';
 
 interface Props {
-    documentInfo: GroupDocumentInfo, 
+    selectedDocument: GroupDocumentInfo | null, 
     createCommentary: (documentId: number, commentaryName: string) => void, 
 };
 
 const CommentaryCreationForm = ({
-    documentInfo, 
+    selectedDocument, 
     createCommentary, 
     }: Props) => {
+
+    if (!selectedDocument) return <div className='CommentaryCreationForm'></div>;
 
     const [nameInputValue, setNameInputValue] = useState<string>('');
 
@@ -19,7 +21,7 @@ const CommentaryCreationForm = ({
 
     const handleFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        createCommentary(documentInfo.id, nameInputValue);
+        createCommentary(selectedDocument.id, nameInputValue);
         setNameInputValue('');
     };
 
