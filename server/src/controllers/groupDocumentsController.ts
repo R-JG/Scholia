@@ -21,9 +21,10 @@ const createOne = async (
                 error: 'user does not have sufficient membership to add a document to this group' 
             });
         };
+        const documentName: string = request.file.originalname.replace(/\.pdf/gi, '');
         const newDocument: NewGroupDocument = {
             groupId,
-            documentName: request.file.originalname,
+            documentName,
             filePath: request.file.path
         };
         const addedDocument = await groupDocumentsService.createOne(newDocument);
