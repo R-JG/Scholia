@@ -1,6 +1,7 @@
 .GroupSelector {
     margin: 0.5em;
     border: 0.1em solid var(--font-color);
+    cursor: pointer;
 }
 
 .GroupSelector.selected {

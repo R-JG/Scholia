@@ -59,6 +59,7 @@ const Dashboard = ({
             <main className='dashboard-main'>
                 {selectedGroup && 
                 <GroupContentPanel 
+                    key={selectedGroup.id}
                     user={user}
                     userCommentaries={userCommentaries}
                     selectedGroup={selectedGroup}

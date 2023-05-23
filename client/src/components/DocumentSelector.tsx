@@ -59,11 +59,12 @@ const DocumentSelector = ({
             <h4 className='DocumentSelector--document-name'>
                 {documentInfo.documentName}
             </h4>
+            {isSelected && 
             <button 
                 className='DocumentSelector--read-document-button'
                 onClick={handleReadDocumentButton}>
                 Read
-            </button>
+            </button>}
             {isSelected && 
             <CommentaryCreationForm 
                 selectedDocument={selectedDocument}
