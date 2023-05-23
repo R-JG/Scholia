@@ -3,3 +3,15 @@
     color: var(--font-color);
     cursor: pointer;
 }
+
+.CommentarySelector:hover {
+    color: var(--accent-color-one);
+}
+
+.CommentarySelector--title {
+    margin: 0;
+}
+
+.CommentarySelector--author {
+    margin: 0;
+}

@@ -8,6 +8,7 @@ import '../css/GroupContentPanel.css';
 
 interface Props {
     user: LoggedInUser | null,
+    userCommentaries: CommentaryInfo[], 
     selectedGroup: Group | null,
     documentsForGroup: GroupDocumentInfo[],
     selectedDocument: GroupDocumentInfo | null, 
@@ -23,6 +24,7 @@ interface Props {
 
 const GroupContentPanel = ({ 
     user,
+    userCommentaries, 
     selectedGroup, 
     documentsForGroup, 
     selectedDocument, 
@@ -39,14 +41,14 @@ const GroupContentPanel = ({
     if (!user || !selectedGroup) return <div className='GroupContentPanel'></div>;
 
     const [inputFile, setInputFile] = useState<File | null>(null);
-    const [commentariesForDocument, setCommentariesForDocument] = useState<CommentaryInfo[]>([]);
+    const [groupCommentariesForDocument, setGroupCommentariesForDocument] = useState<CommentaryInfo[]>([]);
 
     const fileInuptRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (!selectedDocument) return;
         commentariesService.getAllCommentaryInfoByDocument(user.token, selectedDocument.id)
-        .then(commentaryInfo => setCommentariesForDocument(commentaryInfo));
+        .then(commentaries => setGroupCommentariesForDocument(commentaries));
     }, [selectedDocument]);
 
     const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -70,9 +72,13 @@ const GroupContentPanel = ({
                     {documentsForGroup.map(document => 
                     <DocumentSelector 
                         key={document.id}
+                        user={user}
                         isSelected={document.id == selectedDocument?.id}
                         documentsForGroup={documentsForGroup}
-                        commentariesForDocument={commentariesForDocument}
+                        userCommentariesForDocument={userCommentaries.filter(commentary => 
+                            (commentary.documentId === document.id))
+                        }
+                        groupCommentariesForDocument={groupCommentariesForDocument}
                         documentInfo={document}
                         selectedDocument={selectedDocument}
                         selectedCommentary={selectedCommentary}

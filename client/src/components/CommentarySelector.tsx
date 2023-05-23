@@ -42,8 +42,8 @@ const CommentarySelector = ({
         <div 
             className='CommentarySelector'
             onClick={handleClick}>
-            <h5>Title: {commentaryInfo.commentaryName}</h5>
-            <h5>Author: {commentaryInfo.author}</h5>
+            <h5 className='CommentarySelector--title'>{commentaryInfo.commentaryName}</h5>
+            <h5 className='CommentarySelector--author'>By: {commentaryInfo.author}</h5>
         </div>
     );
 };

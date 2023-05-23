@@ -200,6 +200,7 @@ const App = () => {
                         ? <Dashboard 
                             user={user} 
                             userGroups={userGroups}
+                            userCommentaries={userCommentaries}
                             selectedDocument={selectedDocument}
                             selectedCommentary={selectedCommentary}
                             selectedSection={selectedSection}

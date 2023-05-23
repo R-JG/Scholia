@@ -1,0 +1,14 @@
+.DocumentCommentaryList {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.DocumentCommentaryList--user-commentaries-section {
+    margin: 1em;
+}
+
+.DocumentCommentaryList--group-commentaries-section {
+    margin: 1em;
+}

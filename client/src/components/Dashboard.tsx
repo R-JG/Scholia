@@ -1,5 +1,5 @@
 import { 
-    LoggedInUser, Group, GroupDocumentInfo, Commentary, SelectedSection 
+    LoggedInUser, Group, GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection 
 } from '../typeUtils/types';
 import Header from './Header';
 import GroupContentPanel from './GroupContentPanel';
@@ -9,6 +9,7 @@ import '../css/Dashboard.css';
 interface Props {
     user: LoggedInUser | null,
     userGroups: Group[],
+    userCommentaries: CommentaryInfo[], 
     selectedDocument: GroupDocumentInfo | null, 
     selectedCommentary: Commentary | null, 
     selectedSection: SelectedSection | null,
@@ -29,6 +30,7 @@ interface Props {
 const Dashboard = ({ 
     user, 
     userGroups,
+    userCommentaries, 
     selectedDocument, 
     selectedCommentary, 
     selectedSection, 
@@ -58,6 +60,7 @@ const Dashboard = ({
                 {selectedGroup && 
                 <GroupContentPanel 
                     user={user}
+                    userCommentaries={userCommentaries}
                     selectedGroup={selectedGroup}
                     documentsForGroup={groupDocuments.filter(groupDocument => 
                         groupDocument.groupId === selectedGroup.id

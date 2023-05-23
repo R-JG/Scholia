@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection } from '../typeUtils/types';
+import { LoggedInUser, GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../config';
 import DocumentCommentaryList from './DocumentCommentaryList';
 import CommentaryCreationForm from './CommentaryCreationForm';
 import '../css/DocumentSelector.css';
 
 interface Props {
+    user: LoggedInUser | null, 
     isSelected: boolean, 
     documentsForGroup: GroupDocumentInfo[], 
-    commentariesForDocument: CommentaryInfo[], 
+    userCommentariesForDocument: CommentaryInfo[], 
+    groupCommentariesForDocument: CommentaryInfo[], 
     documentInfo: GroupDocumentInfo, 
     selectedDocument: GroupDocumentInfo | null, 
     selectedCommentary: Commentary | null,
@@ -22,9 +24,11 @@ interface Props {
 };
 
 const DocumentSelector = ({ 
+    user, 
     isSelected, 
     documentsForGroup, 
-    commentariesForDocument, 
+    userCommentariesForDocument, 
+    groupCommentariesForDocument, 
     documentInfo, 
     selectedDocument, 
     selectedCommentary, 
@@ -44,7 +48,7 @@ const DocumentSelector = ({
         setSelectedDocument(documentInfo);
     };
 
-    const handleViewDocumentButton = (): void => {
+    const handleReadDocumentButton = (): void => {
         setSelectedDocument(documentInfo);
         if (selectedCommentary) setSelectedCommentary(null);
         if (selectedSection) setSelectedSection(null);
@@ -59,19 +63,10 @@ const DocumentSelector = ({
                 {documentInfo.documentName}
             </h4>
             <button 
-                className='DocumentSelector--view-document-button'
-                onClick={handleViewDocumentButton}>
-                View
+                className='DocumentSelector--read-document-button'
+                onClick={handleReadDocumentButton}>
+                Read
             </button>
-            {isSelected && 
-            <DocumentCommentaryList 
-                documentsForGroup={documentsForGroup}
-                selectedDocument={selectedDocument}
-                commentariesForDocument={commentariesForDocument}
-                setSelectedDocument={setSelectedDocument}
-                getCommentaryForSelection={getCommentaryForSelection}
-                setSelectedSection={setSelectedSection}
-            />}
             {isSelected && 
             <button 
                 className='DocumentCommentaryList--create-commentary-button'
@@ -82,6 +77,17 @@ const DocumentSelector = ({
             <CommentaryCreationForm 
                 selectedDocument={selectedDocument}
                 createCommentary={createCommentary}
+            />}
+            {isSelected && 
+            <DocumentCommentaryList 
+                user={user}
+                documentsForGroup={documentsForGroup}
+                selectedDocument={selectedDocument}
+                userCommentariesForDocument={userCommentariesForDocument}
+                groupCommentariesForDocument={groupCommentariesForDocument}
+                setSelectedDocument={setSelectedDocument}
+                getCommentaryForSelection={getCommentaryForSelection}
+                setSelectedSection={setSelectedSection}
             />}
         </div>
     );
