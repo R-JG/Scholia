@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoggedInUser, GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../config';
@@ -40,8 +39,6 @@ const DocumentSelector = ({
     getCommentaryForSelection
     }: Props) => {
 
-    const [createCommentaryMode, setCreateCommentaryMode] = useState<boolean>(false);
-
     const navigate = useNavigate();
 
     const handleComponentClick = (): void => {
@@ -68,12 +65,6 @@ const DocumentSelector = ({
                 Read
             </button>
             {isSelected && 
-            <button 
-                className='DocumentCommentaryList--create-commentary-button'
-                onClick={() => setCreateCommentaryMode(!createCommentaryMode)}>
-                {createCommentaryMode ? 'Cancel' : 'Create Commentary'}
-            </button>}
-            {isSelected && createCommentaryMode && 
             <CommentaryCreationForm 
                 selectedDocument={selectedDocument}
                 createCommentary={createCommentary}

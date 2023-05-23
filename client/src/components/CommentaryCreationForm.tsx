@@ -13,7 +13,15 @@ const CommentaryCreationForm = ({
 
     if (!selectedDocument) return <div className='CommentaryCreationForm'></div>;
 
+    const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [nameInputValue, setNameInputValue] = useState<string>('');
+
+    const handleExpandButton = (): void => setIsExpanded(true);
+
+    const handleCancelButton = (): void => {
+        setNameInputValue('');
+        setIsExpanded(false);
+    };
 
     const handleNameInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setNameInputValue(e.currentTarget.value);
@@ -26,25 +34,40 @@ const CommentaryCreationForm = ({
     };
 
     return (
-        <form 
-            className='CommentaryCreationForm'
-            onSubmit={handleFormSubmit}>
-            <label 
-                className='CommentaryCreationForm--name-label'
-                htmlFor='CommentaryCreationForm--name-input'>
-                Commentary name: 
-            </label>
-            <input 
-                id='CommentaryCreationForm--name-input'
-                className='CommentaryCreationForm--name-input'
-                type='text' 
-                value={nameInputValue}
-                onChange={handleNameInputChange}
-            />
-            <button className='CommentaryCreationForm--submit-button'>
-                Create
-            </button>
-        </form>
+        <div className='CommentaryCreationForm'>
+            {!isExpanded && 
+            <button
+                className='CommentaryCreationForm--expand-button'
+                onClick={handleExpandButton}>
+                Create Commentary
+            </button>}
+            <form 
+                className='CommentaryCreationForm--form'
+                style={isExpanded ? undefined : { display: 'none' }}
+                onSubmit={handleFormSubmit}>
+                <label 
+                    className='CommentaryCreationForm--name-label'
+                    htmlFor='CommentaryCreationForm--name-input'>
+                    Commentary name: 
+                </label>
+                <input 
+                    id='CommentaryCreationForm--name-input'
+                    className='CommentaryCreationForm--name-input'
+                    type='text' 
+                    value={nameInputValue}
+                    onChange={handleNameInputChange}
+                />
+                <button className='CommentaryCreationForm--submit-button'>
+                    Create
+                </button>
+                <button 
+                    className='CommentaryCreationForm--cancel-button'
+                    type='button'
+                    onClick={handleCancelButton}>
+                    Cancel
+                </button>
+            </form>
+        </div>
     );
 }
 
