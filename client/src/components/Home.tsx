@@ -7,19 +7,21 @@ import '../css/Home.css';
 
 interface Props {
     user: LoggedInUser | null,
-    updateUser: (userData: LoggedInUser | null) => void
+    updateUser: (userData: LoggedInUser | null) => void,
+    logout: () => void
 };
 
 const Home = ({ 
     user, 
-    updateUser
-}: Props) => {
+    updateUser, 
+    logout
+    }: Props) => {
 
     return (
         <div className='Home'>
             <Header 
                 user={user} 
-                updateUser={updateUser} 
+                logout={logout} 
             />
             {(!user) 
             ? <LoginForm 

@@ -64,6 +64,17 @@ const App = () => {
         setUser(userData);
     };
 
+    const logout = (): void => {
+        updateUser(null);
+        setSelectedSection(null);
+        setSelectedCommentary(null);
+        setSelectedDocument(null);
+        setSelectedGroup(null);
+        setUserGroups([]);
+        setUserCommentaries([]);
+        setGroupDocuments([]);
+    };
+
     const createGroup = (groupName: string): void => {
         if (!user) return;
         groupsService.createGroup({ groupName }, user.token)
@@ -195,6 +206,7 @@ const App = () => {
                         : <Home 
                             user={user}
                             updateUser={updateUser}
+                            logout={logout}
                         />
                     } />
                     <Route path={dashboardRoute} element={
@@ -208,7 +220,7 @@ const App = () => {
                             selectedSection={selectedSection}
                             selectedGroup={selectedGroup}
                             groupDocuments={groupDocuments}
-                            updateUser={updateUser}
+                            logout={logout}
                             createGroup={createGroup}
                             joinGroup={joinGroup}
                             createCommentary={createCommentary}
@@ -228,6 +240,7 @@ const App = () => {
                             selectedDocument={selectedDocument}
                             selectedCommentary={selectedCommentary}
                             selectedSection={selectedSection}
+                            setSelectedCommentary={setSelectedCommentary}
                             setSelectedSection={setSelectedSection}
                             addSectionToSelectedCommentary={addSectionToSelectedCommentary}
                             deleteSelectedCommentarySection={deleteSelectedCommentarySection}

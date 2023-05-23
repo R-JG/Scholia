@@ -3,17 +3,26 @@ import '../css/Header.css';
 
 interface Props {
     user: LoggedInUser | null,
-    updateUser: (userData: LoggedInUser | null) => void
+    logout: () => void
 };
 
-const Header = ({ user, updateUser }: Props) => {
+const Header = ({ 
+    user, 
+    logout 
+    }: Props) => {
 
-    const logout = (): void => updateUser(null);
+    if (!user) return <div className='Header inactive'></div>;
 
     return (
         <header className='Header'>
-            {user && <h4 className='header--username'>{user.username}</h4>}
-            {user && <button className='header--logout-button' onClick={logout}>Logout</button>}
+            <h4 className='Header--username'>
+                {user.username}
+            </h4>
+            <button 
+                className='Header--logout-button' 
+                onClick={logout}>
+                Logout
+            </button>
         </header>
     );
 };

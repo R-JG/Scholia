@@ -15,7 +15,7 @@ interface Props {
     selectedSection: SelectedSection | null,
     selectedGroup: Group | null,
     groupDocuments: GroupDocumentInfo[],
-    updateUser: (userData: LoggedInUser | null) => void,
+    logout: () => void, 
     createGroup: (groupName: string) => void,
     joinGroup: (groupId: number) => void, 
     createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>,
@@ -36,7 +36,7 @@ const Dashboard = ({
     selectedSection, 
     selectedGroup,
     groupDocuments, 
-    updateUser,
+    logout,
     createGroup,
     joinGroup, 
     createCommentary, 
@@ -54,7 +54,7 @@ const Dashboard = ({
         <div className='Dashboard'>
             <Header 
                 user={user} 
-                updateUser={updateUser}
+                logout={logout}
             />
             <main className='dashboard-main'>
                 {selectedGroup && 

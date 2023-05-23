@@ -18,6 +18,7 @@ interface Props {
     selectedDocument: GroupDocumentInfo | null,
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
+    setSelectedCommentary: (commentary: Commentary | null) => void, 
     setSelectedSection: (section: SelectedSection | null) => void,
     addSectionToSelectedCommentary: (
         commentaryId: number, pageNumber: number, 
@@ -33,6 +34,7 @@ const CommentaryTool = ({
     selectedDocument, 
     selectedCommentary, 
     selectedSection,
+    setSelectedCommentary, 
     setSelectedSection,
     addSectionToSelectedCommentary, 
     deleteSelectedCommentarySection, 
@@ -237,6 +239,8 @@ const CommentaryTool = ({
             <CommentaryToolHeader 
                 selectedDocument={selectedDocument}
                 selectedCommentary={selectedCommentary}
+                setSelectedCommentary={setSelectedCommentary}
+                setSelectedSection={setSelectedSection}
             />
             <div 
                 className='document-container' 
