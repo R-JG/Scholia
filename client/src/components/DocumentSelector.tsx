@@ -18,7 +18,7 @@ interface Props {
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     setSelectedCommentary: (commentary: Commentary | null) => void,
     setSelectedSection: (section: SelectedSection | null) => void, 
-    createCommentary: (documentId: number, commentaryName: string) => void, 
+    createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>, 
     getCommentaryForSelection: (commentaryId: number) => void
 };
 

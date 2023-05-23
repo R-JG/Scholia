@@ -18,7 +18,7 @@ interface Props {
     updateUser: (userData: LoggedInUser | null) => void,
     createGroup: (groupName: string) => void,
     joinGroup: (groupId: number) => void, 
-    createCommentary: (documentId: number, commentaryName: string) => void,
+    createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>,
     setSelectedGroup: (group: Group) => void,
     setSelectedDocument: (documentInfo: GroupDocumentInfo | null) => void,
     uploadDocument: (document: File, groupId: number) => void,

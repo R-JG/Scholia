@@ -99,20 +99,22 @@ const App = () => {
         });
     };
 
-    const createCommentary = (documentId: number, commentaryName: string): void => {
-        if (!user) return;
+    const createCommentary = async (documentId: number, commentaryName: string): Promise<boolean> => {
+        if (!user) return false;
         const commentaryEntry: CommentaryEntry = { documentId, commentaryName };
-        commentariesService.createCommentary(user.token, commentaryEntry)
-        .then(createdCommentary => {
-            if (!createdCommentary) return;
-            const { id, userId, documentId, commentaryName } = createdCommentary;
-            const createdCommentaryInfo: CommentaryInfo = {
-                id, userId, documentId, commentaryName, 
-                author: user.username
-            };
-            setUserCommentaries(userCommentaries.concat(createdCommentaryInfo))
-            setSelectedCommentary(createdCommentary);
-        });
+        const createdCommentary: Commentary | null = await commentariesService
+        .createCommentary(user.token, commentaryEntry);
+        if (!createdCommentary) return false;
+        const createdCommentaryInfo: CommentaryInfo = {
+            id: createdCommentary.id, 
+            userId: createdCommentary.userId, 
+            documentId: createdCommentary.documentId, 
+            commentaryName: createdCommentary.commentaryName, 
+            author: user.username
+        };
+        setUserCommentaries(userCommentaries.concat(createdCommentaryInfo))
+        setSelectedCommentary(createdCommentary);
+        return true;
     };
 
     const addSectionToSelectedCommentary = (

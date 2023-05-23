@@ -63,6 +63,8 @@ const CommentaryNavigator = ({
                 onClick={() => handleNavigateButton('next')}>
                 ▶
             </button>}
+            {(selectedCommentary.commentarySections.length === 0) && 
+            <h4>Add a new section to get started.</h4>}
         </div>
     );
 };

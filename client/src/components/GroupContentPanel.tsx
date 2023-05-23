@@ -16,7 +16,7 @@ interface Props {
     selectedSection: SelectedSection | null,
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     uploadDocument: (document: File, groupId: number) => void, 
-    createCommentary: (documentId: number, commentaryName: string) => void, 
+    createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>, 
     getCommentaryForSelection: (commentaryId: number) => void, 
     setSelectedCommentary: (commentary: Commentary | null) => void, 
     setSelectedSection: (section: SelectedSection | null) => void

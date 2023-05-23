@@ -1,9 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { commentaryToolRoute } from '../config';
 import { GroupDocumentInfo } from '../typeUtils/types';
 
 interface Props {
     selectedDocument: GroupDocumentInfo | null, 
-    createCommentary: (documentId: number, commentaryName: string) => void, 
+    createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>, 
 };
 
 const CommentaryCreationForm = ({
@@ -15,6 +17,8 @@ const CommentaryCreationForm = ({
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [nameInputValue, setNameInputValue] = useState<string>('');
+
+    const navigate = useNavigate();
 
     const handleExpandButton = (): void => setIsExpanded(true);
 
@@ -29,8 +33,12 @@ const CommentaryCreationForm = ({
 
     const handleFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        createCommentary(selectedDocument.id, nameInputValue);
-        setNameInputValue('');
+        createCommentary(selectedDocument.id, nameInputValue)
+        .then(creationIsSuccessful => {
+            if (!creationIsSuccessful) return;
+            setNameInputValue('');
+            navigate(commentaryToolRoute);
+        });
     };
 
     return (
