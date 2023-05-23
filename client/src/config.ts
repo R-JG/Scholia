@@ -7,5 +7,8 @@ export const commentaryToolRoute: string = '/commentary';
 export const pageAmountToRenderOnScroll: number = 3;
 export const pageRenderCooldownMilliseconds: number = 100;
 
-// GroupSearch
+// Search
 export const groupSearchDebounceMilliseconds: number = 500;
+
+// File Upload
+export const maxFileBytesSize: number = 30000000;
