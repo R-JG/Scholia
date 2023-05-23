@@ -7,11 +7,11 @@ import '../css/DocumentSelector.css';
 
 interface Props {
     user: LoggedInUser | null, 
+    documentInfo: GroupDocumentInfo, 
     isSelected: boolean, 
     documentsForGroup: GroupDocumentInfo[], 
     userCommentariesForDocument: CommentaryInfo[], 
     groupCommentariesForDocument: CommentaryInfo[], 
-    documentInfo: GroupDocumentInfo, 
     selectedDocument: GroupDocumentInfo | null, 
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
@@ -24,11 +24,11 @@ interface Props {
 
 const DocumentSelector = ({ 
     user, 
+    documentInfo, 
     isSelected, 
     documentsForGroup, 
     userCommentariesForDocument, 
     groupCommentariesForDocument, 
-    documentInfo, 
     selectedDocument, 
     selectedCommentary, 
     selectedSection, 

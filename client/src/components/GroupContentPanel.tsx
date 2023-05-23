@@ -57,17 +57,17 @@ const GroupContentPanel = ({
                     uploadDocument={uploadDocument}
                 />
                 <div className='GroupContentPanel--group-documents-list'>
-                    {documentsForGroup.map(document => 
+                    {documentsForGroup.map(documentInfo => 
                     <DocumentSelector 
-                        key={document.id}
+                        key={documentInfo.id}
                         user={user}
-                        isSelected={document.id == selectedDocument?.id}
+                        documentInfo={documentInfo}
+                        isSelected={documentInfo.id == selectedDocument?.id}
                         documentsForGroup={documentsForGroup}
                         userCommentariesForDocument={userCommentaries.filter(commentary => 
-                            (commentary.documentId === document.id))
+                            (commentary.documentId === documentInfo.id))
                         }
                         groupCommentariesForDocument={groupCommentariesForDocument}
-                        documentInfo={document}
                         selectedDocument={selectedDocument}
                         selectedCommentary={selectedCommentary}
                         selectedSection={selectedSection}

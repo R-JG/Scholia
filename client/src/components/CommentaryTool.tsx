@@ -61,8 +61,6 @@ const CommentaryTool = ({
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
-    const pageExpansionTriggerHeight: number = ((initialPageHeight) ? (initialPageHeight * 2) : 2000);
-
     useEffect(() => {
         groupDocumentsService.getSingleDocumentFile(selectedDocument.id, user.token)
         .then(blob => setDocumentBlob(blob));
@@ -130,13 +128,15 @@ const CommentaryTool = ({
 
     const documentIsScrolledNearBottom = (): boolean => {
         if (!documentContainerRef.current || !initialPageHeight) return false;
+        const distanceFromBottomAmount: number = (initialPageHeight * 2);
         return (documentContainerRef.current.scrollTop 
-        >= (documentContainerRef.current.scrollHeight - pageExpansionTriggerHeight));
+        >= (documentContainerRef.current.scrollHeight - distanceFromBottomAmount));
     };
 
     const documentIsScrolledNearTop = (): boolean => {
         if (!documentContainerRef.current || !initialPageHeight) return false;
-        return (documentContainerRef.current.scrollTop <= pageExpansionTriggerHeight);
+        const distanceFromTopAmount: number = (initialPageHeight * 2);
+        return (documentContainerRef.current.scrollTop <= distanceFromTopAmount);
     };
 
     const allNextPagesAreRendered = (): boolean => {
@@ -164,7 +164,7 @@ const CommentaryTool = ({
         setNextPagesToRender(nextPagesToRender + calculatePagesToAdd('after-initial'));
     };
 
-    const handleDocumentMouseWheel = (): void => {
+    const handleDocumentScroll = (): void => {
         if (!documentIsLoaded || !initialPageHeight || !documentContainerRef.current) return;
         if (pageRenderCooldown) return;
         if (!allNextPagesAreRendered() && documentIsScrolledNearBottom()) {
@@ -241,7 +241,7 @@ const CommentaryTool = ({
             <div 
                 className='document-container' 
                 ref={documentContainerRef}
-                onScroll={handleDocumentMouseWheel}
+                onScroll={handleDocumentScroll}
                 style={(pageRenderCooldown) ? { overflow: 'hidden' } : undefined}
             >
                 {documentBlob && 
