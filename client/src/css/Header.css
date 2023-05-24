@@ -3,19 +3,16 @@
     height: 3.5rem;
     width: 100%;
     padding: 0.5rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-start;
     color: var(--font-color);
     background-color: var(--background-color-two);
     z-index: 1000;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
-.header--username {
-    margin: 0;
-}
-
-.header--logout-button {
-    margin: 0;
+.Header--username {
+    margin-inline: 1em;
+    margin-block: 0;
 }

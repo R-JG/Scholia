@@ -56,7 +56,7 @@ const Dashboard = ({
                 user={user} 
                 logout={logout}
             />
-            <main className='dashboard-main'>
+            <main className='Dashboard--main'>
                 {selectedGroup && 
                 <GroupContentPanel 
                     key={selectedGroup.id}

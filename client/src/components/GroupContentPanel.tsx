@@ -79,7 +79,9 @@ const GroupContentPanel = ({
                     />)}
                 </div>
                 {(documentsForGroup.length === 0) && 
-                <h4>This group currently has no documents</h4>}
+                <h4 className='GroupContentPanel--no-documents-message'>
+                    This group currently has no documents
+                </h4>}
             </div>
         </div>
     );

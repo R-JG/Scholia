@@ -1,0 +1,20 @@
+.GroupContentPanel {
+    height: 100%;
+    width: 100%;
+    color: var(--font-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: scroll;
+}
+
+.GroupContentPanel--group-documents-section {
+    height: 100%;
+    width: 80%;
+}
+
+.GroupContentPanel--no-documents-message {
+    margin-top: 20%;
+    margin-left: 39%;
+}
