@@ -1,8 +1,9 @@
 .CommentaryNavigator {
-    height: 4rem;
+    box-sizing: border-box;
+    height: var(--commentary-navigator-height);
     min-width: 50rem;
     padding: 0.6rem;
-    margin-bottom: 1.2rem;
+    margin-bottom: var(--commentary-navigator-bottom-margin);
     border-radius: 0.5rem;
     position: absolute;
     bottom: 0;

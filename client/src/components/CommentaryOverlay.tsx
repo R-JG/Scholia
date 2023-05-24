@@ -34,18 +34,18 @@ const CommentaryOverlay = ({
     return (
         <div className='CommentaryOverlay'>
             <button 
-                className='commentary-section-close-button'
+                className='CommentaryOverlay--close-button'
                 onClick={handleCloseButton}>
                 ×
             </button>
             {editTextMode 
             ? <textarea 
-                className='commentary-section-text--edit'
+                className='CommentaryOverlay--section-text--edit'
                 value={selectedSection.data.text}
                 onChange={handleTextAreaChange}
             />
             : <p 
-                className='commentary-section-text--read-only' 
+                className='CommentaryOverlay--section-text--read-only' 
                 style={{ whiteSpace: 'pre-line' }}>
                 {selectedSection.data.text}
             </p>}

@@ -284,6 +284,7 @@ const CommentaryTool = ({
             </div>
             {selectedCommentary && 
             <CommentaryNavigator 
+                user={user}
                 selectedCommentary={selectedCommentary}
                 selectedSection={selectedSection}
                 coordinateSelectMode={coordinateSelectMode}

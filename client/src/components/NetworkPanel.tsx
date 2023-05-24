@@ -28,22 +28,20 @@ const NetworkPanel = ({
 
     return (
         <div className='NetworkPanel'>
-            <div className='network-panel--group-membership-section'>
-                <h3>User's Groups:</h3>
-                {(userGroups.length > 0) && 
-                <div className='group-membership-list'>
-                    {userGroups.map(group => 
-                    <GroupSelector 
-                        key={group.id}
-                        group={group}
-                        isSelected={selectedGroup?.id === group.id}
-                        userIsAMember={true}
-                        setSelectedGroup={setSelectedGroup}
-                        setSelectedDocument={setSelectedDocument}
-                        joinGroup={joinGroup}
-                    />)}
-                </div>}
-            </div>
+            <h3 className='NetworkPanel--groups-title'>Groups</h3>
+            {(userGroups.length > 0) && 
+            <div className='NetworkPanel--group-membership-list'>
+                {userGroups.map(group => 
+                <GroupSelector 
+                    key={group.id}
+                    group={group}
+                    isSelected={selectedGroup?.id === group.id}
+                    userIsAMember={true}
+                    setSelectedGroup={setSelectedGroup}
+                    setSelectedDocument={setSelectedDocument}
+                    joinGroup={joinGroup}
+                />)}
+            </div>}
             <GroupSearch 
                 user={user}
                 userGroups={userGroups}

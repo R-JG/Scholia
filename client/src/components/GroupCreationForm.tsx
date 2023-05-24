@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
+import '../css/GroupCreationForm.css';
 
 interface Props {
     createGroup: (groupName: string) => void, 

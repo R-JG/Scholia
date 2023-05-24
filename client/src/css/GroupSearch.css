@@ -1,5 +1,15 @@
 .GroupSearch {
+    width: 100%;
     margin-block: 2rem;
     display: flex;
     flex-direction: column;
+}
+
+.GroupSearch--expand-button {
+    width: 100%;
+    margin: 0;
+}
+
+.GroupSearch--search-input {
+    width: 60%;
 }

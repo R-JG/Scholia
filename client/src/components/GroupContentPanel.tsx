@@ -78,6 +78,8 @@ const GroupContentPanel = ({
                         getCommentaryForSelection={getCommentaryForSelection}
                     />)}
                 </div>
+                {(documentsForGroup.length === 0) && 
+                <h4>This group currently has no documents</h4>}
             </div>
         </div>
     );

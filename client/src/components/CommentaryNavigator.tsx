@@ -1,7 +1,8 @@
-import { Commentary, CommentarySection, SelectedSection, NavDirection } from '../typeUtils/types';
+import { LoggedInUser, Commentary, CommentarySection, SelectedSection, NavDirection } from '../typeUtils/types';
 import '../css/CommentaryNavigator.css';
 
 interface Props {
+    user: LoggedInUser | null, 
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
     coordinateSelectMode: boolean,
@@ -10,6 +11,7 @@ interface Props {
 };
 
 const CommentaryNavigator = ({ 
+    user, 
     selectedCommentary, 
     selectedSection, 
     coordinateSelectMode, 
@@ -17,7 +19,7 @@ const CommentaryNavigator = ({
     jumpToSelection 
     }: Props) => {
 
-    if (!selectedCommentary) return <div className='CommentaryNavigator'></div>;
+    if (!user || !selectedCommentary) return <div className='CommentaryNavigator'></div>;
 
     const navigateSections = (direction: NavDirection): void => {
         if (!selectedSection) return;
@@ -64,7 +66,10 @@ const CommentaryNavigator = ({
                 ▶
             </button>}
             {(selectedCommentary.commentarySections.length === 0) && 
-            <h4>Add a new section to get started.</h4>}
+            <h4>
+                {(user.id === selectedCommentary.userId) 
+                ? 'Add a new section to get started' : 'This commentary is empty'}
+            </h4>}
         </div>
     );
 };

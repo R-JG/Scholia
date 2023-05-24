@@ -1,0 +1,12 @@
+.GroupCreationForm {
+    width: 100%;
+}
+
+.GroupCreationForm--expand-button {
+    width: 100%;
+    margin: 0;
+}
+
+.GroupCreationForm--group-name-input {
+    margin-top: 0.6em;
+}

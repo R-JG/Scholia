@@ -1,7 +1,21 @@
 .GroupSelector {
-    margin: 0.5em;
-    border: 0.1em solid var(--font-color);
+    padding-inline: 1em;
+    margin-block: 0.5em;
+    margin-inline: 0;
+    border-radius: 0.5rem;
+    border: 0.2em solid var(--font-color);
     cursor: pointer;
+    transition: filter 0.2s ease;
+    display: grid;
+    place-content: center;
+}
+
+.GroupSelector:hover {
+    filter: brightness(1.2);
+}
+
+.GroupSelector:active {
+    filter: brightness(2);
 }
 
 .GroupSelector.selected {

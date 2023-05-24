@@ -4,17 +4,16 @@
     --font-color: #EEEEEE;
     --accent-color-one: gold;
     --accent-color-one--transparent: rgba(255, 231, 47, 0.5);
+
+    --commentary-navigator-height: 5rem;
+    --commentary-navigator-bottom-margin: 1.2rem;
 }
 
 /* backgroud, light: #f4edea */
 
-/*  
-Old --background-color-one: #5f5566;
-Old --background-color-two: #33202a;
-Old --font-color: #f4edea;
-*/
 
 body {
+    font-family: 'Raleway', sans-serif;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -24,4 +23,25 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+}
+
+button {
+    font-family: 'Raleway', sans-serif;
+    margin: 0.6em;
+    padding: 0.4em;
+    border-radius: 0.3rem;
+    border: none;
+    color: var(--background-color-two);
+    background-color: var(--font-color);
+    cursor: pointer;
+    transition: filter 0.2s ease;
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+input {
+    border: none;
+    border-radius: 0.4rem;
 }

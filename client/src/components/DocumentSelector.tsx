@@ -56,9 +56,9 @@ const DocumentSelector = ({
         <div 
             className={`DocumentSelector ${isSelected ? 'selected' : ''}`}
             onClick={handleComponentClick}>
-            <h4 className='DocumentSelector--document-name'>
+            <h3 className='DocumentSelector--document-name'>
                 {documentInfo.documentName}
-            </h4>
+            </h3>
             {isSelected && 
             <button 
                 className='DocumentSelector--read-document-button'
