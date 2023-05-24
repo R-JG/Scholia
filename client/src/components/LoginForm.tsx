@@ -12,9 +12,10 @@ interface Props {
 
 const LoginForm = ({
     updateUser
-}: Props) => {
+    }: Props) => {
 
     const [formMode, setFormMode] = useState<'login' | 'create'>('login');
+    const [promptMessage, setPromptMessage] = useState<string | null>(null);
     const [formValues, setFormValues] = useState<{ username: string, password: string }>({ 
         username: '', password: '' 
     });
@@ -22,13 +23,25 @@ const LoginForm = ({
     const navigate = useNavigate();
 
     const createUser = (username: string, password: string): void => {
-        usersService.createUser({ username, password });
+        usersService.createUser({ username, password })
+        .then(result => {
+            if (result) {
+                setPromptMessage(`User ${result.username} successfully created`);
+            } else {
+                setPromptMessage('Account creation unsuccessful');
+            };
+        });
     };
 
     const login = (username: string, password: string): void => {
-        loginService.login({ username, password }).then(loggedInUser => {
-            updateUser(loggedInUser);
-            navigate(dashboardRoute);
+        loginService.login({ username, password })
+        .then(loggedInUser => {
+            if (loggedInUser) {
+                updateUser(loggedInUser);
+                navigate(dashboardRoute);
+            } else {
+                setPromptMessage('Login unsuccessful');
+            };
         });
     };
 
@@ -53,44 +66,68 @@ const LoginForm = ({
         (formMode === 'login') ? setFormMode('create') : setFormMode('login');
     };
 
+    const handleClosePromptButton = (): void => setPromptMessage(null);
+
     return (
         <form className='LoginForm' onSubmit={handleSubmit}>
-            <h1 className='login-form--title'>
+            {(formMode === 'create') && 
+            <button 
+                className='LoginForm--form-mode-button--login'
+                type='button' 
+                onClick={handleFormModeButton}> 
+                🡄
+            </button>}
+            <h1 className='LoginForm--title'>
                 {(formMode === 'login') ? 'Login' : 'Create Account'}
             </h1>
+            {(formMode === 'login') && 
             <button 
-                className='login-form--mode-button'
+                className='LoginForm--form-mode-button--create'
                 type='button' 
-                onClick={handleFormModeButton}
-            > {(formMode === 'login') ? 'Create Account' : 'Login'}
-            </button>
+                onClick={handleFormModeButton}> 
+                Create Account
+            </button>}
             <label 
-                className='login-form--username-label' 
-                htmlFor='login-form--username-input'
+                className='LoginForm--username-label' 
+                htmlFor='LoginForm--username-input'
             >Username
             </label>
             <input 
-                id='login-form--username-input' 
+                id='LoginForm--username-input' 
+                className='LoginForm--username-input'
                 name='username' 
                 type='text' 
                 value={formValues.username}
                 onChange={handleInputChange}
             />
             <label 
-                className='login-form--password-label' 
-                htmlFor='login-form--password-input'
+                className='LoginForm--password-label' 
+                htmlFor='LoginForm--password-input'
             >Password
             </label>
             <input 
-                id='login-form--password-input' 
+                id='LoginForm--password-input' 
+                className='LoginForm--password-input'
                 name='password' 
                 type='password' 
                 value={formValues.password}
                 onChange={handleInputChange}
             />
-            <button className='login-form--submit-button'>
+            <button className='LoginForm--submit-button'>
                 Enter
             </button>
+            {promptMessage && 
+            <div className='LoginForm--prompt-message'>
+                <button 
+                    className='LoginForm--close-prompt-button'
+                    type='button'
+                    onClick={handleClosePromptButton}>
+                    ×
+                </button>
+                <h4 className='LoginForm--prompt-message-text'>
+                    {promptMessage}
+                </h4>
+            </div>}
         </form>
     );
 };
