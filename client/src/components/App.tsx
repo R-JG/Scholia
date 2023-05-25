@@ -128,33 +128,34 @@ const App = () => {
         return true;
     };
 
-    const addSectionToSelectedCommentary = (
+    const addSectionToSelectedCommentary = async (
             commentaryId: number, pageNumber: number, 
             pageCoordinateTop: number, pageCoordinateBottom: number
-        ): void => {
-        if (!user || !selectedCommentary) return;
+        ): Promise<boolean> => {
+        if (!user || !selectedCommentary) return false;
         const commentarySectionData: CommentarySectionEntry = {
             pageNumber, pageCoordinateTop, pageCoordinateBottom, text: ''
         };
-        commentariesService.createCommentarySection(user.token, commentaryId, commentarySectionData)
-        .then(createdSection => {
-            if (!createdSection) return;
-            const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
-            .concat(createdSection)
-            .sort((a, b) => 
-                ((a.pageNumber < b.pageNumber) 
-                || ((a.pageNumber === b.pageNumber) 
-                && (a.pageCoordinateTop < b.pageCoordinateTop))) ? -1 : 1
-            );
-            const newSectionIndex: number = updatedCommentarySections.findIndex(section => 
-                (section.id === createdSection.id)
-            );
-            setSelectedCommentary({ 
-                ...selectedCommentary, 
-                commentarySections: updatedCommentarySections
-            });
-            setSelectedSection({ data: createdSection, index: newSectionIndex });
+        const createdSection = await commentariesService.createCommentarySection(
+            user.token, commentaryId, commentarySectionData
+        );
+        if (!createdSection) return false;
+        const updatedCommentarySections: CommentarySection[] = selectedCommentary.commentarySections
+        .concat(createdSection)
+        .sort((a, b) => 
+            ((a.pageNumber < b.pageNumber) 
+            || ((a.pageNumber === b.pageNumber) 
+            && (a.pageCoordinateTop < b.pageCoordinateTop))) ? -1 : 1
+        );
+        const newSectionIndex: number = updatedCommentarySections.findIndex(section => 
+            (section.id === createdSection.id)
+        );
+        setSelectedCommentary({ 
+            ...selectedCommentary, 
+            commentarySections: updatedCommentarySections
         });
+        setSelectedSection({ data: createdSection, index: newSectionIndex });
+        return true;
     };
 
     const updateSelectedSectionText = (updatedText: string): void => {

@@ -8,3 +8,7 @@
     z-index: 102;
     background-color: var(--background-color-two);
 }
+
+.CommentaryEditBar--coordinate-select-message {
+    color: var(--font-color);
+}

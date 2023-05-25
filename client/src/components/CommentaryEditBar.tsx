@@ -19,7 +19,7 @@ interface Props {
         pageNumber: number, 
         pageCoordinateTop: number, 
         pageCoordinateBottom: number
-    ) => void,
+    ) => Promise<boolean>,
     deleteSelectedCommentarySection: () => void, 
     setEditTextMode: (boolean: boolean) => void,
     saveSectionTextToCommentary: (commentarySection: CommentarySection) => void, 
@@ -76,10 +76,13 @@ const CommentaryEditBar = ({
             );
             addSectionToSelectedCommentary(
                 selectedCommentary.id, pageNumber, pageCoordinateTop, pageCoordinateBottom
-            );
+            ).then(sectionHasBeenAdded => {
+                if (!sectionHasBeenAdded) return;
+                resetSelectionCoordinates();
+                setCoordinateSelectMode(false);
+                setEditTextMode(true);
+            });
         };
-        resetSelectionCoordinates();
-        setCoordinateSelectMode(false);
     };
 
     const handleDiscardNewSectionButton = (): void => {
@@ -105,52 +108,55 @@ const CommentaryEditBar = ({
 
     return (
         <div className='CommentaryEditBar'>
-            <div className='add-new-commentary-section-buttons-container'>
+            <div className='CommentaryEditBar--add-new-section-container'>
                 {!coordinateSelectMode && !editTextMode &&
                 <button 
-                    className='add-new-commentary-section-button'
+                    className='CommentaryEditBar--add-new-section-button'
                     onClick={handleAddNewSectionButton}>
                     Add New Section
                 </button>}
                 {coordinateSelectMode && 
                 <div>
+                    <p className='CommentaryEditBar--coordinate-select-message'>
+                        Click and drag to make a selection
+                    </p>
                     {yPercentCoordinateOne && yPercentCoordinateTwo &&
                     <button 
-                        className='save-new-commentary-section-button'
+                        className='CommentaryEditBar--save-new-section-button'
                         onClick={handleSaveNewSectionButton}>
                         Add
                     </button>}
                     <button
-                        className='discard-new-commentary-section-button'
+                        className='CommentaryEditBar--discard-new-section-button'
                         onClick={handleDiscardNewSectionButton}>
                         Cancel
                     </button>
                 </div>}
             </div>
-            <div className='edit-commentary-section-buttons-container'>
+            <div className='CommentaryEditBar--edit-section-container'>
                 {(selectedCommentary.commentarySections.length > 0) 
                 && selectedSection && !sectionTextHasBeenEdited &&
                 <button 
-                    className='edit-commentary-section-button'
+                    className='CommentaryEditBar--edit-section-button'
                     onClick={() => setEditTextMode(!editTextMode)}>
                     {!editTextMode ? 'Edit Commentary Section' : 'Cancel Edit'}
                 </button>}
                 {editTextMode && sectionTextHasBeenEdited &&
                 <div>
                     <button 
-                        className='save-edited-commentary-section-button'
+                        className='CommentaryEditBar--save-edited-section-button'
                         onClick={handleSaveSectionEditButton}>
                         Save Changes
                     </button>
                     <button 
-                        className='discard-edited-commentary-section-button'
+                        className='CommentaryEditBar--discard-edited-section-button'
                         onClick={handleDiscardSectionEditButton}>
                         Discard Changes
                     </button>
                 </div>}
                 {editTextMode && 
                 <button
-                    className='delete-commentary-section-button'
+                    className='CommentaryEditBar--delete-section-button'
                     onClick={handleDeleteSectionButton}>
                     Delete Section
                 </button>}

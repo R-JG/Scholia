@@ -63,6 +63,11 @@ const CommentaryNavigator = ({
                     onClick={() => handleSectionIconClick(section, index)}>
                 </div>)}
             </div>
+            {(selectedCommentary.commentarySections.length === 0) && 
+            <h4 className='CommentaryNavigator--empty-commentary-message'>
+                {(user.id === selectedCommentary.userId) 
+                ? 'Add a new section to get started' : 'This commentary is empty'}
+            </h4>}
             <div className='CommentaryNavigator--button-container--next'>
                 {(selectedSection && 
                 (selectedSection.index !== (selectedCommentary.commentarySections.length - 1))) 
@@ -73,11 +78,6 @@ const CommentaryNavigator = ({
                 </button> 
                 : <div className='CommentaryNavigator--navigate-button-placeholder'></div>}
             </div>
-            {(selectedCommentary.commentarySections.length === 0) && 
-            <h4 className='CommentaryNavigator--empty-commentary-message'>
-                {(user.id === selectedCommentary.userId) 
-                ? 'Add a new section to get started' : 'This commentary is empty'}
-            </h4>}
         </div>
     );
 };

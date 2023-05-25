@@ -23,7 +23,7 @@ interface Props {
     addSectionToSelectedCommentary: (
         commentaryId: number, pageNumber: number, 
         pageCoordinateTop: number, pageCoordinateBottom: number
-    ) => void,
+    ) => Promise<boolean>,
     deleteSelectedCommentarySection: () => void, 
     updateSelectedSectionText: (updatedText: string) => void,
     saveSectionTextToCommentary: (commentarySection: CommentarySection) => void

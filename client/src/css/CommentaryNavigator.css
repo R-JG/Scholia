@@ -71,5 +71,6 @@
 }
 
 .CommentaryNavigator--empty-commentary-message {
+    font-weight: 400;
     color: var(--font-color);
 }
