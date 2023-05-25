@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { commentaryToolRoute } from '../config';
 import { GroupDocumentInfo } from '../typeUtils/types';
+import '../css/CommentaryCreationForm.css';
 
 interface Props {
     selectedDocument: GroupDocumentInfo | null, 

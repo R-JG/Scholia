@@ -1,12 +1,33 @@
 .DocumentSelector {
+    width: 100%;
+    padding-inline: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 1em;
     margin: 1rem;
-    border: 0.1em solid var(--font-color);
+    border-radius: 0.7rem;
+    border: 0.2em solid var(--font-color);
     color: var(--font-color);
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .DocumentSelector.selected {
     border-width: 0.2em;
     border-color: var(--accent-color-one);
     cursor: default;
+}
+
+.DocumentSelector--button-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.DocumentSelector--divider {
+    margin-inline: 0.5em;
+    flex-grow: 2;
+    border: 0.1em solid var(--accent-color-one);
 }

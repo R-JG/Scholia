@@ -1,5 +1,5 @@
 .GroupContentPanel {
-    height: 100%;
+    height: calc(100% - var(--header-height));
     width: 100%;
     color: var(--font-color);
     display: flex;
@@ -12,6 +12,10 @@
 .GroupContentPanel--group-documents-section {
     height: 100%;
     width: 80%;
+}
+
+.GroupContentPanel--group-documents-list {
+    width: 100%;
 }
 
 .GroupContentPanel--no-documents-message {

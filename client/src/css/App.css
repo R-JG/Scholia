@@ -5,6 +5,7 @@
     --accent-color-one: gold;
     --accent-color-one--transparent: rgba(255, 231, 47, 0.5);
 
+    --header-height: 3.5rem;
     --commentary-navigator-height: 5rem;
     --commentary-navigator-bottom-margin: 1.2rem;
 }

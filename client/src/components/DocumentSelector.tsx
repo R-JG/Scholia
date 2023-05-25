@@ -39,6 +39,8 @@ const DocumentSelector = ({
     getCommentaryForSelection
     }: Props) => {
 
+    if (!user) return <div className='DocumentSelector inactive'></div>;
+
     const navigate = useNavigate();
 
     const handleComponentClick = (): void => {
@@ -60,23 +62,27 @@ const DocumentSelector = ({
                 {documentInfo.documentName}
             </h3>
             {isSelected && 
-            <button 
-                className='DocumentSelector--read-document-button'
-                onClick={handleReadDocumentButton}>
-                Read
-            </button>}
-            {isSelected && 
-            <CommentaryCreationForm 
-                selectedDocument={selectedDocument}
-                createCommentary={createCommentary}
-            />}
+            <div className='DocumentSelector--button-section'>
+                <button 
+                    className='DocumentSelector--read-document-button'
+                    onClick={handleReadDocumentButton}>
+                    Read
+                </button>
+                <CommentaryCreationForm 
+                    selectedDocument={selectedDocument}
+                    createCommentary={createCommentary}
+                />
+                <hr className='DocumentSelector--divider' />
+            </div>}
             {isSelected && 
             <DocumentCommentaryList 
                 user={user}
                 documentsForGroup={documentsForGroup}
                 selectedDocument={selectedDocument}
                 userCommentariesForDocument={userCommentariesForDocument}
-                groupCommentariesForDocument={groupCommentariesForDocument}
+                groupCommentariesForDocument={groupCommentariesForDocument
+                    .filter(commentaryInfo => (commentaryInfo.userId !== user.id))
+                }
                 setSelectedDocument={setSelectedDocument}
                 getCommentaryForSelection={getCommentaryForSelection}
                 setSelectedSection={setSelectedSection}

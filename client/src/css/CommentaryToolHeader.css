@@ -1,6 +1,6 @@
 .CommentaryToolHeader {
     box-sizing: border-box;
-    height: 3.5rem;
+    height: var(--header-height);
     width: 100%;
     padding: 0.5rem;
     display: flex;

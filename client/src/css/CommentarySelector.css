@@ -2,16 +2,44 @@
     margin: 1rem;
     color: var(--font-color);
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .CommentarySelector:hover {
     color: var(--accent-color-one);
 }
 
-.CommentarySelector--title {
-    margin: 0;
+.CommentarySelector--bullet-point {
+    height: 0.4em;
+    width: 0.4em;
+    margin: 0.6em;
+    border-radius: 1em;
+    background-color: var(--font-color);
 }
 
+.CommentarySelector:hover .CommentarySelector--bullet-point {
+    background-color: var(--accent-color-one);
+}
+
+.CommentarySelector--info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.CommentarySelector--title, 
 .CommentarySelector--author {
-    margin: 0;
+    max-width: 95%;
+    margin-inline: 0;
+    margin-block: 0.3em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
