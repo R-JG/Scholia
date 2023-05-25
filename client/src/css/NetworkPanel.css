@@ -1,6 +1,6 @@
 .NetworkPanel {
     height: 100%;
-    width: 12rem;
+    width: 15rem;
     padding: 2em;
     border-left: 0.2em solid var(--background-color-two);
     align-self: flex-end;

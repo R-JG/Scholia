@@ -24,7 +24,7 @@ const NetworkPanel = ({
     joinGroup
     }: Props) => {
 
-    if (!user) return <div className='NetworkPanel'></div>;
+    if (!user) return <div className='NetworkPanel inactive'></div>;
 
     return (
         <div className='NetworkPanel'>

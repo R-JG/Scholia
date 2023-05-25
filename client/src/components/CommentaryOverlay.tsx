@@ -20,7 +20,7 @@ const CommentaryOverlay = ({
     cancelSectionTextEdit
     }: Props) => {
 
-    if (!selectedCommentary || !selectedSection) return <div className='CommentaryOverlay'></div>
+    if (!selectedCommentary || !selectedSection) return <div className='CommentaryOverlay inactive'></div>;
 
     const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
         updateSelectedSectionText(e.currentTarget.value);

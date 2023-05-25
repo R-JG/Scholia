@@ -19,7 +19,7 @@ const CommentaryNavigator = ({
     jumpToSelection 
     }: Props) => {
 
-    if (!user || !selectedCommentary) return <div className='CommentaryNavigator'></div>;
+    if (!user || !selectedCommentary) return <div className='CommentaryNavigator inactive'></div>;
 
     const navigateSections = (direction: NavDirection): void => {
         if (!selectedSection) return;

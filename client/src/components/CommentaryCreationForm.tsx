@@ -14,7 +14,7 @@ const CommentaryCreationForm = ({
     createCommentary, 
     }: Props) => {
 
-    if (!selectedDocument) return <div className='CommentaryCreationForm'></div>;
+    if (!selectedDocument) return <div className='CommentaryCreationForm inactive'></div>;
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [nameInputValue, setNameInputValue] = useState<string>('');

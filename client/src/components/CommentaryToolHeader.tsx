@@ -17,7 +17,7 @@ const CommentaryToolHeader = ({
     setSelectedSection
     }: Props) => {
 
-    if (!selectedDocument) return <div className='CommentaryToolHeader'></div>;
+    if (!selectedDocument) return <div className='CommentaryToolHeader inactive'></div>;
 
     const navigate = useNavigate();
 

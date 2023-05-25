@@ -46,7 +46,7 @@ const CommentaryEditBar = ({
     }: Props) => {
 
     if (!user || !selectedCommentary || (user.id !== selectedCommentary.userId)
-    ) return <div className='CommentaryEditBar'></div>;
+    ) return <div className='CommentaryEditBar inactive'></div>;
 
     const [sectionTextHasBeenEdited, setSectionTextHasBeenEdited] = useState<boolean>(false);
 

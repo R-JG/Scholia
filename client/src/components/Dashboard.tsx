@@ -48,7 +48,7 @@ const Dashboard = ({
     setSelectedSection
     }: Props) => {
 
-    if (!user) return <div className='Dashboard'></div>;
+    if (!user) return <div className='Dashboard inactive'></div>;
 
     return (
         <div className='Dashboard'>

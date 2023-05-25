@@ -39,7 +39,7 @@ const GroupContentPanel = ({
     setSelectedSection
     }: Props) => {
     
-    if (!user || !selectedGroup) return <div className='GroupContentPanel'></div>;
+    if (!user || !selectedGroup) return <div className='GroupContentPanel inactive'></div>;
 
     const [groupCommentariesForDocument, setGroupCommentariesForDocument] = useState<CommentaryInfo[]>([]);
 

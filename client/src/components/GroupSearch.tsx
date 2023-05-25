@@ -23,7 +23,7 @@ const GroupSearch = ({
     joinGroup
     }: Props) => {
 
-    if (!user) return <div className='GroupSearch'></div>;
+    if (!user) return <div className='GroupSearch inactive'></div>;
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [searchInputValue, setSearchInputValue] = useState<string>('');

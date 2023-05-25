@@ -42,7 +42,7 @@ const CommentaryTool = ({
     saveSectionTextToCommentary
     }: Props) => {
 
-    if (!user || !selectedDocument) return <div className='CommentaryTool'></div>;
+    if (!user || !selectedDocument) return <div className='CommentaryTool inactive'></div>;
 
     const [documentBlob, setDocumentBlob] = useState<Blob | null>(null);
     const [documentIsLoaded, setDocumentIsLoaded] = useState<boolean>(false);
