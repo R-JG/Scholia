@@ -105,7 +105,7 @@ const CommentaryTool = ({
         } else setSectionTextHasBeenEdited(false);
     }, [selectedCommentary, selectedSection]);
 
-    const jumpToNewPage = (pageNumber: number) => {
+    const jumpToNewPage = (pageNumber: number): void => {
         setPreviousPagesToRender(0);
         setNextPagesToRender(0);
         setInitialPageNumber(pageNumber);

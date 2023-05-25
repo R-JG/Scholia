@@ -45,28 +45,36 @@ const CommentaryNavigator = ({
 
     return (
         <div className='CommentaryNavigator'>
-            {selectedSection && (selectedSection.index !== 0) &&
-            <button 
-                onClick={() => handleNavigateButton('previous')}>
-                ◀
-            </button>}
-            <div className='commentary-section-display'>
+            <div className='CommentaryNavigator--button-container--previous'>
+                {(selectedSection && (selectedSection.index !== 0)) 
+                ? <button 
+                    className='CommentaryNavigator--navigate-button'
+                    onClick={() => handleNavigateButton('previous')}>
+                    ◀
+                </button>
+                : <div className='CommentaryNavigator--navigate-button-placeholder'></div>}
+            </div>
+            <div className='CommentaryNavigator--commentary-section-display'>
                 {selectedCommentary.commentarySections.map((section, index) => 
                 <div 
-                    className={(section.id === selectedSection?.data.id) 
-                        ? 'commentary-section-icon--selected'
-                        : 'commentary-section-icon--unselected'}
+                    className={`CommentaryNavigator--commentary-section-icon 
+                    ${(section.id === selectedSection?.data.id) 
+                        ? 'selected' : 'unselected'}`}
                     onClick={() => handleSectionIconClick(section, index)}>
                 </div>)}
             </div>
-            {selectedSection && 
-            (selectedSection.index !== (selectedCommentary.commentarySections.length - 1)) &&
-            <button 
-                onClick={() => handleNavigateButton('next')}>
-                ▶
-            </button>}
+            <div className='CommentaryNavigator--button-container--next'>
+                {(selectedSection && 
+                (selectedSection.index !== (selectedCommentary.commentarySections.length - 1))) 
+                ? <button 
+                    className='CommentaryNavigator--navigate-button'
+                    onClick={() => handleNavigateButton('next')}>
+                    ▶
+                </button> 
+                : <div className='CommentaryNavigator--navigate-button-placeholder'></div>}
+            </div>
             {(selectedCommentary.commentarySections.length === 0) && 
-            <h4>
+            <h4 className='CommentaryNavigator--empty-commentary-message'>
                 {(user.id === selectedCommentary.userId) 
                 ? 'Add a new section to get started' : 'This commentary is empty'}
             </h4>}

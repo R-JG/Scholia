@@ -1,5 +1,5 @@
 .GroupContentPanel {
-    height: calc(100% - var(--header-height));
+    height: 100%;
     width: 100%;
     color: var(--font-color);
     display: flex;

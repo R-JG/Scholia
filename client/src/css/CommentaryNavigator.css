@@ -1,7 +1,7 @@
 .CommentaryNavigator {
     box-sizing: border-box;
     height: var(--commentary-navigator-height);
-    min-width: 50rem;
+    width: 60%;
     padding: 0.6rem;
     margin-bottom: var(--commentary-navigator-bottom-margin);
     border-radius: 0.5rem;
@@ -15,7 +15,7 @@
     align-items: center;
 }
 
-.commentary-section-display {
+.CommentaryNavigator--commentary-section-display {
     max-width: 50%;
     display: flex;
     flex-direction: row;
@@ -24,7 +24,7 @@
     overflow: scroll;
 }
 
-.commentary-section-icon--selected {
+.CommentaryNavigator--commentary-section-icon.selected {
     box-sizing: border-box;
     height: 1rem;
     width: 1rem;
@@ -34,7 +34,7 @@
     cursor: pointer;
 }
 
-.commentary-section-icon--unselected {
+.CommentaryNavigator--commentary-section-icon.unselected {
     box-sizing: border-box;
     height: 0.75rem;
     width: 0.75rem;
@@ -42,4 +42,34 @@
     border-radius: 1rem;
     background-color: var(--accent-color-one--transparent);
     cursor: pointer;
+}
+
+.CommentaryNavigator--button-container--previous {
+    padding-right: 0.6em;
+    flex-grow: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.CommentaryNavigator--button-container--next {
+    padding-left: 0.6em;
+    flex-grow: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.CommentaryNavigator--navigate-button, 
+.CommentaryNavigator--navigate-button-placeholder {
+    height: 1.6rem;
+    width: 1.6rem;
+    margin: 0;
+    padding: 0;
+}
+
+.CommentaryNavigator--empty-commentary-message {
+    color: var(--font-color);
 }

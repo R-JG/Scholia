@@ -34,13 +34,23 @@ const CommentaryToolHeader = ({
                 onClick={handleReturnButton}>
                 Return To Dashboard
             </button>
-            <h4 className='CommentaryToolHeader--document-name'>
-                {`Document: ${selectedDocument.documentName}`}
-            </h4>
             {selectedCommentary && 
-            <h4 className='CommentaryToolHeader--commentary-name'>
-                {`Commentary: ${selectedCommentary.commentaryName}`}
+            <h4 className='CommentaryToolHeader--commentary-title'>
+                <span className='CommentaryToolHeader--commentary-tag'>
+                    Commentary
+                </span>
+                <span className='CommentaryToolHeader--commentary-name'>
+                    {selectedCommentary.commentaryName}
+                </span>
             </h4>}
+            <h4 className='CommentaryToolHeader--document-title'>
+                <span className='CommentaryToolHeader--document-tag'>
+                    Document
+                </span>
+                <span className='CommentaryToolHeader--document-name'>
+                    {selectedDocument.documentName}
+                </span>
+            </h4>
         </header>
     );
 };

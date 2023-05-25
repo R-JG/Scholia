@@ -6,7 +6,32 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     color: var(--font-color);
     background-color: var(--background-color-two);
+}
+
+.CommentaryToolHeader--return-button {
+    margin-inline: 0.6em;
+    margin-block: 0;
+}
+
+.CommentaryToolHeader--document-title, 
+.CommentaryToolHeader--commentary-title {
+    max-width: 45%;
+    margin-block: 0;
+    margin-inline: 1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.CommentaryToolHeader--document-tag, 
+.CommentaryToolHeader--commentary-tag {
+    margin-right: 1em;
+}
+
+.CommentaryToolHeader--document-name, 
+.CommentaryToolHeader--commentary-name {
+    font-weight: 400;
 }
