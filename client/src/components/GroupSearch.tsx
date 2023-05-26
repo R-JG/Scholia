@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
-import { groupSearchDebounceMilliseconds } from '../config';
+import { debounceMilliseconds } from '../config';
 import groupsService from '../services/groupsService';
 import GroupSelector from './GroupSelector';
 import '../css/GroupSearch.css';
@@ -40,7 +40,7 @@ const GroupSearch = ({
                 if (unjoinedGroups.length > 0) setSearchResults(unjoinedGroups);
             });
         };
-        const searchDebounce = setTimeout(searchGroupByName, groupSearchDebounceMilliseconds);
+        const searchDebounce = setTimeout(searchGroupByName, debounceMilliseconds);
         return () => clearTimeout(searchDebounce);
     }, [searchInputValue]);
 

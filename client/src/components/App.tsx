@@ -5,12 +5,12 @@ import {
     CommentaryEntry, CommentarySectionEntry, SelectedSection
 } from '../typeUtils/types';
 import { parseLoggedInUser } from '../typeUtils/validation';
-import { homeRoute, dashboardRoute, commentaryToolRoute } from '../config';
+import { indexRoute, dashboardRoute, commentaryToolRoute } from '../config';
 import loginService from '../services/loginService';
 import groupsService from '../services/groupsService';
 import groupDocumentsService from '../services/groupDocumentsService';
 import commentariesService from '../services/commentariesService';
-import Home from './Home';
+import LoginPage from './LoginPage';
 import Dashboard from './Dashboard';
 import CommentaryTool from './CommentaryTool';
 import '../css/App.css';
@@ -201,10 +201,10 @@ const App = () => {
         <div className='App'>
             <BrowserRouter>
                 <Routes>
-                    <Route path={homeRoute} element={
+                    <Route path={indexRoute} element={
                         (user) 
                         ? <Navigate replace to={dashboardRoute} /> 
-                        : <Home 
+                        : <LoginPage 
                             user={user}
                             updateUser={updateUser}
                             logout={logout}
@@ -232,7 +232,7 @@ const App = () => {
                             setSelectedCommentary={setSelectedCommentary}
                             setSelectedSection={setSelectedSection}
                         /> 
-                        : <Navigate replace to={homeRoute} />
+                        : <Navigate replace to={indexRoute} />
                     } />
                     <Route path={commentaryToolRoute} element={
                         (selectedDocument) 

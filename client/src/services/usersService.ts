@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { UserEntry, User } from '../typeUtils/types';
-import { parseUser, parseUserArray } from '../typeUtils/validation';
+import { parseUser, parseUserArray, parseBoolean } from '../typeUtils/validation';
 
 const baseUrl: string = '/api/v1/users';
 
@@ -29,4 +29,15 @@ const searchByUsername = async (searchTerm: string, token: string): Promise<User
     };
 };
 
-export default { createUser, searchByUsername };
+const checkIfUserExists = async (searchTerm: string): Promise<boolean | null> => {
+    try {
+        const response = await axios.get(`${baseUrl}/verify/${searchTerm}`);
+        const result: boolean = parseBoolean(response.data);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return null;
+    };
+};
+
+export default { createUser, searchByUsername, checkIfUserExists };

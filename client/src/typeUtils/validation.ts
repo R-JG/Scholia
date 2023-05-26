@@ -12,14 +12,21 @@ const isNumber = (params: unknown): params is number => {
 
 const parseString = (params: unknown): string => {
     if (!isString(params)) {
-        throw new Error(`value: ${params} is not of type string`);
+        throw new Error(`value: ${params} is not a string`);
     };
     return params;
 };
 
 export const parseNumber = (params: unknown): number => {
     if (!isNumber(params)) {
-        throw new Error(`value: ${params} is not of type number`);
+        throw new Error(`value: ${params} is not a number`);
+    };
+    return params;
+};
+
+export const parseBoolean = (params: unknown): boolean => {
+    if (typeof params !== 'boolean') {
+        throw new Error(`value: ${params} is not a boolean`);
     };
     return params;
 };
