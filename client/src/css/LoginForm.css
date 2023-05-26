@@ -1,38 +1,24 @@
 .LoginForm {
-    height: 70%;
-    width: 30%;
-    margin: 4rem;
+    margin-inline: 4rem;
+    margin-block: 1rem;
     padding: 3rem;
-    border: 0.1em solid var(--background-color-two);
+    padding-bottom: 4rem;
+    border-radius: 0.5em;
+    border: 0.2em solid var(--background-color-two);
     color: var(--font-color);
-    align-self: flex-end;
     display: grid;
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(4, auto);
     grid-template-rows: repeat(4, auto);
+    row-gap: 3em;
     grid-template-areas: 
-    'title title . mode-button'
+    'title title . .'
     'username-label . username-input username-input'
     'password-label . password-input password-input'
-    'submit-button . . .'
-    '. prompt-message prompt-message .';
+    'submit-button . . .';
 }
 
 .LoginForm--title {
     grid-area: title;
-    margin: 0;
-}
-
-.LoginForm--form-mode-button--login {
-    grid-area: mode-button;
-    max-height: 2em;
-    max-width: 12em;
-    margin: 0;
-}
-
-.LoginForm--form-mode-button--create {
-    grid-area: mode-button;
-    max-height: 2em;
-    max-width: 12em;
     margin: 0;
 }
 
@@ -58,8 +44,4 @@
     grid-area: submit-button;
     max-height: 2em;
     margin: 0;
-}
-
-.LoginForm--prompt-message {
-    grid-area: prompt-message;
 }

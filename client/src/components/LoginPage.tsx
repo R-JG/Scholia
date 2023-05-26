@@ -41,15 +41,15 @@ const LoginPage = ({
                 setMainStatusPrompt={setMainStatusPrompt}
             />}
             {mainStatusPrompt && 
-            <div className='LoginPage--prompt-message'>
+            <div className='LoginPage--prompt'>
+                <h4 className='LoginPage--prompt-text'>
+                    {mainStatusPrompt}
+                </h4>
                 <button 
                     className='LoginPage--close-prompt-button'
                     onClick={() => setMainStatusPrompt('')}>
                     🞪
                 </button>
-                <h4 className='LoginPage--prompt-message-text'>
-                    {mainStatusPrompt}
-                </h4>
             </div>}
         </div>
     );

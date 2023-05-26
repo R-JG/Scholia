@@ -69,7 +69,9 @@ const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
                 onChange={e => setUsernameInput(e.currentTarget.value)}
             />
             {usernameStatusPrompt && usernameInput && 
-            <span>{usernameStatusPrompt}</span>}
+            <span className='UserCreationForm--username-prompt'>
+                {usernameStatusPrompt}
+            </span>}
             <label 
                 className='UserCreationForm--password-label' 
                 htmlFor='UserCreationForm--password-input'>
@@ -95,7 +97,9 @@ const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
                 onChange={e => setPasswordCheckInput(e.currentTarget.value)}
             />
             {passwordStatusPrompt && 
-            <span>{passwordStatusPrompt}</span>}
+            <span className='UserCreationForm--password-prompt'>
+                {passwordStatusPrompt}
+            </span>}
             <button className='UserCreationForm--submit-button'>
                 Create
             </button>
