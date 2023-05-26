@@ -36,7 +36,7 @@ const CommentaryOverlay = ({
             <button 
                 className='CommentaryOverlay--close-button'
                 onClick={handleCloseButton}>
-                ×
+                🞪
             </button>
             {editTextMode 
             ? <textarea 

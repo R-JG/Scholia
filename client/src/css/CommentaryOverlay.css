@@ -20,11 +20,13 @@
 
 .CommentaryOverlay--close-button {
     box-sizing: border-box;
-    height: 3rem;
-    width: 3rem;
+    height: 1.4rem;
+    width: 1.4rem;
+    padding: 0.3em;
     margin: 0;
-    padding: 0;
     align-self: flex-end;
+    position: relative;
+    left: 1.5%;
 }
 
 .CommentaryOverlay--section-text--read-only {

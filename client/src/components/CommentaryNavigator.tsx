@@ -6,6 +6,8 @@ interface Props {
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
     coordinateSelectMode: boolean,
+    editTextMode: boolean,
+    setEditTextMode: (boolean: boolean) => void, 
     setSelectedSection: (section: SelectedSection) => void,
     jumpToSelection: (pageNumber: number, pageCoordinateTop: number) => void
 };
@@ -15,6 +17,8 @@ const CommentaryNavigator = ({
     selectedCommentary, 
     selectedSection, 
     coordinateSelectMode, 
+    editTextMode, 
+    setEditTextMode, 
     setSelectedSection, 
     jumpToSelection 
     }: Props) => {
@@ -34,11 +38,14 @@ const CommentaryNavigator = ({
     };
 
     const handleNavigateButton = (direction: NavDirection): void => {
+        if (coordinateSelectMode) return;
+        if (editTextMode) setEditTextMode(false);
         navigateSections(direction);
     };
 
     const handleSectionIconClick = (section: CommentarySection, index: number): void => {
         if (coordinateSelectMode) return;
+        if (editTextMode) setEditTextMode(false);
         setSelectedSection({ data: section, index });
         jumpToSelection(section.pageNumber, section.pageCoordinateTop);
     };

@@ -16,6 +16,8 @@ interface Props {
     pageForSelection: number | null,
     yPercentCoordinateOne: number | null,
     yPercentCoordinateTwo: number | null,
+    editTextMode: boolean,
+    setEditTextMode: (boolean: boolean) => void, 
     setInitialPageIsLoaded: (isLoaded: boolean) => void,
     setInitialPageHeight: (height: number) => void,
     setPageForSelection: (pageNumber: number) => void,
@@ -37,6 +39,8 @@ const DocumentPage = ({
     pageForSelection,
     yPercentCoordinateOne,
     yPercentCoordinateTwo,
+    editTextMode, 
+    setEditTextMode, 
     setInitialPageIsLoaded,
     setInitialPageHeight,
     setPageForSelection,
@@ -116,6 +120,8 @@ const DocumentPage = ({
                 yPercentCoordinateTwo={yPercentCoordinateTwo}
                 yPixelCoordinateOne={yPixelCoordinateOne}
                 yPixelCoordinateTwo={yPixelCoordinateTwo}
+                editTextMode={editTextMode}
+                setEditTextMode={setEditTextMode}
                 setSelectedSection={setSelectedSection}
             />
             <Page 

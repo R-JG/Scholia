@@ -12,6 +12,8 @@ interface Props {
     yPercentCoordinateTwo: number | null,
     yPixelCoordinateOne: number | null,
     yPixelCoordinateTwo: number | null,
+    editTextMode: boolean,
+    setEditTextMode: (boolean: boolean) => void, 
     setSelectedSection: (section: SelectedSection) => void
 };
 
@@ -25,7 +27,9 @@ const SelectionBoxContainer = ({
     yPercentCoordinateOne,
     yPercentCoordinateTwo,
     yPixelCoordinateOne,
-    yPixelCoordinateTwo,
+    yPixelCoordinateTwo, 
+    editTextMode, 
+    setEditTextMode, 
     setSelectedSection
     }: Props) => {
 
@@ -59,6 +63,7 @@ const SelectionBoxContainer = ({
 
     const handleSelectionBoxClick = (section: CommentarySection, index: number): void => {
         if (coordinateSelectMode) return;
+        if (editTextMode) setEditTextMode(false);
         setSelectedSection({ data: section, index });
     };
 

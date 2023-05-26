@@ -134,6 +134,12 @@ const CommentaryEditBar = ({
                 </div>}
             </div>
             <div className='CommentaryEditBar--edit-section-container'>
+                {editTextMode && 
+                <button
+                    className='CommentaryEditBar--delete-section-button'
+                    onClick={handleDeleteSectionButton}>
+                    Delete Section
+                </button>}
                 {(selectedCommentary.commentarySections.length > 0) 
                 && selectedSection && !sectionTextHasBeenEdited &&
                 <button 
@@ -154,12 +160,6 @@ const CommentaryEditBar = ({
                         Discard Changes
                     </button>
                 </div>}
-                {editTextMode && 
-                <button
-                    className='CommentaryEditBar--delete-section-button'
-                    onClick={handleDeleteSectionButton}>
-                    Delete Section
-                </button>}
             </div>
         </div>
     );
