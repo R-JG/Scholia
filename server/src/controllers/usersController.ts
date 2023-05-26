@@ -4,29 +4,30 @@ import { parseUserEntry } from '../typeUtils/validation';
 import { createPasswordHash } from '../serverUtils/encryption';
 import usersService from '../database/services/usersService';
 
-/*
-const getAll = async (
-        _request: Request, response: Response, next: NextFunction
+const getAllWhereUsernameMatches = async (
+        request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
     try {
-        const allUsers: UserModel[] = await usersService.getAll();
-        response.json(allUsers);
+        const searchTerm: string = request.params.searchTerm;
+        const searchResult: UserModel[] = await usersService.getAllWhereUsernameMatches(searchTerm);
+        response.json(searchResult.map(user => ({ username: user.username })));
     } catch (error) {
         next(error);
     };
 };
 
-const getOne = async (
+const verifyIfUserExists = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
     try {
-        const user: UserModel | null = await usersService.getOneById(request.params.id);
-        response.json(user);
+        const username: string = request.params.username;
+        const user: UserModel | null = await usersService.getOneByUsername(username);
+        if (user) response.json(true);
+        if (!user) response.json(false);
     } catch (error) {
         next(error);
     };
 };
-*/
 
 const createOne = async (
         request: Request, response: Response, next: NextFunction
@@ -45,29 +46,4 @@ const createOne = async (
     };
 };
 
-/*
-const deleteOne = async (
-        request: Request, response: Response, next: NextFunction
-    ): Promise<void> => {
-    try {
-        const deleteResult: number = await usersService.deleteOne(request.params.id);
-        response.json(deleteResult);
-    } catch (error) {
-        next(error);
-    };
-};
-*/
-
-const getSomeByUsername = async (
-        request: Request, response: Response, next: NextFunction
-    ): Promise<void> => {
-    try {
-        const searchTerm: string = request.params.searchTerm;
-        const searchResult: UserModel[] = await usersService.getSomeByUsername(searchTerm);
-        response.json(searchResult.map(user => ({ username: user.username })));
-    } catch (error) {
-        next(error);
-    };
-};
-
-export default { createOne, getSomeByUsername };
+export default { getAllWhereUsernameMatches, verifyIfUserExists, createOne };

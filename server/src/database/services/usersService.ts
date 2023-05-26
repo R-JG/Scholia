@@ -12,7 +12,7 @@ const getOneByUsername = async (username: string): Promise<UserModel | null> => 
     return await User.findOne({ where: { username } });
 };
 
-const getSomeByUsername = async (searchTerm: string): Promise<UserModel[]> => {
+const getAllWhereUsernameMatches = async (searchTerm: string): Promise<UserModel[]> => {
     return await User.findAll({ where: { username: { [Op.like]: `%${searchTerm}%` } } });
 };
 
@@ -24,4 +24,4 @@ const deleteOne = async (primaryKey: string): Promise<number> => {
     return await User.destroy({ where: { id: primaryKey } });
 };
 
-export default { getAll, getOneById, getOneByUsername, getSomeByUsername, createOne, deleteOne };
+export default { getAll, getAllWhereUsernameMatches, getOneById, getOneByUsername, createOne, deleteOne };
