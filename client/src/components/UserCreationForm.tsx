@@ -4,10 +4,14 @@ import usersService from '../services/usersService';
 import '../css/UserCreationForm.css';
 
 interface Props {
+    setCreateAccountMode: (mode: boolean) => void, 
     setMainStatusPrompt: (message: string) => void
 };
 
-const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
+const UserCreationForm = ({ 
+    setCreateAccountMode, 
+    setMainStatusPrompt 
+    }: Props) => {
 
     const [usernameStatusPrompt, setUsernameStatusPrompt] = useState<string>('');
     const [passwordStatusPrompt, setPasswordStatusPrompt] = useState<string>('');
@@ -36,6 +40,7 @@ const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
         .then(result => {
             if (result) {
                 setMainStatusPrompt(`User ${result.username} successfully created`);
+                setCreateAccountMode(false);
             } else {
                 setMainStatusPrompt('Account creation unsuccessful');
             };
@@ -46,7 +51,7 @@ const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
         e.preventDefault();
         if (!usernameInput || !passwordInput || !passwordCheckInput) return;
         if (passwordInput !== passwordCheckInput) {
-            setPasswordStatusPrompt('Passwords do not match');
+            setPasswordStatusPrompt('passwords do not match');
             return;
         };
         createUser(usernameInput, passwordInput);
@@ -64,17 +69,19 @@ const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
                 htmlFor='UserCreationForm--username-input'>
                 Username
             </label>
-            <input 
-                id='UserCreationForm--username-input' 
-                className='UserCreationForm--username-input'
-                type='text' 
-                value={usernameInput}
-                onChange={e => setUsernameInput(e.currentTarget.value)}
-            />
-            {usernameStatusPrompt && usernameInput && 
-            <span className='UserCreationForm--username-prompt'>
-                {usernameStatusPrompt}
-            </span>}
+            <div className='UserCreationForm--username-input-container'>
+                <input 
+                    id='UserCreationForm--username-input' 
+                    className='UserCreationForm--username-input'
+                    type='text' 
+                    value={usernameInput}
+                    onChange={e => setUsernameInput(e.currentTarget.value)}
+                />
+                {usernameStatusPrompt && usernameInput && 
+                <span className='UserCreationForm--username-prompt'>
+                    {usernameStatusPrompt}
+                </span>}
+            </div>
             <label 
                 className='UserCreationForm--password-label' 
                 htmlFor='UserCreationForm--password-input'>
@@ -92,17 +99,19 @@ const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
                 htmlFor='UserCreationForm--password-check-input'>
                 Re-enter Password
             </label>
-            <input 
-                id='UserCreationForm--password-check-input' 
-                className='UserCreationForm--password-check-input'
-                type='password' 
-                value={passwordCheckInput}
-                onChange={e => setPasswordCheckInput(e.currentTarget.value)}
-            />
-            {passwordStatusPrompt && 
-            <span className='UserCreationForm--password-prompt'>
-                {passwordStatusPrompt}
-            </span>}
+            <div className='UserCreationForm--password-check-input-container'>
+                <input 
+                    id='UserCreationForm--password-check-input' 
+                    className='UserCreationForm--password-check-input'
+                    type='password' 
+                    value={passwordCheckInput}
+                    onChange={e => setPasswordCheckInput(e.currentTarget.value)}
+                />
+                {passwordStatusPrompt && 
+                <span className='UserCreationForm--password-prompt'>
+                    {passwordStatusPrompt}
+                </span>}
+            </div>
             <button className='UserCreationForm--submit-button'>
                 Create
             </button>

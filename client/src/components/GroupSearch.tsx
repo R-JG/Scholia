@@ -34,10 +34,9 @@ const GroupSearch = ({
         if (!searchResults) setSearchResults([]);
         const searchGroupByName = () => {
             groupsService.getGroupsByName(user.token, searchInputValue)
-            .then(groupsResult => {
-                const unjoinedGroups: Group[] = groupsResult.filter(group => !userIsAMember(group));
-                if (unjoinedGroups.length <= 0) setSearchResults(null);
-                if (unjoinedGroups.length > 0) setSearchResults(unjoinedGroups);
+            .then(groups => {
+                if (groups.length <= 0) setSearchResults(null);
+                if (groups.length > 0) setSearchResults(groups);
             });
         };
         const searchDebounce = setTimeout(searchGroupByName, debounceMilliseconds);
@@ -86,6 +85,7 @@ const GroupSearch = ({
                 </div>
                 <div className='GroupSearch--search-results'>
                     {searchResults && searchResults.map(group => 
+                    (!userIsAMember(group)) ?
                     <GroupSelector 
                         group={group}
                         isSelected={selectedGroup?.id === group.id}
@@ -93,7 +93,7 @@ const GroupSearch = ({
                         setSelectedGroup={setSelectedGroup}
                         setSelectedDocument={setSelectedDocument}
                         joinGroup={joinGroup}
-                    />)}
+                    /> : undefined)}
                     {(!searchResults) && (searchInputValue !== '') && 
                     <div className='GroupSearch--results-null-message'>
                         No results

@@ -15,7 +15,7 @@
 
 .LoginPage--prompt {
     padding: 1.2em;
-    margin-inline: 7rem;
+    margin-inline: 4rem;
     border-radius: 0.5rem;
     background-color: var(--background-color-two);
     display: flex;

@@ -38,6 +38,7 @@ const LoginPage = ({
             />}
             {createAccountMode && 
             <UserCreationForm 
+                setCreateAccountMode={setCreateAccountMode}
                 setMainStatusPrompt={setMainStatusPrompt}
             />}
             {mainStatusPrompt && 

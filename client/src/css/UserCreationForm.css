@@ -27,9 +27,20 @@
     grid-area: username-label;
 }
 
-.UserCreationForm--username-input {
+.UserCreationForm--username-input-container {
     grid-area: username-input;
+    display: flex;
+    flex-direction: column;
+}
+
+.UserCreationForm--username-input {
     max-height: 1.5em;
+}
+
+.UserCreationForm--username-prompt {
+    height: 0;
+    position: relative;
+    top: 0.2em;
 }
 
 .UserCreationForm--password-label {
@@ -45,30 +56,24 @@
     grid-area: password-check-label;
 }
 
-.UserCreationForm--password-check-input {
+.UserCreationForm--password-check-input-container {
     grid-area: password-check-input;
+    display: flex;
+    flex-direction: column;
+}
+
+.UserCreationForm--password-check-input {
     max-height: 1.5em;
+}
+
+.UserCreationForm--password-prompt {
+    height: 0;
+    position: relative;
+    top: 0.2em;
 }
 
 .UserCreationForm--submit-button {
     grid-area: submit-button;
     max-height: 2em;
     margin: 0;
-}
-
-.UserCreationForm--username-prompt {
-    height: 0;
-    width: 0;
-    position: relative;
-    top: 6.7em;
-    white-space: nowrap;
-}
-
-.UserCreationForm--password-prompt {
-    height: 0;
-    width: 0;
-    position: relative;
-    top: 15.2em;
-    right: 5.8em;
-    white-space: nowrap;
 }
