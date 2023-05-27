@@ -33,6 +33,7 @@ const CommentaryCreationForm = ({
     };
 
     const handleFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
+        if (!nameInputValue) return;
         e.preventDefault();
         createCommentary(selectedDocument.id, nameInputValue)
         .then(creationIsSuccessful => {
