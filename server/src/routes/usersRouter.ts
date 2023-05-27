@@ -6,7 +6,7 @@ const usersRouter = Router();
 
 usersRouter.get('/search/:searchTerm', authenticateUser, usersController.getAllWhereUsernameMatches);
 
-usersRouter.get('/verify/:username', usersController.verifyIfUserExists);
+usersRouter.get('/:username/exists', usersController.verifyIfUserExists);
 
 usersRouter.post('/', usersController.createOne);
 

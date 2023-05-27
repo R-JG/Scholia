@@ -31,7 +31,7 @@ const searchByUsername = async (searchTerm: string, token: string): Promise<User
 
 const checkIfUserExists = async (searchTerm: string): Promise<boolean | null> => {
     try {
-        const response = await axios.get(`${baseUrl}/verify/${searchTerm}`);
+        const response = await axios.get(`${baseUrl}/${searchTerm}/exists`);
         const result: boolean = parseBoolean(response.data);
         return result;
     } catch (error) {
