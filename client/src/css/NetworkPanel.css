@@ -1,8 +1,10 @@
 .NetworkPanel {
+    box-sizing: border-box;
     height: 100%;
-    width: 15rem;
+    width: 17rem;
     padding: 2em;
     border-left: 0.2em solid var(--background-color-two);
+    flex-shrink: 0;
     align-self: flex-end;
     color: var(--font-color);
     overflow-y: scroll;
@@ -14,7 +16,6 @@
 }
 
 .NetworkPanel--groups-title {
-    margin-top: 4rem;
     align-self: center;
 }
 

@@ -43,6 +43,7 @@ const CommentaryOverlay = ({
                 className='CommentaryOverlay--section-text--edit'
                 value={selectedSection.data.text}
                 onChange={handleTextAreaChange}
+                autoFocus
             />
             : <p 
                 className='CommentaryOverlay--section-text--read-only' 

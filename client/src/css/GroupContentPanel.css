@@ -1,6 +1,7 @@
 .GroupContentPanel {
     height: 100%;
     width: 100%;
+    padding-top: 1.5em;
     color: var(--font-color);
     display: flex;
     flex-direction: row;
