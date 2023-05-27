@@ -35,10 +35,10 @@ const GroupSelector = ({
             className={`GroupSelector ${isSelected ? 'selected' : ''}`}
             onClick={handleSelectorClick}
         >
-            <h5>{group.groupName}</h5>
+            <h5 className='GroupSelector--group-name'>{group.groupName}</h5>
             {!userIsAMember && 
             <button 
-                className='join-group-button'
+                className='GroupSelector--join-group-button'
                 onClick={handleJoinButton}>
                 Join
             </button>}

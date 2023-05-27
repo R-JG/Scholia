@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import '../css/GroupCreationForm.css';
 
 interface Props {
@@ -9,6 +9,8 @@ const GroupCreationForm = ({ createGroup }: Props) => {
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [groupNameInputValue, setGroupNameInputValue] = useState<string>('');
+
+    const nameInputRef = useRef<HTMLInputElement>(null);
 
     const handleExpandButton = (): void => setIsExpanded(true);
 
@@ -23,7 +25,7 @@ const GroupCreationForm = ({ createGroup }: Props) => {
 
     const handleGroupFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        if (groupNameInputValue === '') return;
+        if (groupNameInputValue === '') return nameInputRef.current?.focus();
         createGroup(groupNameInputValue);
         setGroupNameInputValue('');
         setIsExpanded(false);
@@ -50,6 +52,7 @@ const GroupCreationForm = ({ createGroup }: Props) => {
                 <input 
                     id='GroupCreationForm--group-name-input'
                     className='GroupCreationForm--group-name-input' 
+                    ref={nameInputRef}
                     type='text' 
                     value={groupNameInputValue}
                     onChange={handleGroupNameInputChange}

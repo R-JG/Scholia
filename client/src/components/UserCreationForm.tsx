@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, useRef, FormEvent } from 'react';
 import { debounceMilliseconds } from '../config';
 import usersService from '../services/usersService';
 import '../css/UserCreationForm.css';
@@ -15,17 +15,21 @@ const UserCreationForm = ({
 
     const [usernameStatusPrompt, setUsernameStatusPrompt] = useState<string>('');
     const [passwordStatusPrompt, setPasswordStatusPrompt] = useState<string>('');
-    const [usernameInput, setUsernameInput] = useState<string>('');
-    const [passwordInput, setPasswordInput] = useState<string>('');
-    const [passwordCheckInput, setPasswordCheckInput] = useState<string>('');
+    const [usernameInputValue, setUsernameInputValue] = useState<string>('');
+    const [passwordInputValue, setPasswordInputValue] = useState<string>('');
+    const [passwordCheckInputValue, setPasswordCheckInputValue] = useState<string>('');
+
+    const usernameInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
+    const passwordCheckInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (!usernameInput) {
+        if (!usernameInputValue) {
             if (usernameStatusPrompt) setUsernameStatusPrompt('');
             return;
         };
         const checkIfUsernameIsTaken = () => {
-            usersService.checkIfUserExists(usernameInput).then(usernameIsTaken => {
+            usersService.checkIfUserExists(usernameInputValue).then(usernameIsTaken => {
                 const promptMessage: string = (usernameIsTaken) 
                 ? 'username is taken' : 'username is available';
                 setUsernameStatusPrompt(promptMessage);
@@ -33,7 +37,7 @@ const UserCreationForm = ({
         };
         const checkDebounce: number = setTimeout(checkIfUsernameIsTaken, debounceMilliseconds);
         return () => clearTimeout(checkDebounce);
-    }, [usernameInput]);
+    }, [usernameInputValue]);
 
     const createUser = (username: string, password: string): void => {
         usersService.createUser({ username, password })
@@ -49,15 +53,17 @@ const UserCreationForm = ({
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        if (!usernameInput || !passwordInput || !passwordCheckInput) return;
-        if (passwordInput !== passwordCheckInput) {
+        if (!usernameInputValue) return usernameInputRef.current?.focus();
+        if (!passwordInputValue) return passwordInputRef.current?.focus();
+        if (!passwordCheckInputValue) return passwordCheckInputRef.current?.focus();
+        if (passwordInputValue !== passwordCheckInputValue) {
             setPasswordStatusPrompt('passwords do not match');
             return;
         };
-        createUser(usernameInput, passwordInput);
-        setUsernameInput('');
-        setPasswordInput('');
-        setPasswordCheckInput('');
+        createUser(usernameInputValue, passwordInputValue);
+        setUsernameInputValue('');
+        setPasswordInputValue('');
+        setPasswordCheckInputValue('');
         setPasswordStatusPrompt('');
     };
 
@@ -74,10 +80,11 @@ const UserCreationForm = ({
                     id='UserCreationForm--username-input' 
                     className='UserCreationForm--username-input'
                     type='text' 
-                    value={usernameInput}
-                    onChange={e => setUsernameInput(e.currentTarget.value)}
+                    ref={usernameInputRef}
+                    value={usernameInputValue}
+                    onChange={e => setUsernameInputValue(e.currentTarget.value)}
                 />
-                {usernameStatusPrompt && usernameInput && 
+                {usernameStatusPrompt && usernameInputValue && 
                 <span className='UserCreationForm--username-prompt'>
                     {usernameStatusPrompt}
                 </span>}
@@ -91,8 +98,9 @@ const UserCreationForm = ({
                 id='UserCreationForm--password-input' 
                 className='UserCreationForm--password-input'
                 type='password' 
-                value={passwordInput}
-                onChange={e => setPasswordInput(e.currentTarget.value)}
+                ref={passwordInputRef}
+                value={passwordInputValue}
+                onChange={e => setPasswordInputValue(e.currentTarget.value)}
             />
             <label 
                 className='UserCreationForm--password-check-label' 
@@ -104,8 +112,9 @@ const UserCreationForm = ({
                     id='UserCreationForm--password-check-input' 
                     className='UserCreationForm--password-check-input'
                     type='password' 
-                    value={passwordCheckInput}
-                    onChange={e => setPasswordCheckInput(e.currentTarget.value)}
+                    ref={passwordCheckInputRef}
+                    value={passwordCheckInputValue}
+                    onChange={e => setPasswordCheckInputValue(e.currentTarget.value)}
                 />
                 {passwordStatusPrompt && 
                 <span className='UserCreationForm--password-prompt'>

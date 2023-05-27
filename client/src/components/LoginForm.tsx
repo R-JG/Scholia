@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, useRef, FormEvent, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoggedInUser } from '../typeUtils/types';
 import { dashboardRoute } from '../config';
@@ -16,6 +16,9 @@ const LoginForm = ({
     }: Props) => {
 
     const [formValues, setFormValues] = useState({ username: '', password: '' });
+
+    const usernameInputRef = useRef<HTMLInputElement>(null);
+    const passwordInputRef = useRef<HTMLInputElement>(null);
 
     const navigate = useNavigate();
 
@@ -42,7 +45,8 @@ const LoginForm = ({
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        if ((formValues.username === '') || (formValues.password === '')) return;
+        if (!formValues.username) return usernameInputRef.current?.focus();
+        if (!formValues.password) return passwordInputRef.current?.focus();
         login(formValues.username, formValues.password);
         setFormValues({ username: '', password: '' });
     };
@@ -60,6 +64,7 @@ const LoginForm = ({
                 className='LoginForm--username-input'
                 name='username' 
                 type='text' 
+                ref={usernameInputRef}
                 value={formValues.username}
                 onChange={handleInputChange}
             />
@@ -73,6 +78,7 @@ const LoginForm = ({
                 className='LoginForm--password-input'
                 name='password' 
                 type='password' 
+                ref={passwordInputRef}
                 value={formValues.password}
                 onChange={handleInputChange}
             />

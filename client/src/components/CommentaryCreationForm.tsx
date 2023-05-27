@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { commentaryToolRoute } from '../config';
 import { GroupDocumentInfo } from '../typeUtils/types';
@@ -19,6 +19,8 @@ const CommentaryCreationForm = ({
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [nameInputValue, setNameInputValue] = useState<string>('');
 
+    const nameInputRef = useRef<HTMLInputElement>(null);
+
     const navigate = useNavigate();
 
     const handleExpandButton = (): void => setIsExpanded(true);
@@ -33,8 +35,8 @@ const CommentaryCreationForm = ({
     };
 
     const handleFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
-        if (!nameInputValue) return;
         e.preventDefault();
+        if (!nameInputValue) return nameInputRef.current?.focus();
         createCommentary(selectedDocument.id, nameInputValue)
         .then(creationIsSuccessful => {
             if (!creationIsSuccessful) return;
@@ -63,6 +65,7 @@ const CommentaryCreationForm = ({
                 <input 
                     id='CommentaryCreationForm--name-input'
                     className='CommentaryCreationForm--name-input'
+                    ref={nameInputRef}
                     type='text' 
                     value={nameInputValue}
                     onChange={handleNameInputChange}
