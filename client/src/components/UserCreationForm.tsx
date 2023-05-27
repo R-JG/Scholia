@@ -16,7 +16,10 @@ const UserCreationForm = ({ setMainStatusPrompt }: Props) => {
     const [passwordCheckInput, setPasswordCheckInput] = useState<string>('');
 
     useEffect(() => {
-        if (!usernameInput) return;
+        if (!usernameInput) {
+            if (usernameStatusPrompt) setUsernameStatusPrompt('');
+            return;
+        };
         const checkIfUsernameIsTaken = () => {
             usersService.checkIfUserExists(usernameInput).then(usernameIsTaken => {
                 const promptMessage: string = (usernameIsTaken) 
