@@ -1,17 +1,17 @@
 import { Sequelize } from 'sequelize';
 import { Umzug, SequelizeStorage } from 'umzug';
 import { 
-    POSTGRES_PORT, POSTGRES_DATABASE, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST 
+    DATABASE_PORT, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST 
 } from '../serverUtils/config';
 import { logInfo, logError } from '../serverUtils/logger';
 
 export const database = new Sequelize(
-    POSTGRES_DATABASE, 
-    POSTGRES_USER, 
-    POSTGRES_PASSWORD,
+    DATABASE_NAME, 
+    DATABASE_USER, 
+    DATABASE_PASSWORD,
     {
-        host: POSTGRES_HOST,
-        port: POSTGRES_PORT,
+        host: DATABASE_HOST,
+        port: DATABASE_PORT,
         dialect: 'postgres'
     }
 );
