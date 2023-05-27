@@ -98,6 +98,7 @@ const App = () => {
         .then(addedDocumentInfo => {
             if (!addedDocumentInfo) return;
             setGroupDocuments(groupDocuments.concat(addedDocumentInfo));
+            setSelectedDocument(addedDocumentInfo);
         });
     };
 
