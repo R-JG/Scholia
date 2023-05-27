@@ -4,7 +4,7 @@
     padding: 3rem;
     padding-bottom: 4rem;
     border-radius: 0.5em;
-    border: 0.2em solid var(--background-color-two);
+    border: 0.2em solid var(--font-color);
     color: var(--font-color);
     display: grid;
     grid-template-columns: repeat(4, auto);
