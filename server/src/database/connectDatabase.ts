@@ -1,19 +1,17 @@
 import { Sequelize } from 'sequelize';
 import { Umzug, SequelizeStorage } from 'umzug';
 import { 
-    DATABASE_PORT, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST 
+    DATABASE_URI, DATABASE_PORT, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST 
 } from '../serverUtils/config';
 import { logInfo, logError } from '../serverUtils/logger';
 
-export const database = new Sequelize(
-    DATABASE_NAME, 
-    DATABASE_USER, 
-    DATABASE_PASSWORD,
-    {
+export const database: Sequelize = (DATABASE_URI 
+    ? new Sequelize(DATABASE_URI)
+    : new Sequelize(DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, {
         host: DATABASE_HOST,
         port: DATABASE_PORT,
         dialect: 'postgres'
-    }
+    })
 );
 
 const runMigrations = async () => {
