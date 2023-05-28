@@ -1,12 +1,12 @@
 import { Sequelize } from 'sequelize';
 import { Umzug, SequelizeStorage } from 'umzug';
 import { 
-    DATABASE_URI, DATABASE_PORT, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST 
+    DATABASE_URL, DATABASE_PORT, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST 
 } from '../serverUtils/config';
 import { logInfo, logError } from '../serverUtils/logger';
 
-export const database: Sequelize = (DATABASE_URI 
-    ? new Sequelize(DATABASE_URI)
+export const database: Sequelize = (DATABASE_URL 
+    ? new Sequelize(DATABASE_URL)
     : new Sequelize(DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, {
         host: DATABASE_HOST,
         port: DATABASE_PORT,

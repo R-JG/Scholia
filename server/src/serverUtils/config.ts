@@ -5,7 +5,7 @@ dotenv.config();
 
 export const PORT: string = process.env.PORT || '';
 
-export const DATABASE_URI: string = process.env.DATABASE_URI || '';
+export const DATABASE_URL: string = process.env.DATABASE_URL || '';
 
 export const DATABASE_PORT: number = Number(process.env.DATABASE_PORT) || 5432;
 
