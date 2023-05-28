@@ -6,6 +6,6 @@ COPY . .
 
 RUN npm ci --omit=dev
 
-RUN mkdir /documents
+RUN mkdir /usr/src/app/documents
 
 CMD npm start
