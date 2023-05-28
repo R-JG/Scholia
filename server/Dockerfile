@@ -2,10 +2,10 @@ FROM node:19
 
 WORKDIR /usr/src/app
 
-COPY package.json .
-COPY package-lock.json .
-COPY build .
+COPY . .
 
-RUN npm ci --only=production
+RUN npm ci --omit=dev
+
+RUN mkdir /documents
 
 CMD npm start

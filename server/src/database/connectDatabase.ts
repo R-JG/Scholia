@@ -17,7 +17,7 @@ export const database: Sequelize = (DATABASE_URI
 const runMigrations = async () => {
     const migrator = new Umzug({
         migrations: {
-            glob: 'src/database/migrations/*.ts',
+            glob: 'build/server/database/migrations/*.js',
         },
         storage: new SequelizeStorage({
             sequelize: database,
