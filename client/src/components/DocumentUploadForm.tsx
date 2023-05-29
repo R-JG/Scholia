@@ -1,23 +1,46 @@
 import { useState, useRef, ChangeEvent, FormEvent } from 'react';
+import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
 import { maxFileBytesSize } from '../config';
-import { Group } from '../typeUtils/types';
+import groupDocumentsService from '../services/groupDocumentsService';
 import '../css/DocumentUploadForm.css';
 
 interface Props {
+    user: LoggedInUser | null,
+    groupDocuments: GroupDocumentInfo[], 
     selectedGroup: Group | null, 
-    uploadDocument: (document: File, groupId: number) => void
+    setGroupDocuments: (groupDocuments: GroupDocumentInfo[]) => void, 
+    setSelectedDocument: (documentInfo: GroupDocumentInfo) => void
 };
 
 const DocumentUploadForm = ({
+    user, 
+    groupDocuments, 
     selectedGroup, 
-    uploadDocument
+    setGroupDocuments, 
+    setSelectedDocument
     }: Props) => {
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [inputFile, setInputFile] = useState<File | null>(null);
     const [promptMessage, setPromptMessage] = useState<string | null>(null);
+    const [uploadProgress, setUploadProgress] = useState<number | undefined>(undefined);
 
     const fileInuptRef = useRef<HTMLInputElement>(null);
+
+    const callbackUploadProgress = (newProgressValue: number | undefined): void => setUploadProgress(newProgressValue);
+
+    const uploadDocument = (document: File, groupId: number): void => {
+        if (!user) return;
+        groupDocumentsService.addDocument(document, groupId, user.token, callbackUploadProgress)
+        .then(addedDocumentInfo => {
+            if (!addedDocumentInfo) return setUploadProgress(undefined);
+            setGroupDocuments(groupDocuments.concat(addedDocumentInfo));
+            setSelectedDocument(addedDocumentInfo);
+            if (fileInuptRef.current) fileInuptRef.current.value = '';
+            setUploadProgress(undefined);
+            setIsExpanded(false);
+        });
+    };
 
     const handleExpandButton = (): void => setIsExpanded(true);
 
@@ -47,9 +70,6 @@ const DocumentUploadForm = ({
         e.preventDefault();
         if (!inputFile || !selectedGroup) return;
         uploadDocument(inputFile, selectedGroup.id);
-        if (fileInuptRef.current) {
-            fileInuptRef.current.value = '';
-        };
     };
 
     return (
@@ -60,9 +80,9 @@ const DocumentUploadForm = ({
                 onClick={handleExpandButton}>
                 Add a document to the group
             </button>}
+            {isExpanded && !uploadProgress && 
             <form 
                 className='DocumentUploadForm--form'
-                style={isExpanded ? undefined : { display: 'none' }}
                 onSubmit={handleFormSubmit}>
                 <input 
                     className='DocumentUploadForm--upload-input' 
@@ -85,7 +105,19 @@ const DocumentUploadForm = ({
                     onClick={handleCancelButton}>
                     Cancel
                 </button>
-            </form>
+            </form>}
+            {uploadProgress && 
+            <div className='DocumentUploadForm--progress-section'>
+                <span className='DocumentUploadForm--progress-message'>
+                    {`Uploading ${inputFile?.name}`}
+                </span>
+                <div className='DocumentUploadForm--progress-bar'>
+                    <div 
+                        className='DocumentUploadForm--progress-amount'
+                        style={{ width: `${uploadProgress * 100}%` }}>
+                    </div>
+                </div>
+            </div>}
         </div>
     );
 };

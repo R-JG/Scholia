@@ -5,7 +5,10 @@ import { parseGroupDocumentInfo, parseGroupDocumentInfoArray, parseBlob } from '
 const baseUrl: string = '/api/v1/documents';
 
 const addDocument = async (
-        document: File, groupId: number, token: string
+        document: File, 
+        groupId: number, 
+        token: string, 
+        uploadProgressCallback: (progress: number | undefined) => void
     ): Promise<GroupDocumentInfo | null> => {
     try {
         const formData = new FormData();
@@ -13,7 +16,8 @@ const addDocument = async (
         const response = await axios.post(
             `${baseUrl}/groups/${groupId}`,
             formData,
-            { headers: { Authorization: `Bearer ${token}` } }
+            { headers: { Authorization: `Bearer ${token}` }, 
+            onUploadProgress: (progressEvent) => uploadProgressCallback(progressEvent.progress)}
         );
         const addedDocumentInfo: GroupDocumentInfo = parseGroupDocumentInfo(response.data);
         return addedDocumentInfo;        

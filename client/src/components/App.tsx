@@ -92,16 +92,6 @@ const App = () => {
         });
     };
 
-    const uploadDocument = (document: File, groupId: number): void => {
-        if (!user) return;
-        groupDocumentsService.addDocument(document, groupId, user.token)
-        .then(addedDocumentInfo => {
-            if (!addedDocumentInfo) return;
-            setGroupDocuments(groupDocuments.concat(addedDocumentInfo));
-            setSelectedDocument(addedDocumentInfo);
-        });
-    };
-
     const getCommentaryForSelection = (commentaryId: number): void => {
         if (!user) return;
         commentariesService.getCommentaryById(user.token, commentaryId)
@@ -226,9 +216,9 @@ const App = () => {
                             createGroup={createGroup}
                             joinGroup={joinGroup}
                             createCommentary={createCommentary}
+                            setGroupDocuments={setGroupDocuments}
                             setSelectedGroup={setSelectedGroup}
                             setSelectedDocument={setSelectedDocument}
-                            uploadDocument={uploadDocument}
                             getCommentaryForSelection={getCommentaryForSelection}
                             setSelectedCommentary={setSelectedCommentary}
                             setSelectedSection={setSelectedSection}

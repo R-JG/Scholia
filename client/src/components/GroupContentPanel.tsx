@@ -10,13 +10,14 @@ import '../css/GroupContentPanel.css';
 interface Props {
     user: LoggedInUser | null,
     userCommentaries: CommentaryInfo[], 
+    groupDocuments: GroupDocumentInfo[], 
     selectedGroup: Group | null, 
     documentsForGroup: GroupDocumentInfo[],
     selectedDocument: GroupDocumentInfo | null, 
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
+    setGroupDocuments: (groupDocuments: GroupDocumentInfo[]) => void, 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
-    uploadDocument: (document: File, groupId: number) => void, 
     createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>, 
     getCommentaryForSelection: (commentaryId: number) => void, 
     setSelectedCommentary: (commentary: Commentary | null) => void, 
@@ -26,13 +27,14 @@ interface Props {
 const GroupContentPanel = ({ 
     user,
     userCommentaries, 
+    groupDocuments, 
     selectedGroup, 
     documentsForGroup, 
     selectedDocument, 
     selectedCommentary,
     selectedSection, 
+    setGroupDocuments, 
     setSelectedDocument,
-    uploadDocument,
     createCommentary, 
     getCommentaryForSelection, 
     setSelectedCommentary, 
@@ -53,8 +55,11 @@ const GroupContentPanel = ({
         <div className='GroupContentPanel'>
             <div className='GroupContentPanel--group-documents-section'>
                 <DocumentUploadForm 
+                    user={user}
+                    groupDocuments={groupDocuments}
                     selectedGroup={selectedGroup}
-                    uploadDocument={uploadDocument}
+                    setGroupDocuments={setGroupDocuments}
+                    setSelectedDocument={setSelectedDocument}
                 />
                 <div className='GroupContentPanel--group-documents-list'>
                     {documentsForGroup.map(documentInfo => 
