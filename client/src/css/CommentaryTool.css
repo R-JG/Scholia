@@ -9,17 +9,23 @@
     overflow: hidden;
 }
 
-.document-container {
+.CommentaryTool--progress-bar {
+    margin: 3em;
+    justify-content: center;
+}
+
+.CommentaryTool--document-container {
     width: 50%;
     height: 80%;
     margin-top: 3%;
-    border: 0.1em solid var(--background-color-two);
     overflow: scroll;
     position: relative;
 }
 
-.document-component {
+.CommentaryTool--document-component {
     width: 100%;
     height: 100%;
+    color: var(--font-color);
     position: relative;
+    text-align: center;
 }

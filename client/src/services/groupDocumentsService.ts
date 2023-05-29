@@ -4,7 +4,7 @@ import { parseGroupDocumentInfo, parseGroupDocumentInfoArray, parseBlob } from '
 
 const baseUrl: string = '/api/v1/documents';
 
-const addDocument = async (
+const uploadDocument = async (
         document: File, 
         groupId: number, 
         token: string, 
@@ -21,6 +21,26 @@ const addDocument = async (
         );
         const addedDocumentInfo: GroupDocumentInfo = parseGroupDocumentInfo(response.data);
         return addedDocumentInfo;        
+    } catch (error) {
+        console.error(error);
+        return null;
+    };
+};
+
+const downloadDocument = async (
+        documentId: number, 
+        token: string, 
+        downloadProgressCallback: (progress: number | undefined) => void
+    ): Promise<Blob | null> => {
+    try {
+        const response = await axios.get(
+            `${baseUrl}/${documentId}/file`,
+            { headers: { Authorization: `Bearer ${token}` }, 
+            responseType: 'blob', 
+            onDownloadProgress: (progressEvent) => downloadProgressCallback(progressEvent.progress) }
+        );
+        const documentBlob = parseBlob(response.data);
+        return documentBlob;
     } catch (error) {
         console.error(error);
         return null;
@@ -44,18 +64,4 @@ const getAllDocumentInfoForGroups = async (
     };
 };
 
-const getSingleDocumentFile = async (documentId: number, token: string): Promise<Blob | null> => {
-    try {
-        const response = await axios.get(
-            `${baseUrl}/${documentId}/file`,
-            { headers: { Authorization: `Bearer ${token}` }, responseType: 'blob' }
-        );
-        const documentBlob = parseBlob(response.data);
-        return documentBlob;
-    } catch (error) {
-        console.error(error);
-        return null;
-    };
-};
-
-export default { addDocument, getAllDocumentInfoForGroups, getSingleDocumentFile };
+export default { uploadDocument, downloadDocument, getAllDocumentInfoForGroups };

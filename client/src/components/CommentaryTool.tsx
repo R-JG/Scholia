@@ -10,6 +10,7 @@ import DocumentPage from './DocumentPage';
 import CommentaryNavigator from './CommentaryNavigator';
 import CommentaryOverlay from './CommentaryOverlay';
 import CommentaryEditBar from './CommentaryEditBar';
+import ProgressBar from './ProgressBar';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../css/CommentaryTool.css';
 
@@ -44,6 +45,7 @@ const CommentaryTool = ({
 
     if (!user || !selectedDocument) return <div className='CommentaryTool inactive'></div>;
 
+    const [downloadProgress, setDownloadProgress] = useState<number | undefined>(undefined);
     const [documentBlob, setDocumentBlob] = useState<Blob | null>(null);
     const [documentIsLoaded, setDocumentIsLoaded] = useState<boolean>(false);
     const [initialPageIsLoaded, setInitialPageIsLoaded] = useState<boolean>(false);
@@ -64,8 +66,14 @@ const CommentaryTool = ({
     const documentContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        groupDocumentsService.getSingleDocumentFile(selectedDocument.id, user.token)
-        .then(blob => setDocumentBlob(blob));
+        const callbackDownloadProgress = (newProgressValue: number | undefined): void => {
+            setDownloadProgress(newProgressValue);
+        };
+        groupDocumentsService.downloadDocument(selectedDocument.id, user.token, callbackDownloadProgress)
+        .then(blob => {
+            setDownloadProgress(undefined);
+            setDocumentBlob(blob);
+        });
     }, []);
 
     useEffect(() => {
@@ -244,16 +252,23 @@ const CommentaryTool = ({
                 setSelectedCommentary={setSelectedCommentary}
                 setSelectedSection={setSelectedSection}
             />
+            {downloadProgress && 
+            <ProgressBar 
+                className='CommentaryTool--progress-bar'
+                message='Downloading' 
+                progressPercent={downloadProgress * 100} 
+            />}
             <div 
-                className='document-container' 
+                className='CommentaryTool--document-container' 
                 ref={documentContainerRef}
                 onScroll={handleDocumentScroll}
                 style={(pageRenderCooldown) ? { overflow: 'hidden' } : undefined}
             >
                 {documentBlob && 
                 <Document 
-                    className='document-component' 
+                    className='CommentaryTool--document-component' 
                     file={documentBlob}
+                    loading='Preparing document'
                     onLoadSuccess={(pdf) => {
                         setTotalPages(pdf.numPages);
                         setDocumentIsLoaded(true);
@@ -286,7 +301,7 @@ const CommentaryTool = ({
                     {createPages('after-initial')}
                 </Document>}
             </div>
-            {selectedCommentary && 
+            {selectedCommentary && documentIsLoaded && 
             <CommentaryNavigator 
                 user={user}
                 selectedCommentary={selectedCommentary}
@@ -297,7 +312,7 @@ const CommentaryTool = ({
                 setSelectedSection={setSelectedSection}
                 jumpToSelection={jumpToSelection}
             />}
-            {selectedCommentary && selectedSection &&
+            {selectedCommentary && selectedSection && documentIsLoaded && 
             <CommentaryOverlay 
                 selectedCommentary={selectedCommentary}
                 selectedSection={selectedSection}
@@ -306,7 +321,8 @@ const CommentaryTool = ({
                 updateSelectedSectionText={updateSelectedSectionText}
                 cancelSectionTextEdit={cancelSectionTextEdit}
             />}
-            {selectedCommentary && (user.id === selectedCommentary.userId) && 
+            {selectedCommentary && documentIsLoaded && 
+            (user.id === selectedCommentary.userId) && 
             <CommentaryEditBar 
                 user={user}
                 selectedCommentary={selectedCommentary}

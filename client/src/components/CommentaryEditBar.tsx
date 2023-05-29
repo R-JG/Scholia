@@ -78,10 +78,11 @@ const CommentaryEditBar = ({
                 selectedCommentary.id, pageNumber, pageCoordinateTop, pageCoordinateBottom
             ).then(sectionHasBeenAdded => {
                 if (!sectionHasBeenAdded) return;
-                resetSelectionCoordinates();
-                setCoordinateSelectMode(false);
+
                 setEditTextMode(true);
             });
+            resetSelectionCoordinates();
+            setCoordinateSelectMode(false);
         };
     };
 
@@ -145,7 +146,7 @@ const CommentaryEditBar = ({
                 <button 
                     className='CommentaryEditBar--edit-section-button'
                     onClick={() => setEditTextMode(!editTextMode)}>
-                    {!editTextMode ? 'Edit Commentary Section' : 'Cancel Edit'}
+                    {!editTextMode ? 'Edit Section' : 'Cancel Edit'}
                 </button>}
                 {editTextMode && sectionTextHasBeenEdited &&
                 <div>

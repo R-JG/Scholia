@@ -2,6 +2,7 @@ import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { LoggedInUser, Group, GroupDocumentInfo } from '../typeUtils/types';
 import { maxFileBytesSize } from '../config';
 import groupDocumentsService from '../services/groupDocumentsService';
+import ProgressBar from './ProgressBar';
 import '../css/DocumentUploadForm.css';
 
 interface Props {
@@ -31,7 +32,7 @@ const DocumentUploadForm = ({
 
     const uploadDocument = (document: File, groupId: number): void => {
         if (!user) return;
-        groupDocumentsService.addDocument(document, groupId, user.token, callbackUploadProgress)
+        groupDocumentsService.uploadDocument(document, groupId, user.token, callbackUploadProgress)
         .then(addedDocumentInfo => {
             if (!addedDocumentInfo) return setUploadProgress(undefined);
             setGroupDocuments(groupDocuments.concat(addedDocumentInfo));
@@ -107,17 +108,10 @@ const DocumentUploadForm = ({
                 </button>
             </form>}
             {uploadProgress && 
-            <div className='DocumentUploadForm--progress-section'>
-                <span className='DocumentUploadForm--progress-message'>
-                    {`Uploading ${inputFile?.name}`}
-                </span>
-                <div className='DocumentUploadForm--progress-bar'>
-                    <div 
-                        className='DocumentUploadForm--progress-amount'
-                        style={{ width: `${uploadProgress * 100}%` }}>
-                    </div>
-                </div>
-            </div>}
+            <ProgressBar 
+                message={`Uploading ${inputFile?.name}`} 
+                progressPercent={uploadProgress * 100} 
+            />}
         </div>
     );
 };
