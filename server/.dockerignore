@@ -4,4 +4,7 @@ src
 
 .env
 
+docker-compose.db.yml
+docker-compose.yml
+
 tsconfig.json
