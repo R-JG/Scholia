@@ -1,6 +1,7 @@
 :root {
     --background-color-one: #393E46;
     --background-color-two: #222831;
+    --background-color-three: #464b55;
     --font-color: #EEEEEE;
     --accent-color-one: gold;
     --accent-color-one--transparent: rgba(255, 231, 47, 0.5);
@@ -9,9 +10,6 @@
     --commentary-navigator-height: 5rem;
     --commentary-navigator-bottom-margin: 1.2rem;
 }
-
-/* backgroud, light: #f4edea */
-
 
 body {
     font-family: 'Raleway', sans-serif;

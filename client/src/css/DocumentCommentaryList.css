@@ -26,6 +26,5 @@
 .DocumentCommentaryList--group-commentaries-list {
     width: 100%;
     max-height: 20rem;
-    background-color: var(--background-color-one);
     overflow-y: scroll;
 }

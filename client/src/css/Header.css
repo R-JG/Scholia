@@ -15,6 +15,7 @@
 .Header--title {
     margin-block: 0;
     margin-inline: 0.8em;
+    cursor: default;
 }
 
 .Header--user-section {
