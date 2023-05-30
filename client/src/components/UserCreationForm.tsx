@@ -35,7 +35,7 @@ const UserCreationForm = ({
                 setUsernameStatusPrompt(promptMessage);
             });
         };
-        const checkDebounce: number = setTimeout(checkIfUsernameIsTaken, debounceMilliseconds);
+        const checkDebounce = setTimeout(checkIfUsernameIsTaken, debounceMilliseconds);
         return () => clearTimeout(checkDebounce);
     }, [usernameInputValue]);
 

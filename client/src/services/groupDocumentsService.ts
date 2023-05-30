@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from './axiosConfig';
 import { GroupDocumentInfo } from '../typeUtils/types';
 import { parseGroupDocumentInfo, parseGroupDocumentInfoArray, parseBlob } from '../typeUtils/validation';
 
@@ -13,7 +13,7 @@ const uploadDocument = async (
     try {
         const formData = new FormData();
         formData.append('file', document);
-        const response = await axios.post(
+        const response = await axiosInstance.post(
             `${baseUrl}/groups/${groupId}`,
             formData,
             { headers: { Authorization: `Bearer ${token}` }, 
@@ -33,7 +33,7 @@ const downloadDocument = async (
         downloadProgressCallback: (progress: number | undefined) => void
     ): Promise<Blob | null> => {
     try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             `${baseUrl}/${documentId}/file`,
             { headers: { Authorization: `Bearer ${token}` }, 
             responseType: 'blob', 
@@ -51,8 +51,12 @@ const getAllDocumentInfoForGroups = async (
         groupIds: number[], token: string
     ): Promise<GroupDocumentInfo[]> => {
     try {
+        if (groupIds.length === 0) {
+            console.log('group id query parameters are empty');
+            return [];
+        };
         const queryParams: string = `?groupId=${groupIds.join('&groupId=')}`;
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             `${baseUrl}/info/groups${queryParams}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );

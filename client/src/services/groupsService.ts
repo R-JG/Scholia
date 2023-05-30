@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from './axiosConfig';
 import { GroupEntry, Group } from '../typeUtils/types';
 import { parseGroup, parseGroupArray } from '../typeUtils/validation';
 
@@ -6,7 +6,7 @@ const baseUrl: string = '/api/v1/groups';
 
 const createGroup = async (newGroupData: GroupEntry, token: string): Promise<Group | null> => {
     try {
-        const response = await axios.post(
+        const response = await axiosInstance.post(
             baseUrl,
             newGroupData,
             { headers: { Authorization: `Bearer ${token}` } }
@@ -21,7 +21,7 @@ const createGroup = async (newGroupData: GroupEntry, token: string): Promise<Gro
 
 const getGroupsByUser = async (token: string): Promise<Group[]> => {
     try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             baseUrl, 
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -35,7 +35,7 @@ const getGroupsByUser = async (token: string): Promise<Group[]> => {
 
 const getGroupsByName = async (token: string, searchTerm: string): Promise<Group[]> => {
     try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             `${baseUrl}/search/${searchTerm}`, 
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -49,7 +49,7 @@ const getGroupsByName = async (token: string, searchTerm: string): Promise<Group
 
 const joinGroupById = async (token: string, groupId: number): Promise<Group | null> => {
     try {
-        const response = await axios.post(
+        const response = await axiosInstance.post(
             `${baseUrl}/join/${groupId}`, 
             null,
             { headers: { Authorization: `Bearer ${token}` } }

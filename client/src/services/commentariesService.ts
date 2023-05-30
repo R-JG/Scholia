@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from './axiosConfig';
 import { 
     Commentary, CommentaryInfo, CommentaryEntry, CommentarySectionEntry, CommentarySection 
 } from '../typeUtils/types';
@@ -10,7 +10,7 @@ const baseUrl: string = '/api/v1/commentaries';
 
 const getAllCommentaryInfoByUser = async (token: string): Promise<CommentaryInfo[]> => {
     try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             `${baseUrl}/info`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -26,8 +26,12 @@ const getAllCommentaryInfoForDocuments = async (
         token: string, documentIds: number[]
     ): Promise<CommentaryInfo[]> => {
     try {
+        if (documentIds.length === 0) {
+            console.log('document id query parameters are empty');
+            return [];
+        };
         const queryParams: string = `?documentId=${documentIds.join('&documentId=')}`;
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             `${baseUrl}/info/documents${queryParams}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -43,7 +47,7 @@ const getCommentaryById = async (
         token: string, commentaryId: number
     ): Promise<Commentary | null> => {
     try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             `${baseUrl}/${commentaryId}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -59,7 +63,7 @@ const createCommentary = async (
         token: string, commentaryData: CommentaryEntry
     ): Promise<Commentary | null> => {
     try {
-        const response = await axios.post(
+        const response = await axiosInstance.post(
             baseUrl,
             commentaryData,
             { headers: { Authorization: `Bearer ${token}` } }
@@ -76,7 +80,7 @@ const createCommentarySection = async (
         token: string, commentaryId: number, sectionData: CommentarySectionEntry
     ): Promise<CommentarySection | null> => {
     try {
-        const response = await axios.post(
+        const response = await axiosInstance.post(
             `${baseUrl}/${commentaryId}/sections`,
             sectionData,
             { headers: { Authorization: `Bearer ${token}` } }
@@ -93,7 +97,7 @@ const updateCommentarySectionById = async (
         token: string, commentaryId: number, sectionId: number, sectionData: CommentarySectionEntry
     ): Promise<CommentarySection | null> => {
     try {
-        const response = await axios.put(
+        const response = await axiosInstance.put(
             `${baseUrl}/${commentaryId}/sections/${sectionId}`,
             sectionData,
             { headers: { Authorization: `Bearer ${token}` } }
@@ -110,7 +114,7 @@ const deleteCommentarySectionById = async (
         token: string, commentaryId: number, sectionId: number
     ): Promise<boolean> => {
     try {
-        const response = await axios.delete(
+        const response = await axiosInstance.delete(
             `${baseUrl}/${commentaryId}/sections/${sectionId}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );

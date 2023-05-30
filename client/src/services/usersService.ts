@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from './axiosConfig';
 import { UserEntry, User } from '../typeUtils/types';
 import { parseUser, parseUserArray, parseBoolean } from '../typeUtils/validation';
 
@@ -6,7 +6,7 @@ const baseUrl: string = '/api/v1/users';
 
 const createUser = async (newUserData: UserEntry): Promise<User | null> => {
     try {
-        const response = await axios.post(baseUrl, newUserData);
+        const response = await axiosInstance.post(baseUrl, newUserData);
         const createdUser: User = parseUser(response.data);
         return createdUser;
     } catch (error) {
@@ -17,7 +17,7 @@ const createUser = async (newUserData: UserEntry): Promise<User | null> => {
 
 const searchByUsername = async (searchTerm: string, token: string): Promise<User[]> => {
     try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
             `${baseUrl}/search/${searchTerm}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -31,7 +31,7 @@ const searchByUsername = async (searchTerm: string, token: string): Promise<User
 
 const checkIfUserExists = async (searchTerm: string): Promise<boolean | null> => {
     try {
-        const response = await axios.get(`${baseUrl}/${searchTerm}/exists`);
+        const response = await axiosInstance.get(`${baseUrl}/${searchTerm}/exists`);
         const result: boolean = parseBoolean(response.data);
         return result;
     } catch (error) {

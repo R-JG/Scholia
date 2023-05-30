@@ -74,6 +74,7 @@ const CommentaryTool = ({
             setDownloadProgress(undefined);
             setDocumentBlob(blob);
         });
+        setDownloadProgress(0);
     }, []);
 
     useEffect(() => {
@@ -252,7 +253,7 @@ const CommentaryTool = ({
                 setSelectedCommentary={setSelectedCommentary}
                 setSelectedSection={setSelectedSection}
             />
-            {downloadProgress && 
+            {(downloadProgress !== undefined) && 
             <ProgressBar 
                 className='CommentaryTool--progress-bar'
                 message='Downloading' 

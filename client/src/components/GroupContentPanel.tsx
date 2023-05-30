@@ -46,6 +46,7 @@ const GroupContentPanel = ({
     const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
 
     useEffect(() => {
+        if (documentsForGroup.length === 0) return;
         const documentIds: number[] = documentsForGroup.map(document => document.id);
         commentariesService.getAllCommentaryInfoForDocuments(user.token, documentIds)
         .then(commentaries => setAllDocumentCommentaries(commentaries));
