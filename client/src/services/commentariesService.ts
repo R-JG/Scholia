@@ -22,16 +22,17 @@ const getAllCommentaryInfoByUser = async (token: string): Promise<CommentaryInfo
     };
 };
 
-const getAllCommentaryInfoByDocument = async (
-        token: string, documentId: number
+const getAllCommentaryInfoForDocuments = async (
+        token: string, documentIds: number[]
     ): Promise<CommentaryInfo[]> => {
     try {
+        const queryParams: string = `?documentId=${documentIds.join('&documentId=')}`;
         const response = await axios.get(
-            `${baseUrl}/info/document/${documentId}`,
+            `${baseUrl}/info/documents${queryParams}`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
-        const commentaryInfoForDocument: CommentaryInfo[] = parseCommentaryInfoArray(response.data);
-        return commentaryInfoForDocument;
+        const commentaryInfoForDocuments: CommentaryInfo[] = parseCommentaryInfoArray(response.data);
+        return commentaryInfoForDocuments;
     } catch (error) {
         console.error(error);
         return [];
@@ -124,7 +125,7 @@ const deleteCommentarySectionById = async (
 
 export default { 
     getAllCommentaryInfoByUser, 
-    getAllCommentaryInfoByDocument, 
+    getAllCommentaryInfoForDocuments, 
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 

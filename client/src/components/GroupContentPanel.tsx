@@ -43,13 +43,18 @@ const GroupContentPanel = ({
     
     if (!user || !selectedGroup) return <div className='GroupContentPanel inactive'></div>;
 
-    const [groupCommentariesForDocument, setGroupCommentariesForDocument] = useState<CommentaryInfo[]>([]);
+    const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
 
     useEffect(() => {
         if (!selectedDocument) return;
-        commentariesService.getAllCommentaryInfoByDocument(user.token, selectedDocument.id)
-        .then(commentaries => setGroupCommentariesForDocument(commentaries));
-    }, [selectedDocument]);
+        const documentIds: number[] = documentsForGroup.map(document => document.id);
+        commentariesService.getAllCommentaryInfoForDocuments(user.token, documentIds)
+        .then(commentaries => setAllDocumentCommentaries(commentaries));
+    }, []);
+
+    const filterCommentariesByDocument = (commentaries: CommentaryInfo[], documentId: number) => (
+        commentaries.filter(commentary => (commentary.documentId === documentId))
+    );
 
     return (
         <div className='GroupContentPanel'>
@@ -69,10 +74,12 @@ const GroupContentPanel = ({
                         documentInfo={documentInfo}
                         isSelected={documentInfo.id == selectedDocument?.id}
                         documentsForGroup={documentsForGroup}
-                        userCommentariesForDocument={userCommentaries.filter(commentary => 
-                            (commentary.documentId === documentInfo.id))
+                        userCommentariesForDocument={
+                            filterCommentariesByDocument(userCommentaries, documentInfo.id)
                         }
-                        groupCommentariesForDocument={groupCommentariesForDocument}
+                        groupCommentariesForDocument={
+                            filterCommentariesByDocument(allDocumentCommentaries, documentInfo.id)
+                        }
                         selectedDocument={selectedDocument}
                         selectedCommentary={selectedCommentary}
                         selectedSection={selectedSection}
