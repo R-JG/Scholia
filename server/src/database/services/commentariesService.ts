@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { 
     CommentaryModel, CommentaryInfo, CommentaryEntry, CommentarySectionEntry, CommentarySectionModel 
 } from '../../typeUtils/types';
@@ -34,9 +35,9 @@ const getCommentaryInfoByUser = async (userId: string | number): Promise<Comment
     return commentaryInfo;
 };
 
-const getCommentaryInfoByDocument = async (documentId: string | number): Promise<CommentaryInfo[]> => {
+const getCommentaryInfoByDocument = async (documentIds: string[]): Promise<CommentaryInfo[]> => {
     const commentaryData = await Commentary.findAll({ 
-        where: { documentId }, 
+        where: { documentId: { [Op.in]: documentIds } }, 
         attributes: commentaryInfoAttributes, 
         include: commentaryInfoAuthorAssociation
     });

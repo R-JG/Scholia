@@ -5,7 +5,7 @@ const commentariesRouter = Router();
 
 commentariesRouter.get('/info', commentariesController.getAllCommentaryInfoByUser);
 
-commentariesRouter.get('/info/document/:documentId', commentariesController.getAllCommentaryInfoByDocument);
+commentariesRouter.get('/info/documents', commentariesController.getAllCommentaryInfoForDocuments);
 
 commentariesRouter.get('/:commentaryId', commentariesController.getCommentaryById);
 

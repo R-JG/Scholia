@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { 
     UserModel, CommentaryInfo, CommentaryModel, CommentaryEntry, CommentarySectionEntry, CommentarySectionModel 
 } from '../typeUtils/types';
-import { parseCommentaryEntry, parseCommentarySectionEntry } from '../typeUtils/validation';
+import { parseCommentaryEntry, parseCommentarySectionEntry, parseQueryParams } from '../typeUtils/validation';
 import commentariesService from '../database/services/commentariesService';
 
 const getAllCommentaryInfoByUser = async (
@@ -18,13 +18,13 @@ const getAllCommentaryInfoByUser = async (
     };
 };
 
-const getAllCommentaryInfoByDocument = async (
+const getAllCommentaryInfoForDocuments = async (
         request: Request, response: Response, next: NextFunction
     ): Promise<void> => {
     try {
-        const documentId: string = request.params.documentId;
+        const documentIdQueryParams: string[] = parseQueryParams(request.query.documentId);
         const commentaryInfo: CommentaryInfo[] = await commentariesService
-        .getCommentaryInfoByDocument(documentId);
+        .getCommentaryInfoByDocument(documentIdQueryParams);
         response.json(commentaryInfo);
     } catch (error) {
         next(error);
@@ -131,7 +131,7 @@ const deleteCommentarySectionById = async (
 
 export default { 
     getAllCommentaryInfoByUser, 
-    getAllCommentaryInfoByDocument, 
+    getAllCommentaryInfoForDocuments, 
     getCommentaryById, 
     createCommentary, 
     createCommentarySection, 
