@@ -1,7 +1,8 @@
 .CommentarySelector {
     padding-inline: 1.5em;
     padding-block: 0.5em;
-    margin: 1rem;
+    margin-inline: 0.2em;
+    margin-block: 0.5em;
     border-radius: 0.5em;
     border: 0.1em solid;
     color: var(--font-color);
@@ -10,6 +11,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    transition: color .07s ease;
 }
 
 .CommentarySelector:hover {
