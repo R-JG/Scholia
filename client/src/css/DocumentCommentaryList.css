@@ -12,14 +12,14 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .DocumentCommentaryList--user-commentaries-title, 
 .DocumentCommentaryList--group-commentaries-title {
     margin-top: 1em;
-    margin-bottom: 0;
-    margin-inline: 1em;
+    margin-bottom: 0.7em;
+    margin-inline: 1.5em;
 }
 
 .DocumentCommentaryList--user-commentaries-list, 
