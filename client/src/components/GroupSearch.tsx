@@ -35,8 +35,9 @@ const GroupSearch = ({
         const searchGroupByName = () => {
             groupsService.getGroupsByName(user.token, searchInputValue)
             .then(groups => {
-                if (groups.length <= 0) setSearchResults(null);
-                if (groups.length > 0) setSearchResults(groups);
+                const unjoinedGroups: Group[] = groups.filter(group => !userIsAMember(group));
+                if (unjoinedGroups.length === 0) setSearchResults(null);
+                if (unjoinedGroups.length > 0) setSearchResults(groups);
             });
         };
         const searchDebounce = setTimeout(searchGroupByName, debounceMilliseconds);
