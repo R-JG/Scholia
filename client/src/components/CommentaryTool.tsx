@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Document } from 'react-pdf';
 import { 
-    LoggedInUser, PageDirection, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
+    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
 } from '../typeUtils/types';
 import { pageAmountToRenderOnScroll, pageRenderCooldownMilliseconds } from '../config';
 import groupDocumentsService from '../services/groupDocumentsService';
@@ -13,6 +13,8 @@ import CommentaryEditBar from './CommentaryEditBar';
 import ProgressBar from './ProgressBar';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import '../css/CommentaryTool.css';
+
+type PageDirection = 'before-initial' | 'after-initial';
 
 interface Props {
     user: LoggedInUser | null,
@@ -163,7 +165,8 @@ const CommentaryTool = ({
             ? (initialPageNumber - previousPagesToRender - 1) 
             : (totalPages - initialPageNumber + nextPagesToRender);
         const amountToAdd: number = (unrenderedPages < pageAmountToRenderOnScroll) 
-        ? unrenderedPages : pageAmountToRenderOnScroll;
+            ? unrenderedPages 
+            : pageAmountToRenderOnScroll;
         return amountToAdd;
     };
 
@@ -213,7 +216,8 @@ const CommentaryTool = ({
                 : (initialPageNumber + index + 1);
         };
         return (
-            Array.from({ length: pagesToRender }).map((_el, index) => {
+            Array.from({ length: pagesToRender })
+            .map((_el, index) => {
                 const pageNumber: number = getPageNumber(index);
                 const pageId: string = createPageId(pageNumber);
                 return (

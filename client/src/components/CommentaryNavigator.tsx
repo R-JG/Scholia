@@ -1,5 +1,7 @@
-import { LoggedInUser, Commentary, CommentarySection, SelectedSection, NavDirection } from '../typeUtils/types';
+import { LoggedInUser, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import '../css/CommentaryNavigator.css';
+
+type NavDirection = 'previous' | 'next';
 
 interface Props {
     user: LoggedInUser | null, 

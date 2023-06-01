@@ -8,7 +8,7 @@
 
 Scholia is a platform for writing commentaries in a collaborative, group based environment. 
 
-This project is inspired by the pedagogical tradition of commentary writing, which flourished through the Classical, Medieval, and Early-Modern periods. The aim of Scholia is to realize this in the context of contemporary web technology. 
+This project is inspired by the pedagogical tradition of commentary writing, which flourished through the Classical, Medieval, and Early-Modern periods. The aim of Scholia is to reimagine this in the context of contemporary web technology. 
 
 In Scholia, all content is centered around groups; documents are uploaded to groups and shared in common among their members. Group members may then create commentaries for these documents, or read those created by other members.
 
