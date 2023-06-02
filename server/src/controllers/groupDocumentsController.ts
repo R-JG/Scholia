@@ -1,8 +1,29 @@
 import { Request, Response, NextFunction } from 'express';
+import fsp from 'fs/promises';
+import { PDFDocument } from 'pdf-lib';
+import { THUMBNAIL_DIR_FILE_PATH } from '../serverUtils/config';
+import { logError } from '../serverUtils/logger';
 import { UserModel, NewGroupDocument, GroupDocumentInfo, GroupDocumentModel } from '../typeUtils/types';
 import { parseQueryParams } from '../typeUtils/validation';
 import groupDocumentsService from '../database/services/groupDocumentsService';
 import groupsService from '../database/services/groupsService';
+
+const createThumbnailPDF = async (documentFilePath: string, documentId: number): Promise<void> => {
+    try {
+        const documentData = new Uint8Array(await fsp.readFile(documentFilePath));
+        const uploadedDocument = await PDFDocument.load(documentData);
+        const newDocument = await PDFDocument.create();
+        const [firstPage] = await newDocument.copyPages(uploadedDocument, [0]);
+        newDocument.addPage(firstPage);
+        const thumbnailDocument = Buffer.from(await newDocument.save());
+        await fsp.writeFile(
+            `${THUMBNAIL_DIR_FILE_PATH}/${documentId}.pdf`, 
+            thumbnailDocument
+        );
+    } catch (error) {
+        logError(error);
+    };
+};
 
 const createOne = async (
         request: Request, response: Response, next: NextFunction
@@ -21,11 +42,12 @@ const createOne = async (
                 error: 'user does not have sufficient membership to add a document to this group' 
             });
         };
-        const documentName: string = request.file.originalname.replace(/\.pdf/gi, '');
+        const uploadedFile = request.file;
+        const documentName: string = uploadedFile.originalname.replace(/\.pdf/gi, '');
         const newDocument: NewGroupDocument = {
             groupId,
             documentName,
-            filePath: request.file.path
+            filePath: uploadedFile.path
         };
         const addedDocument = await groupDocumentsService.createOne(newDocument);
         const addedDocumentInfo: GroupDocumentInfo = {
@@ -33,6 +55,7 @@ const createOne = async (
             groupId: addedDocument.groupId,
             documentName: addedDocument.documentName
         };
+        await createThumbnailPDF(uploadedFile.path, addedDocument.id);
         response.json(addedDocumentInfo);
     } catch (error) {
         next(error);
@@ -95,4 +118,22 @@ const getSingleDocumentFile = async (
     };
 };
 
-export default { createOne, getAllDocumentInfoByGroup, getSingleDocumentInfo, getSingleDocumentFile };
+const getSingleDocumentThumbnail = async (
+        request: Request, response: Response, next: NextFunction
+    ): Promise<void> => {
+    try {
+        const documentId: string = request.params.documentId;
+        const thumbnailFilePath: string = `${THUMBNAIL_DIR_FILE_PATH}/${documentId}.pdf`;
+        response.sendFile(thumbnailFilePath);
+    } catch (error) {
+        next(error);
+    };
+};
+
+export default { 
+    createOne, 
+    getAllDocumentInfoByGroup, 
+    getSingleDocumentInfo, 
+    getSingleDocumentFile, 
+    getSingleDocumentThumbnail 
+};

@@ -3,6 +3,7 @@ import { LoggedInUser, GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSe
 import { commentaryToolRoute } from '../config';
 import DocumentCommentaryList from './DocumentCommentaryList';
 import CommentaryCreationForm from './CommentaryCreationForm';
+import DocumentThumbnail from './DocumentThumbnail';
 import '../css/DocumentSelector.css';
 
 interface Props {
@@ -58,6 +59,7 @@ const DocumentSelector = ({
         <div 
             className={`DocumentSelector ${isSelected ? 'selected' : ''}`}
             onClick={handleComponentClick}>
+            <DocumentThumbnail user={user} documentId={documentInfo.id} />
             <h3 className='DocumentSelector--document-name'>
                 {documentInfo.documentName}
             </h3>

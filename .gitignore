@@ -9,4 +9,5 @@ client/node_modules
 client/dist
 
 test_documents
+test_thumbnails
 notes.md

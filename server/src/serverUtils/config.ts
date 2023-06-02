@@ -24,6 +24,8 @@ export const JWT_SECRET: string = process.env.JWT_SECRET || '';
 
 export const DOCUMENT_DIR_FILE_PATH: string = process.env.DOCUMENT_DIR_FILE_PATH || '';
 
+export const THUMBNAIL_DIR_FILE_PATH: string = process.env.THUMBNAIL_DIR_FILE_PATH || '';
+
 export const PDF_WORKER_FILE_PATH: string = (
     process.env.PDF_WORKER_FILE_PATH || 
     path.resolve(__dirname, '../../client/pdf.worker.js')

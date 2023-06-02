@@ -68,4 +68,23 @@ const getAllDocumentInfoForGroups = async (
     };
 };
 
-export default { uploadDocument, downloadDocument, getAllDocumentInfoForGroups };
+const downloadDocumentThumbnail = async (documentId: number, token: string): Promise<Blob | null> => {
+    try {
+        const response = await axiosInstance.get(
+            `${baseUrl}/${documentId}/thumbnail`,
+            { headers: { Authorization: `Bearer ${token}` }, responseType: 'blob' } 
+        );
+        const thumbnailDocumentBlob = parseBlob(response.data);
+        return thumbnailDocumentBlob;
+    } catch (error) {
+        console.error(error);
+        return null;
+    };
+};
+
+export default { 
+    uploadDocument, 
+    downloadDocument, 
+    getAllDocumentInfoForGroups, 
+    downloadDocumentThumbnail 
+};

@@ -3,6 +3,7 @@
     padding-block: 1.5em;
     margin: 1em;
     border-radius: 0.7rem;
+    border: 0.1em solid var(--font-color);
     color: var(--font-color);
     background-color: var(--background-color-three);
     cursor: pointer;

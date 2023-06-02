@@ -12,4 +12,6 @@ groupDocumentsRouter.get('/info/:documentId', groupDocumentsController.getSingle
 
 groupDocumentsRouter.get('/:documentId/file', groupDocumentsController.getSingleDocumentFile);
 
+groupDocumentsRouter.get('/:documentId/thumbnail', groupDocumentsController.getSingleDocumentThumbnail);
+
 export default groupDocumentsRouter;
