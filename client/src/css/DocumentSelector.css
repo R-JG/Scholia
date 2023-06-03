@@ -1,4 +1,6 @@
 .DocumentSelector {
+    height: fit-content;
+    width: 25%;
     padding-inline: 1.2em;
     padding-block: 1.5em;
     margin: 1em;
@@ -8,13 +10,27 @@
     background-color: var(--background-color-three);
     cursor: pointer;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    flex-direction: row;
+    justify-content: center;
+    transition: width 0.2s ease;
 }
 
 .DocumentSelector.selected {
+    height: auto;
+    width: 90%;
     border: 0.2em solid var(--accent-color-one);
+    justify-content: flex-start;
     cursor: default;
+}
+
+.DocumentSelector--expanded-section {
+    width: 100%;
+    margin-left: 1em;
+    margin-block: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .DocumentSelector--document-name {
@@ -27,6 +43,7 @@
 }
 
 .DocumentSelector--button-section {
+    width: 100%;
     margin-top: 1em;
     display: flex;
     flex-direction: row;

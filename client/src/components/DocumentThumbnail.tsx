@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Document, Page } from 'react-pdf';
 import { LoggedInUser } from '../typeUtils/types';
 import groupDocumentsService from '../services/groupDocumentsService';
+import '../css/DocumentThumbnail.css';
 
 interface Props {
     user: LoggedInUser, 
@@ -12,6 +13,8 @@ const DocumentThumbnail = ({ user, documentId }: Props) => {
 
     const [documentBlob, setDocumentBlob] = useState<Blob | null>(null);
 
+    const thumbnailWidth = (0.15 * window.innerWidth);
+
     useEffect(() => {
         groupDocumentsService.downloadDocumentThumbnail(documentId, user.token)
         .then(thumbnailDocumentBlob => {
@@ -19,21 +22,28 @@ const DocumentThumbnail = ({ user, documentId }: Props) => {
         });
     }, []);
 
-    if (!documentBlob) return <div className='DocumentThumbnail inactive'></div>;
-
     return (
         <div className='DocumentThumbnail'>
-            <Document 
+            {documentBlob 
+            ? <Document 
                 className='DocumentThumbnail--document-component'
                 file={documentBlob}>
                 <Page 
                     className='DocumentThumbnail--document-page'
                     pageIndex={0} 
+                    width={thumbnailWidth}
                     renderAnnotationLayer={false} 
                     renderInteractiveForms={false} 
                     renderTextLayer={false}
                 />
-            </Document>
+            </Document> 
+            : <div 
+                className='DocumentThumbnail--thumbnail-placeholder'
+                style={{ 
+                    width: `${thumbnailWidth}px`, 
+                    height: `${thumbnailWidth * 1.5}px` 
+                }}>
+            </div>}
         </div>
     );
 };

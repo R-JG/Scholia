@@ -44,7 +44,12 @@ const GroupContentPanel = ({
     if (!user || !selectedGroup) return <div className='GroupContentPanel inactive'></div>;
 
     const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
-
+    
+    const documentListColumnAmount = 3;
+    const selectedDocumentIndex = ((selectedDocument && (selectedDocument.groupId === selectedGroup.id)) 
+        ? documentsForGroup.findIndex(document => (document.id === selectedDocument.id)) : null
+    );
+    
     useEffect(() => {
         if (documentsForGroup.length === 0) return;
         const documentIds: number[] = documentsForGroup.map(document => document.id);
@@ -54,6 +59,11 @@ const GroupContentPanel = ({
 
     const filterCommentariesByDocument = (commentaries: CommentaryInfo[], documentId: number) => (
         commentaries.filter(commentary => (commentary.documentId === documentId))
+    );
+
+    const documentListOffsetElements = (selectedDocumentIndex ? Array.from({ 
+            length: (documentListColumnAmount - ((selectedDocumentIndex % documentListColumnAmount))) 
+        }).map(() => <div className='GroupContentPanel--document-list-offset'></div>) : []
     );
 
     return (
@@ -67,7 +77,8 @@ const GroupContentPanel = ({
                     setSelectedDocument={setSelectedDocument}
                 />
                 <div className='GroupContentPanel--group-documents-list'>
-                    {documentsForGroup.map(documentInfo => 
+                    {documentListOffsetElements.concat(
+                    documentsForGroup.map(documentInfo => 
                     <DocumentSelector 
                         key={documentInfo.id}
                         user={user}
@@ -88,7 +99,7 @@ const GroupContentPanel = ({
                         setSelectedSection={setSelectedSection}
                         createCommentary={createCommentary}
                         getCommentaryForSelection={getCommentaryForSelection}
-                    />)}
+                    />))}
                 </div>
                 {(documentsForGroup.length === 0) && 
                 <h4 className='GroupContentPanel--no-documents-message'>

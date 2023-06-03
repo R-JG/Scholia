@@ -14,9 +14,10 @@ primary_region = "yyz"
   min_machines_running = 0
 
 [mounts]
-  source = "scholia_documents"
-  destination = "/usr/src/app/documents"
+  source = "scholia_data"
+  destination = "/usr/src/app/data"
 
 [env]
   PORT = "3000"
-  DOCUMENT_DIR_FILE_PATH = "/usr/src/app/documents"
+  DOCUMENT_DIR_FILE_PATH = "/usr/src/app/data/documents"
+  THUMBNAIL_DIR_FILE_PATH = "/usr/src/app/data/thumbnails"

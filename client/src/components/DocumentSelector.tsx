@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoggedInUser, GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../config';
@@ -42,10 +43,13 @@ const DocumentSelector = ({
 
     if (!user) return <div className='DocumentSelector inactive'></div>;
 
+    const documentSelectorRef = useRef<HTMLDivElement>(null);
+
     const navigate = useNavigate();
 
     const handleComponentClick = (): void => {
         setSelectedDocument(documentInfo);
+        documentSelectorRef.current?.scrollIntoView();
     };
 
     const handleReadDocumentButton = (): void => {
@@ -58,37 +62,41 @@ const DocumentSelector = ({
     return (
         <div 
             className={`DocumentSelector ${isSelected ? 'selected' : ''}`}
+            ref={documentSelectorRef}
             onClick={handleComponentClick}>
             <DocumentThumbnail user={user} documentId={documentInfo.id} />
-            <h3 className='DocumentSelector--document-name'>
-                {documentInfo.documentName}
-            </h3>
+
             {isSelected && 
-            <div className='DocumentSelector--button-section'>
-                <button 
-                    className='DocumentSelector--read-document-button'
-                    onClick={handleReadDocumentButton}>
-                    Read
-                </button>
-                <CommentaryCreationForm 
+            <div className='DocumentSelector--expanded-section'>
+                <h3 className='DocumentSelector--document-name'>
+                    {documentInfo.documentName}
+                </h3>
+                <div className='DocumentSelector--button-section'>
+                    <button 
+                        className='DocumentSelector--read-document-button'
+                        onClick={handleReadDocumentButton}>
+                        Read
+                    </button>
+                    <CommentaryCreationForm 
+                        selectedDocument={selectedDocument}
+                        createCommentary={createCommentary}
+                    />
+                    <hr className='DocumentSelector--divider' />
+                </div>
+                <DocumentCommentaryList 
+                    user={user}
+                    documentsForGroup={documentsForGroup}
                     selectedDocument={selectedDocument}
-                    createCommentary={createCommentary}
+                    userCommentariesForDocument={userCommentariesForDocument}
+                    groupCommentariesForDocument={groupCommentariesForDocument
+                        .filter(commentaryInfo => (commentaryInfo.userId !== user.id))
+                    }
+                    setSelectedDocument={setSelectedDocument}
+                    getCommentaryForSelection={getCommentaryForSelection}
+                    setSelectedSection={setSelectedSection}
                 />
-                <hr className='DocumentSelector--divider' />
             </div>}
-            {isSelected && 
-            <DocumentCommentaryList 
-                user={user}
-                documentsForGroup={documentsForGroup}
-                selectedDocument={selectedDocument}
-                userCommentariesForDocument={userCommentariesForDocument}
-                groupCommentariesForDocument={groupCommentariesForDocument
-                    .filter(commentaryInfo => (commentaryInfo.userId !== user.id))
-                }
-                setSelectedDocument={setSelectedDocument}
-                getCommentaryForSelection={getCommentaryForSelection}
-                setSelectedSection={setSelectedSection}
-            />}
+
         </div>
     );
 };
