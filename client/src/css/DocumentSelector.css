@@ -1,7 +1,7 @@
 .DocumentSelector {
     box-sizing: border-box;
     position: relative;
-    height: fit-content;
+    height: 100%;
     width: 100%;
     padding-inline: 1.2em;
     padding-block: 1.5em;
@@ -19,12 +19,22 @@
 }
 
 .DocumentSelector.selected {
-    height: auto;
-    width: 320%;
+    width: 325%;
     border: 0.2em solid var(--accent-color-one);
     justify-content: flex-start;
     cursor: default;
     z-index: 2;
+}
+
+.DocumentSelector--thumbnail-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-content: center;
+}
+
+.DocumentSelector.selected .DocumentSelector--thumbnail-container {
+    width: 35%;
 }
 
 .DocumentSelector--expanded-section {

@@ -23,27 +23,22 @@ const DocumentThumbnail = ({ user, documentId }: Props) => {
     }, []);
 
     return (
-        <div className='DocumentThumbnail'>
+        <div className='DocumentThumbnail' style={{ maxWidth: `${thumbnailWidth}px` }}>
             {documentBlob 
             ? <Document 
                 className='DocumentThumbnail--document-component'
-                file={documentBlob}>
+                file={documentBlob}
+                loading=''>
                 <Page 
                     className='DocumentThumbnail--document-page'
                     pageIndex={0} 
-                    width={thumbnailWidth}
+                    height={thumbnailWidth * 1.5}
                     renderAnnotationLayer={false} 
                     renderInteractiveForms={false} 
                     renderTextLayer={false}
                 />
             </Document> 
-            : <div 
-                className='DocumentThumbnail--thumbnail-placeholder'
-                style={{ 
-                    width: `${thumbnailWidth}px`, 
-                    height: `${thumbnailWidth * 1.5}px` 
-                }}>
-            </div>}
+            : <div className='DocumentThumbnail--placeholder'></div>}
         </div>
     );
 };

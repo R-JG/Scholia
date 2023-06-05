@@ -10,6 +10,9 @@
     align-items: flex-start;
     overflow-y: scroll;
     overflow-x: hidden;
+
+    /* does this help stop the effects of scroll snapping at top and bottom? */
+    scroll-margin-block: 20rem;
 }
 
 .GroupContentPanel--group-documents-section {
@@ -19,18 +22,13 @@
 
 .GroupContentPanel--group-documents-list {
     width: 100%;
-    /*
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    */
     display: grid;
-    grid-auto-columns: 30%;
-    grid-auto-rows: 1fr;
-    grid-gap: 2em;
-    place-content: center;
+    /*grid-auto-columns: 30%;*/
+    /*grid-auto-rows: 1fr;*/
+    grid-auto-columns: 17rem;
+    grid-auto-rows: 23.5rem;
+    gap: 2em;
+    justify-content: center;
 }
 
 .GroupContentPanel--document-list-offset {

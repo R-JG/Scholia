@@ -55,9 +55,11 @@ const GroupContentPanel = ({
     const documentListRef = useRef<HTMLDivElement>(null);
     const rowOfPreviousSelection = useRef<number | null>(null);
     const previousSelectionHadYTranslate = useRef<boolean>(false);
-    const translateLeftRemAmount = -20.5;
-    const translateDownRemAmount = 27;
-    const documentListColumnAmount = 3;
+
+    const gridColumnAmount = 3;
+    const gridColumnRemSize = 17;
+    const gridRowRemSize = 23.5;
+    const gridGapRemSize = 2;
     const selectedDocumentIndex = ((selectedDocument && (selectedDocument.groupId === selectedGroup.id)) 
         ? documentsForGroup.findIndex(document => (document.id === selectedDocument.id)) : null
     );
@@ -73,9 +75,9 @@ const GroupContentPanel = ({
         commentaries.filter(commentary => (commentary.documentId === documentId))
     );
 
-    const getGridColumnStart = (index: number): number => ((index % documentListColumnAmount) + 1);
+    const getGridColumnStart = (index: number): number => ((index % gridColumnAmount) + 1);
 
-    const getGridRowStart = (index: number): number => Math.ceil((index + 1) / documentListColumnAmount);
+    const getGridRowStart = (index: number): number => Math.ceil((index + 1) / gridColumnAmount);
 
     const getDocumentSelectorGridStyle = (documentIndex: number): GridStyles => {
         const gridColumnStart = getGridColumnStart(documentIndex);
@@ -90,14 +92,20 @@ const GroupContentPanel = ({
 
         const createTranslateStyle = (setY: 'translateY' | 'baseY'): { translate: string } => ({
             translate: 
-                `${isSelectionIndex ? ((getGridColumnStart(documentIndex) - 1) * translateLeftRemAmount) : 0}rem 
-                 ${(setY === 'translateY') ? translateDownRemAmount : 0}rem`
+                `${isSelectionIndex ? ((getGridColumnStart(documentIndex) - 1) 
+                    * (-(gridColumnRemSize + gridGapRemSize))) : 0}rem 
+                 ${(setY === 'translateY') ? (gridRowRemSize + gridGapRemSize) : 0}rem`
         });
 
         if (selectedDocumentIndex === null) return createTranslateStyle('baseY');
 
         const currentIndexRow = getGridRowStart(documentIndex);
         const selectionRow = getGridRowStart(selectedDocumentIndex);
+
+        if ((documentIndex === (documentsForGroup.length - 1)) && isSelectionIndex
+            && (getGridColumnStart(documentIndex) === 1)) {
+            return createTranslateStyle('baseY');
+        };
 
         if (currentIndexRow === selectionRow) {
             if (rowOfPreviousSelection.current) {
@@ -110,8 +118,6 @@ const GroupContentPanel = ({
                     return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
                 };
                 if (selectionRow > rowOfPreviousSelection.current) {
-                    // if below and the very last row with only one doc, then a gap will be created above...
-                    // I could add an exception for this situation where all docs are translated, which would create a gap at the top...
                     return createTranslateStyle(isSelectionIndex ? 'translateY' : 'baseY');
                 };
             } else return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
@@ -133,7 +139,7 @@ const GroupContentPanel = ({
         }));
         styleArray.forEach((style, index) => {
             if (index === selectedDocumentIndex) {
-                const yTranslateValue = style.translate.split(/\s+/)[1].match(/\d+(?:\.\d)?/);
+                const yTranslateValue = style.translate.split(/\s+/)[1].match(/(?:\.)?\d+(?:\.\d+)?/);
                 const selectionHadYTranslate = (yTranslateValue ? (yTranslateValue[0] !== '0') : false);
                 recordSelectionStyleInfo(style.gridRowStart, selectionHadYTranslate);
             };
@@ -153,7 +159,14 @@ const GroupContentPanel = ({
                     setGroupDocuments={setGroupDocuments}
                     setSelectedDocument={setSelectedDocument}
                 />
-                <div className='GroupContentPanel--group-documents-list' ref={documentListRef}>
+                <div 
+                    className='GroupContentPanel--group-documents-list' 
+                    ref={documentListRef}
+                    style={{ 
+                        gridAutoColumns: `${gridColumnRemSize}rem`, 
+                        gridAutoRows: `${gridRowRemSize}rem`, 
+                        gap: `${gridGapRemSize}rem` 
+                    }}>
                     {documentsForGroup.map((documentInfo, index) => 
                     <DocumentSelector 
                         key={documentInfo.id}

@@ -62,7 +62,9 @@ const DocumentSelector = ({
             className={`DocumentSelector ${isSelected ? 'selected' : ''}`}
             onClick={handleComponentClick}
             style={style}>
-            <DocumentThumbnail user={user} documentId={documentInfo.id} />
+            <div className='DocumentSelector--thumbnail-container'>
+                <DocumentThumbnail user={user} documentId={documentInfo.id} />
+            </div>
             {isSelected && 
             <div className='DocumentSelector--expanded-section'>
                 <h3 className='DocumentSelector--document-name'>

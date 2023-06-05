@@ -1,16 +1,24 @@
 .DocumentThumbnail {
-    height: fit-content;
-    width: fit-content;
+    height: 100%;
+    width: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
 .DocumentThumbnail--document-component {
-    height: fit-content;
-    width: fit-content;
+    height: 100%;
+    width: 100%;
 }
 
 .DocumentThumbnail--document-page {
-    height: fit-content;
-    width: fit-content;
+    height: 100%;
+    width: 100%;
     border-radius: 0.5rem;
     overflow: hidden;
+}
+
+.DocumentThumbnail--placeholder {
+    height: 100%;
+    width: 100%;
+    border-radius: 0.5rem;
 }
