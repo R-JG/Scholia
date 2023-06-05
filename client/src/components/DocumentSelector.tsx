@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoggedInUser, GroupDocumentInfo, Commentary, CommentaryInfo, SelectedSection } from '../typeUtils/types';
 import { commentaryToolRoute } from '../config';
@@ -10,6 +9,7 @@ import '../css/DocumentSelector.css';
 interface Props {
     user: LoggedInUser | null, 
     documentInfo: GroupDocumentInfo, 
+    style: object, 
     isSelected: boolean, 
     documentsForGroup: GroupDocumentInfo[], 
     userCommentariesForDocument: CommentaryInfo[], 
@@ -27,6 +27,7 @@ interface Props {
 const DocumentSelector = ({ 
     user, 
     documentInfo, 
+    style, 
     isSelected, 
     documentsForGroup, 
     userCommentariesForDocument, 
@@ -43,13 +44,10 @@ const DocumentSelector = ({
 
     if (!user) return <div className='DocumentSelector inactive'></div>;
 
-    const documentSelectorRef = useRef<HTMLDivElement>(null);
-
     const navigate = useNavigate();
 
     const handleComponentClick = (): void => {
         setSelectedDocument(documentInfo);
-        documentSelectorRef.current?.scrollIntoView();
     };
 
     const handleReadDocumentButton = (): void => {
@@ -62,10 +60,9 @@ const DocumentSelector = ({
     return (
         <div 
             className={`DocumentSelector ${isSelected ? 'selected' : ''}`}
-            ref={documentSelectorRef}
-            onClick={handleComponentClick}>
+            onClick={handleComponentClick}
+            style={style}>
             <DocumentThumbnail user={user} documentId={documentInfo.id} />
-
             {isSelected && 
             <div className='DocumentSelector--expanded-section'>
                 <h3 className='DocumentSelector--document-name'>
@@ -96,7 +93,6 @@ const DocumentSelector = ({
                     setSelectedSection={setSelectedSection}
                 />
             </div>}
-
         </div>
     );
 };
