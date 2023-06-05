@@ -54,14 +54,13 @@ const GroupContentPanel = ({
 
     const documentListRef = useRef<HTMLDivElement>(null);
     const rowOfPreviousSelection = useRef<number | null>(null);
-    const previousSelectionWasTranslated = useRef<boolean>(false);
-    
+    const previousSelectionHadYTranslate = useRef<boolean>(false);
+    const translateLeftRemAmount = -20.5;
+    const translateDownRemAmount = 27;
     const documentListColumnAmount = 3;
-    /*
     const selectedDocumentIndex = ((selectedDocument && (selectedDocument.groupId === selectedGroup.id)) 
         ? documentsForGroup.findIndex(document => (document.id === selectedDocument.id)) : null
     );
-    */
     
     useEffect(() => {
         if (documentsForGroup.length === 0) return;
@@ -72,11 +71,6 @@ const GroupContentPanel = ({
 
     const filterCommentariesByDocument = (commentaries: CommentaryInfo[], documentId: number) => (
         commentaries.filter(commentary => (commentary.documentId === documentId))
-    );
-    
-    const getSelectedDocumentIndex = () => (
-        (selectedDocument && (selectedDocument.groupId === selectedGroup.id)) 
-        ? documentsForGroup.findIndex(document => (document.id === selectedDocument.id)) : null
     );
 
     const getGridColumnStart = (index: number): number => ((index % documentListColumnAmount) + 1);
@@ -91,67 +85,57 @@ const GroupContentPanel = ({
         return { gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd };
     };
     
-    const getDocumentSelectorPositionStyle = (documentIndex: number): { translate: string } => {
-
-        const normalPosition = { translate: 'none' };
-        const translatedPosition = { translate: '0 27rem' };
-
-        const selectedDocumentIndex = getSelectedDocumentIndex();
-
-        if (selectedDocumentIndex === null) return normalPosition;
-
-        const currentIndexRow = getGridRowStart(documentIndex);
-        const selectionRow = getGridRowStart(selectedDocumentIndex);
-
+    const getDocumentSelectorTranslateStyle = (documentIndex: number): { translate: string } => {
         const isSelectionIndex = (documentIndex === selectedDocumentIndex);
 
-        /*
-        const translateLeftRemAmount = -20.5;
-        const translateDownRemAmount = 27;
-
-        const createTranslateStyle = (setY: 'translateY' | 'resetY'): { translate: string } => ({
+        const createTranslateStyle = (setY: 'translateY' | 'baseY'): { translate: string } => ({
             translate: 
                 `${isSelectionIndex ? ((getGridColumnStart(documentIndex) - 1) * translateLeftRemAmount) : 0}rem 
                  ${(setY === 'translateY') ? translateDownRemAmount : 0}rem`
         });
-        */
+
+        if (selectedDocumentIndex === null) return createTranslateStyle('baseY');
+
+        const currentIndexRow = getGridRowStart(documentIndex);
+        const selectionRow = getGridRowStart(selectedDocumentIndex);
 
         if (currentIndexRow === selectionRow) {
             if (rowOfPreviousSelection.current) {
                 if (selectionRow === rowOfPreviousSelection.current) {
-                    if (previousSelectionWasTranslated.current) {
-                        return isSelectionIndex ? normalPosition : translatedPosition;
-                    } else return isSelectionIndex ? translatedPosition : normalPosition;
+                    if (previousSelectionHadYTranslate.current) {
+                        return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
+                    } else return createTranslateStyle(isSelectionIndex ? 'translateY' : 'baseY');
                 };
                 if (selectionRow < rowOfPreviousSelection.current) {
-                    return isSelectionIndex ? normalPosition : translatedPosition;
+                    return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
                 };
                 if (selectionRow > rowOfPreviousSelection.current) {
                     // if below and the very last row with only one doc, then a gap will be created above...
                     // I could add an exception for this situation where all docs are translated, which would create a gap at the top...
-                    return isSelectionIndex ? translatedPosition : normalPosition;
+                    return createTranslateStyle(isSelectionIndex ? 'translateY' : 'baseY');
                 };
-            } else return isSelectionIndex ? normalPosition : translatedPosition;
+            } else return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
         };
-        if (currentIndexRow < selectionRow) return normalPosition;
-        if (currentIndexRow > selectionRow) return translatedPosition;
-        return normalPosition;
+        if (currentIndexRow < selectionRow) return createTranslateStyle('baseY');
+        if (currentIndexRow > selectionRow) return createTranslateStyle('translateY');
+        return createTranslateStyle('baseY');
     };
 
-    const recordSelectionStyleInfo = (gridRow: number, wasTranslated: boolean) => {
+    const recordSelectionStyleInfo = (gridRow: number, hadYTranslate: boolean) => {
         rowOfPreviousSelection.current = gridRow;
-        previousSelectionWasTranslated.current = wasTranslated;
+        previousSelectionHadYTranslate.current = hadYTranslate;
     };
 
     const getDocumentSelectorStyles = (): (GridStyles & { translate: string })[] => {
         const styleArray = documentsForGroup.map((_document, index) => ({
             ...getDocumentSelectorGridStyle(index),
-            ...getDocumentSelectorPositionStyle(index)
+            ...getDocumentSelectorTranslateStyle(index)
         }));
-        const selectedDocumentIndex = getSelectedDocumentIndex();
         styleArray.forEach((style, index) => {
             if (index === selectedDocumentIndex) {
-                recordSelectionStyleInfo(style.gridRowStart, (style.translate !== 'none'));
+                const yTranslateValue = style.translate.split(/\s+/)[1].match(/\d+(?:\.\d)?/);
+                const selectionHadYTranslate = (yTranslateValue ? (yTranslateValue[0] !== '0') : false);
+                recordSelectionStyleInfo(style.gridRowStart, selectionHadYTranslate);
             };
         });
         return styleArray;
