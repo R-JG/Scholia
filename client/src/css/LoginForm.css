@@ -23,6 +23,7 @@
 }
 
 .LoginForm--username-label {
+    margin-right: 2em;
     grid-area: username-label;
 }
 
@@ -32,6 +33,7 @@
 }
 
 .LoginForm--password-label {
+    margin-right: 2em;
     grid-area: password-label;
 }
 

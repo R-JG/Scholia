@@ -1,6 +1,7 @@
 .DocumentUploadForm {
     width: 100%;
-    margin: 1.2rem;
+    margin-block: 1.2rem;
+    margin-inline: 3rem;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

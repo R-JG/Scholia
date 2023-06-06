@@ -36,6 +36,7 @@ const DocumentThumbnail = ({ user, documentId }: Props) => {
                     renderAnnotationLayer={false} 
                     renderInteractiveForms={false} 
                     renderTextLayer={false}
+                    loading=''
                 />
             </Document> 
             : <div className='DocumentThumbnail--placeholder'></div>}

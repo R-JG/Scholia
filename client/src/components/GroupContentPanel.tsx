@@ -63,6 +63,11 @@ const GroupContentPanel = ({
     const selectedDocumentIndex = ((selectedDocument && (selectedDocument.groupId === selectedGroup.id)) 
         ? documentsForGroup.findIndex(document => (document.id === selectedDocument.id)) : null
     );
+
+    useEffect(() => {
+        if (rowOfPreviousSelection.current !== null) rowOfPreviousSelection.current = null;
+        if (previousSelectionHadYTranslate.current) previousSelectionHadYTranslate.current = false;
+    }, []);
     
     useEffect(() => {
         if (documentsForGroup.length === 0) return;
