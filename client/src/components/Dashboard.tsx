@@ -50,6 +50,10 @@ const Dashboard = ({
 
     if (!user) return <div className='Dashboard inactive'></div>;
 
+    const createGroupDisplayStyle = (groupId: number): { display: string } => {
+        return (groupId === selectedGroup?.id) ? { display: 'flex' } : { display: 'none' };
+    };
+
     return (
         <div className='Dashboard'>
             <Header 
@@ -57,15 +61,16 @@ const Dashboard = ({
                 logout={logout}
             />
             <main className='Dashboard--main'>
-                {selectedGroup && 
+                {userGroups.map(group => 
                 <GroupContentPanel 
-                    key={selectedGroup.id}
+                    key={group.id}
+                    displayStyle={createGroupDisplayStyle(group.id)}
                     user={user}
                     userCommentaries={userCommentaries}
                     groupDocuments={groupDocuments}
                     selectedGroup={selectedGroup}
                     documentsForGroup={groupDocuments.filter(groupDocument => 
-                        groupDocument.groupId === selectedGroup.id
+                        groupDocument.groupId === group.id
                     )}
                     selectedDocument={selectedDocument}
                     selectedCommentary={selectedCommentary}
@@ -76,7 +81,7 @@ const Dashboard = ({
                     getCommentaryForSelection={getCommentaryForSelection}
                     setSelectedCommentary={setSelectedCommentary}
                     setSelectedSection={setSelectedSection}
-                />}
+                />)}
                 <NetworkPanel 
                     user={user} 
                     userGroups={userGroups}

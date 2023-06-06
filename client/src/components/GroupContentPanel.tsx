@@ -16,6 +16,7 @@ interface GridStyles {
 
 interface Props {
     user: LoggedInUser | null,
+    displayStyle: { display: string }, 
     userCommentaries: CommentaryInfo[], 
     groupDocuments: GroupDocumentInfo[], 
     selectedGroup: Group | null, 
@@ -33,6 +34,7 @@ interface Props {
 
 const GroupContentPanel = ({ 
     user,
+    displayStyle, 
     userCommentaries, 
     groupDocuments, 
     selectedGroup, 
@@ -63,11 +65,6 @@ const GroupContentPanel = ({
     const selectedDocumentIndex = ((selectedDocument && (selectedDocument.groupId === selectedGroup.id)) 
         ? documentsForGroup.findIndex(document => (document.id === selectedDocument.id)) : null
     );
-
-    useEffect(() => {
-        if (rowOfPreviousSelection.current !== null) rowOfPreviousSelection.current = null;
-        if (previousSelectionHadYTranslate.current) previousSelectionHadYTranslate.current = false;
-    }, []);
     
     useEffect(() => {
         if (documentsForGroup.length === 0) return;
@@ -75,6 +72,11 @@ const GroupContentPanel = ({
         commentariesService.getAllCommentaryInfoForDocuments(user.token, documentIds)
         .then(commentaries => setAllDocumentCommentaries(commentaries));
     }, []);
+
+    useEffect(() => {
+        if (rowOfPreviousSelection.current !== null) rowOfPreviousSelection.current = null;
+        if (previousSelectionHadYTranslate.current) previousSelectionHadYTranslate.current = false;
+    }, [selectedGroup]);
 
     const filterCommentariesByDocument = (commentaries: CommentaryInfo[], documentId: number) => (
         commentaries.filter(commentary => (commentary.documentId === documentId))
@@ -155,7 +157,7 @@ const GroupContentPanel = ({
     const documentSelectorStyles = getDocumentSelectorStyles();
 
     return (
-        <div className='GroupContentPanel'>
+        <div className='GroupContentPanel' style={displayStyle}>
             <div className='GroupContentPanel--group-documents-section'>
                 <DocumentUploadForm 
                     user={user}
