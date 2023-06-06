@@ -16,7 +16,11 @@ In Scholia, all content is centered around groups; documents are uploaded to gro
 
 **Technical Highlights:**
 
-Scholia is currently separated into two main parts: the dashboard and the commentary tool. The commentary tool is the main feature of Scholia where documents are read and commentaries are written. 
+Scholia is currently separated into two main parts: the dashboard and the commentary tool. 
+
+The dasboard provides an interface for creating groups, searching for new ones, and displaying the content of those selected. There is a form for uploading documents, and the documents uploaded to a group are processed in order to sore metadata and to create a thumbnail of the first page. Panels representing each document along with their thumbnails are displayed in the dashboard using a combination of programmatic grid and translate styling to create a tiling logic where those selected expand in their row and push others in the row down, yet at the same time any new selected one expands in its current row without reverting back to its original position. 
+
+The commentary tool is the main feature of Scholia where documents are read and commentaries are written. 
 
 Documents are displayed using both the react-pdf library, which provides a basic framework for rendering static page components for a document, and an original solution that allows for rendering the pages in a continuous and scrollable column. The page components have been set up to procedurally load in a way that accommodates jumping through different sections of the document as needed according to the different sections of the commentary.
 
