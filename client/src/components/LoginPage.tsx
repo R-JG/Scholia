@@ -28,15 +28,9 @@ const LoginPage = ({
             />
             <main className='LoginPage--main'>
                 <div className='LoginPage--info-section'>
-                    <hr className='LoginPage--paragraph-hr' />
-                    <p className='LoginPage--info-paragraph first'>
-                        Scholia is a platform for writing commentaries in a collaborative, group based environment.
-                    </p>
-                    <p className='LoginPage--info-paragraph second'>
-                        This project is inspired by the pedagogical tradition of commentary writing, which flourished through the Classical, Medieval, and Early-Modern periods. The aim of Scholia is to reimagine this in the context of contemporary web technology.
-                    </p>
-                    <p className='LoginPage--info-paragraph third'>
-                        In Scholia, all content is centered around groups; documents are uploaded to groups and shared in common among their members. Group members may then create commentaries for these documents, or read those created by other members.
+                    <hr className='LoginPage--info-hr' />
+                    <p className='LoginPage--info-text'>
+                        Scholia is a platform for writing <span className='LoginPage--accent-word'>commentaries</span> in a collaborative, group based environment.
                     </p>
                 </div>
                 <div className='LoginPage--form-section'>

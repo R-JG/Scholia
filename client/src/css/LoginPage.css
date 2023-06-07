@@ -80,28 +80,26 @@
 
 .LoginPage--info-section {
     width: 50%;
-    color: var(--font-color);
-    /* align-self: center; */
-
+    margin-left: 3rem;
+    align-self: center;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
 
-.LoginPage--info-paragraph {
-    margin-left: 2em;
+.LoginPage--info-text {
+    font-size: 2rem;
+    width: 25%;
+    margin-left: 2rem;
     margin-block: 0;
-}
-/*
-.LoginPage--info-paragraph.second {
-    margin-top: 3em;
+    color: var(--font-color);
 }
 
-.LoginPage--info-paragraph.third {
-    margin-top: 6em;
+.LoginPage--accent-word {
+    color: var(--accent-color-one);
 }
-*/
-.LoginPage--paragraph-hr {
-    margin-block: 0;
+
+.LoginPage--info-hr {
+    margin: 0;
     border: 0.1em solid var(--font-color);
 }
