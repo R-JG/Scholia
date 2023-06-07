@@ -50,7 +50,7 @@ const GroupContentPanel = ({
     setSelectedSection
     }: Props) => {
     
-    if (!user || !selectedGroup) return <div className='GroupContentPanel inactive'></div>;
+    if (!user) return <div className='GroupContentPanel inactive'></div>;
 
     const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
 
@@ -62,8 +62,9 @@ const GroupContentPanel = ({
     const gridColumnRemSize = 17;
     const gridRowRemSize = 23.5;
     const gridGapRemSize = 2;
-    const selectedDocumentIndex = ((selectedDocument && (selectedDocument.groupId === selectedGroup.id)) 
-        ? documentsForGroup.findIndex(document => (document.id === selectedDocument.id)) : null
+    const selectedDocumentIndex = ((selectedDocument && selectedGroup && 
+        (selectedDocument.groupId === selectedGroup.id)) ? documentsForGroup
+        .findIndex(document => (document.id === selectedDocument.id)) : null
     );
     
     useEffect(() => {

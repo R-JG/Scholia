@@ -5,23 +5,61 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: center;
+}
+
+.LoginPage--main {
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    padding-inline: 4rem;
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.LoginPage--form-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.LoginPage--form-options {
+    width: 75%;
+    padding-top: 1em;
+    border-top: 0.2em solid var(--font-color);
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.LoginPage--form-note {
+    color: var(--font-color);
 }
 
 .LoginPage--switch-forms-button {
-    margin-right: 4rem;
-    margin-top: 2rem;
+    margin: 2em;
+    align-self: flex-end;
 }
 
 .LoginPage--prompt {
     padding: 1.2em;
-    margin-inline: 4rem;
+    margin: 2rem;
     border-radius: 0.5rem;
     background-color: var(--background-color-two);
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
+    position: absolute;
+    bottom: 2%;
 }
 
 .LoginPage--prompt-text {
@@ -38,4 +76,32 @@
     margin-block: 0;
     margin-inline: 1em;
     align-self: flex-start;
+}
+
+.LoginPage--info-section {
+    width: 50%;
+    color: var(--font-color);
+    /* align-self: center; */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.LoginPage--info-paragraph {
+    margin-left: 2em;
+    margin-block: 0;
+}
+/*
+.LoginPage--info-paragraph.second {
+    margin-top: 3em;
+}
+
+.LoginPage--info-paragraph.third {
+    margin-top: 6em;
+}
+*/
+.LoginPage--paragraph-hr {
+    margin-block: 0;
+    border: 0.1em solid var(--font-color);
 }
