@@ -16,3 +16,14 @@
     justify-content: flex-end;
     align-items: flex-start;
 }
+
+.Dashboard--no-groups-message-container {
+    width: 34%;
+    margin-block: 12rem;
+    margin-inline: 20%;
+}
+
+.Dashboard--no-groups-message-text {
+    font-weight: 500;
+    color: var(--font-color);
+}

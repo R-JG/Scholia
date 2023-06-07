@@ -61,6 +61,18 @@ const Dashboard = ({
                 logout={logout}
             />
             <main className='Dashboard--main'>
+                {(userGroups.length === 0) && 
+                <div className='Dashboard--no-groups-message-container'>
+                    <p className='Dashboard--no-groups-message-text'>
+                        Welcome to Scholia!
+                    </p>
+                    <p className='Dashboard--no-groups-message-text'>
+                        Create a group and upload some documents to get started.
+                    </p>
+                    <p className='Dashboard--no-groups-message-text'>
+                        Or, search for the "Demo Group" and join to view some example documents and commentaries.
+                    </p>
+                </div>}
                 {userGroups.map(group => 
                 <GroupContentPanel 
                     key={group.id}
