@@ -15,5 +15,7 @@
 
 .DocumentUploadForm--upload-input {
     max-width: 65%;
+    padding: 0.7em;
     margin-right: 1em;
+    background-color: var(--background-color-three);
 }

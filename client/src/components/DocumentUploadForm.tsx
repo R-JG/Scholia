@@ -38,6 +38,7 @@ const DocumentUploadForm = ({
             setAllDocumentsForGroups(allDocumentsForGroups.concat(addedDocumentInfo));
             setSelectedDocument(addedDocumentInfo);
             if (fileInuptRef.current) fileInuptRef.current.value = '';
+            setInputFile(null);
             setUploadProgress(undefined);
             setIsExpanded(false);
         });
