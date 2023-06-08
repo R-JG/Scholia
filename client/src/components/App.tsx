@@ -25,6 +25,7 @@ const App = () => {
     const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
     const [selectedCommentary, setSelectedCommentary] = useState<Commentary | null>(null);
     const [selectedSection, setSelectedSection] = useState<SelectedSection | null>(null);
+    const [userHasNoGroups, setUserHasNoGroups] = useState(false);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -42,16 +43,27 @@ const App = () => {
     useEffect(() => {
         if (!user) return;
         groupsService.getGroupsByUser(user.token)
-        .then(groups => setUserGroups(groups));
+        .then(groups => {
+            setUserGroups(groups);
+            if (groups.length === 0) setUserHasNoGroups(true);
+        });
+
         commentariesService.getAllCommentaryInfoByUser(user.token)
         .then(userCommentaryInfo => setUserCommentaries(userCommentaryInfo));
     }, [user]);
 
     useEffect(() => {
-        if (!user || (userGroups.length <= 0)) return;
+        if (!user || (userGroups.length === 0)) return;
         const groupIds: number[] = userGroups.map(group => group.id);
         groupDocumentsService.getAllDocumentInfoForGroups(groupIds, user.token)
         .then(groupDocumentInfo => setAllDocumentsForGroups(groupDocumentInfo));
+    }, [userGroups]);
+
+    useEffect(() => {
+        if (userGroups.length > 0) {
+            setUserHasNoGroups(false);
+            if (!selectedGroup) setSelectedGroup(userGroups[0]);
+        };
     }, [userGroups]);
 
     const updateUser = (userData: LoggedInUser | null): void => {
@@ -73,6 +85,7 @@ const App = () => {
         setUserGroups([]);
         setUserCommentaries([]);
         setAllDocumentsForGroups([]);
+        setUserHasNoGroups(false);
     };
 
     const createGroup = (groupName: string): void => {
@@ -215,6 +228,7 @@ const App = () => {
                             selectedSection={selectedSection}
                             selectedGroup={selectedGroup}
                             allDocumentsForGroups={allDocumentsForGroups}
+                            userHasNoGroups={userHasNoGroups}
                             logout={logout}
                             createGroup={createGroup}
                             joinGroup={joinGroup}

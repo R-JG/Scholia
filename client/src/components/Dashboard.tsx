@@ -15,6 +15,7 @@ interface Props {
     selectedSection: SelectedSection | null,
     selectedGroup: Group | null,
     allDocumentsForGroups: GroupDocumentInfo[],
+    userHasNoGroups: boolean, 
     logout: () => void, 
     createGroup: (groupName: string) => void,
     joinGroup: (groupId: number) => void, 
@@ -36,6 +37,7 @@ const Dashboard = ({
     selectedSection, 
     selectedGroup,
     allDocumentsForGroups, 
+    userHasNoGroups, 
     logout,
     createGroup,
     joinGroup, 
@@ -61,7 +63,7 @@ const Dashboard = ({
                 logout={logout}
             />
             <main className='Dashboard--main'>
-                {(userGroups.length === 0) && 
+                {userHasNoGroups && 
                 <div className='Dashboard--no-groups-message-container'>
                     <p className='Dashboard--no-groups-message-text'>
                         {`Welcome to Scholia ${user.username}!`}
