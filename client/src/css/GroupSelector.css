@@ -1,13 +1,17 @@
 .GroupSelector {
+    min-height: 3.5em;
     padding-inline: 1em;
+    padding-block: 0.5em;
     margin-block: 0.5em;
     margin-inline: 0;
     border-radius: 0.5rem;
     border: 0.2em solid var(--font-color);
     cursor: pointer;
     transition: filter 0.2s ease;
-    display: grid;
-    place-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .GroupSelector:hover {
@@ -24,9 +28,14 @@
 }
 
 .GroupSelector--group-name {
+    margin: 0.5em;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.GroupSelector--join-group-button {
+    width: 4em;
 }

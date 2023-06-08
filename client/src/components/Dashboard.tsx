@@ -64,7 +64,7 @@ const Dashboard = ({
                 {(userGroups.length === 0) && 
                 <div className='Dashboard--no-groups-message-container'>
                     <p className='Dashboard--no-groups-message-text'>
-                        Welcome to Scholia!
+                        {`Welcome to Scholia ${user.username}!`}
                     </p>
                     <p className='Dashboard--no-groups-message-text'>
                         Create a group and upload some documents to get started.

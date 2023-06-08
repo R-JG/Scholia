@@ -79,7 +79,9 @@ const App = () => {
         if (!user) return;
         groupsService.createGroup({ groupName }, user.token)
         .then(createdGroup => {
-            if (createdGroup) setUserGroups(userGroups.concat(createdGroup));
+            if (!createdGroup) return;
+            setUserGroups(userGroups.concat(createdGroup));
+            setSelectedGroup(createdGroup);
         });
     };
 
@@ -89,6 +91,7 @@ const App = () => {
         .then(joinedGroup => {
             if (!joinedGroup) return;
             setUserGroups(userGroups.concat(joinedGroup));
+            setSelectedGroup(joinedGroup);
         });
     };
 
