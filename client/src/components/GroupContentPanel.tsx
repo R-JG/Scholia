@@ -7,12 +7,14 @@ import DocumentUploadForm from './DocumentUploadForm';
 import DocumentSelector from './DocumentSelector';
 import '../css/GroupContentPanel.css';
 
-interface GridStyles { 
+interface GridStyle { 
     gridColumnStart: number, 
     gridColumnEnd: number, 
     gridRowStart: number, 
     gridRowEnd: number
 };
+interface TranslateStyle { translate: string };
+interface DocumentSelectorStyle extends GridStyle, TranslateStyle {};
 
 interface Props {
     user: LoggedInUser | null,
@@ -53,33 +55,43 @@ const GroupContentPanel = ({
     if (!user) return <div className='GroupContentPanel inactive'></div>;
 
     const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
+    const [previousSelectionRow, setPreviousSelectionRow] = useState<number | null>(null);
+    const [previousSelectionHadYTranslate, setPreviousSelectionHadYTranslate] = useState<boolean>(false);
+    const [documentSelectorStyles, setDocumentSelectorStyles] = useState<DocumentSelectorStyle[]>([]);
 
     const documentListRef = useRef<HTMLDivElement>(null);
-    const rowOfPreviousSelection = useRef<number | null>(null);
-    const previousSelectionHadYTranslate = useRef<boolean>(false);
 
     const gridColumnAmount = 3;
     const gridColumnRemSize = 17;
     const gridRowRemSize = 23.5;
     const gridGapRemSize = 2;
-    const selectedDocumentIndex = ((selectedDocument && selectedGroup && 
-        (selectedDocument.groupId === selectedGroup.id)) ? documentsForGroup
-        .findIndex(document => (document.id === selectedDocument.id)) : null
-    );
-    
+
+    useEffect(() => {
+        if (previousSelectionRow) setPreviousSelectionRow(null);
+        if (previousSelectionHadYTranslate) setPreviousSelectionHadYTranslate(false);
+    }, [selectedGroup]);
+
     useEffect(() => {
         if (documentsForGroup.length === 0) return;
         const documentIds: number[] = documentsForGroup.map(document => document.id);
         commentariesService.getAllCommentaryInfoForDocuments(user.token, documentIds)
         .then(commentaries => setAllDocumentCommentaries(commentaries));
-    }, []);
+
+        console.log('running doc commentary request...');
+
+    }, [documentsForGroup]);
 
     useEffect(() => {
-        if (rowOfPreviousSelection.current !== null) rowOfPreviousSelection.current = null;
-        if (previousSelectionHadYTranslate.current) previousSelectionHadYTranslate.current = false;
-    }, [selectedGroup]);
+        const selectedDocumentIndex = ((selectedDocument && selectedGroup && 
+            (selectedDocument.groupId === selectedGroup.id)) ? documentsForGroup
+            .findIndex(document => (document.id === selectedDocument.id)) : null
+        );
+        setDocumentSelectorStyles(getDocumentSelectorStyles(selectedDocumentIndex));
+    }, [documentsForGroup, selectedDocument]);
 
-    const filterCommentariesByDocument = (commentaries: CommentaryInfo[], documentId: number) => (
+    const filterCommentariesByDocument = (
+            commentaries: CommentaryInfo[], documentId: number
+        ): CommentaryInfo[] => (
         commentaries.filter(commentary => (commentary.documentId === documentId))
     );
 
@@ -87,7 +99,7 @@ const GroupContentPanel = ({
 
     const getGridRowStart = (index: number): number => Math.ceil((index + 1) / gridColumnAmount);
 
-    const getDocumentSelectorGridStyle = (documentIndex: number): GridStyles => {
+    const getDocumentSelectorGridStyle = (documentIndex: number): GridStyle => {
         const gridColumnStart = getGridColumnStart(documentIndex);
         const gridColumnEnd = (gridColumnStart + 1);
         const gridRowStart = getGridRowStart(documentIndex);
@@ -95,37 +107,34 @@ const GroupContentPanel = ({
         return { gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd };
     };
     
-    const getDocumentSelectorTranslateStyle = (documentIndex: number): { translate: string } => {
+    const getDocumentSelectorTranslateStyle = (
+            documentIndex: number, selectedDocumentIndex: number | null
+        ): TranslateStyle => {
         const isSelectionIndex = (documentIndex === selectedDocumentIndex);
-
-        const createTranslateStyle = (setY: 'translateY' | 'baseY'): { translate: string } => ({
+        const createTranslateStyle = (setY: 'translateY' | 'baseY'): TranslateStyle => ({
             translate: 
                 `${isSelectionIndex ? ((getGridColumnStart(documentIndex) - 1) 
                     * (-(gridColumnRemSize + gridGapRemSize))) : 0}rem 
                  ${(setY === 'translateY') ? (gridRowRemSize + gridGapRemSize) : 0}rem`
         });
-
         if (selectedDocumentIndex === null) return createTranslateStyle('baseY');
-
-        const currentIndexRow = getGridRowStart(documentIndex);
-        const selectionRow = getGridRowStart(selectedDocumentIndex);
-
         if ((documentIndex === (documentsForGroup.length - 1)) && isSelectionIndex
             && (getGridColumnStart(documentIndex) === 1)) {
             return createTranslateStyle('baseY');
         };
-
+        const currentIndexRow = getGridRowStart(documentIndex);
+        const selectionRow = getGridRowStart(selectedDocumentIndex);
         if (currentIndexRow === selectionRow) {
-            if (rowOfPreviousSelection.current) {
-                if (selectionRow === rowOfPreviousSelection.current) {
-                    if (previousSelectionHadYTranslate.current) {
+            if (previousSelectionRow) {
+                if (selectionRow === previousSelectionRow) {
+                    if (previousSelectionHadYTranslate) {
                         return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
                     } else return createTranslateStyle(isSelectionIndex ? 'translateY' : 'baseY');
                 };
-                if (selectionRow < rowOfPreviousSelection.current) {
+                if (selectionRow < previousSelectionRow) {
                     return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
                 };
-                if (selectionRow > rowOfPreviousSelection.current) {
+                if (selectionRow > previousSelectionRow) {
                     return createTranslateStyle(isSelectionIndex ? 'translateY' : 'baseY');
                 };
             } else return createTranslateStyle(isSelectionIndex ? 'baseY' : 'translateY');
@@ -135,15 +144,15 @@ const GroupContentPanel = ({
         return createTranslateStyle('baseY');
     };
 
-    const recordSelectionStyleInfo = (gridRow: number, hadYTranslate: boolean) => {
-        rowOfPreviousSelection.current = gridRow;
-        previousSelectionHadYTranslate.current = hadYTranslate;
+    const recordSelectionStyleInfo = (gridRow: number, hasYTranslate: boolean): void => {
+        setPreviousSelectionRow(gridRow);
+        setPreviousSelectionHadYTranslate(hasYTranslate);
     };
 
-    const getDocumentSelectorStyles = (): (GridStyles & { translate: string })[] => {
+    const getDocumentSelectorStyles = (selectedDocumentIndex: number | null): DocumentSelectorStyle[] => {
         const styleArray = documentsForGroup.map((_document, index) => ({
             ...getDocumentSelectorGridStyle(index),
-            ...getDocumentSelectorTranslateStyle(index)
+            ...getDocumentSelectorTranslateStyle(index, selectedDocumentIndex)
         }));
         styleArray.forEach((style, index) => {
             if (index === selectedDocumentIndex) {
@@ -154,8 +163,6 @@ const GroupContentPanel = ({
         });
         return styleArray;
     };
-
-    const documentSelectorStyles = getDocumentSelectorStyles();
 
     return (
         <div className='GroupContentPanel' style={displayStyle}>
