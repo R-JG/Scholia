@@ -7,17 +7,17 @@ import '../css/DocumentUploadForm.css';
 
 interface Props {
     user: LoggedInUser | null,
-    groupDocuments: GroupDocumentInfo[], 
+    allDocumentsForGroups: GroupDocumentInfo[], 
     selectedGroup: Group | null, 
-    setGroupDocuments: (groupDocuments: GroupDocumentInfo[]) => void, 
+    setAllDocumentsForGroups: (groupDocuments: GroupDocumentInfo[]) => void, 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void
 };
 
 const DocumentUploadForm = ({
     user, 
-    groupDocuments, 
+    allDocumentsForGroups, 
     selectedGroup, 
-    setGroupDocuments, 
+    setAllDocumentsForGroups, 
     setSelectedDocument
     }: Props) => {
 
@@ -35,7 +35,7 @@ const DocumentUploadForm = ({
         groupDocumentsService.uploadDocument(document, groupId, user.token, callbackUploadProgress)
         .then(addedDocumentInfo => {
             if (!addedDocumentInfo) return setUploadProgress(undefined);
-            setGroupDocuments(groupDocuments.concat(addedDocumentInfo));
+            setAllDocumentsForGroups(allDocumentsForGroups.concat(addedDocumentInfo));
             setSelectedDocument(addedDocumentInfo);
             if (fileInuptRef.current) fileInuptRef.current.value = '';
             setUploadProgress(undefined);

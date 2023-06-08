@@ -14,12 +14,12 @@ interface Props {
     selectedCommentary: Commentary | null, 
     selectedSection: SelectedSection | null,
     selectedGroup: Group | null,
-    groupDocuments: GroupDocumentInfo[],
+    allDocumentsForGroups: GroupDocumentInfo[],
     logout: () => void, 
     createGroup: (groupName: string) => void,
     joinGroup: (groupId: number) => void, 
     createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>,
-    setGroupDocuments: (groupDocuments: GroupDocumentInfo[]) => void, 
+    setAllDocumentsForGroups: (groupDocuments: GroupDocumentInfo[]) => void, 
     setSelectedGroup: (group: Group) => void,
     setSelectedDocument: (documentInfo: GroupDocumentInfo | null) => void,
     getCommentaryForSelection: (commentaryId: number) => void,
@@ -35,12 +35,12 @@ const Dashboard = ({
     selectedCommentary, 
     selectedSection, 
     selectedGroup,
-    groupDocuments, 
+    allDocumentsForGroups, 
     logout,
     createGroup,
     joinGroup, 
     createCommentary, 
-    setGroupDocuments, 
+    setAllDocumentsForGroups, 
     setSelectedGroup,
     setSelectedDocument,
     getCommentaryForSelection, 
@@ -76,18 +76,16 @@ const Dashboard = ({
                 {userGroups.map(group => 
                 <GroupContentPanel 
                     key={group.id}
-                    displayStyle={createGroupDisplayStyle(group.id)}
                     user={user}
+                    group={group}
+                    displayStyle={createGroupDisplayStyle(group.id)}
                     userCommentaries={userCommentaries}
-                    groupDocuments={groupDocuments}
+                    allDocumentsForGroups={allDocumentsForGroups}
                     selectedGroup={selectedGroup}
-                    documentsForGroup={groupDocuments.filter(groupDocument => 
-                        groupDocument.groupId === group.id
-                    )}
                     selectedDocument={selectedDocument}
                     selectedCommentary={selectedCommentary}
                     selectedSection={selectedSection}
-                    setGroupDocuments={setGroupDocuments}
+                    setAllDocumentsForGroups={setAllDocumentsForGroups}
                     setSelectedDocument={setSelectedDocument}
                     createCommentary={createCommentary}
                     getCommentaryForSelection={getCommentaryForSelection}

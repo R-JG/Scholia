@@ -20,7 +20,7 @@ const App = () => {
     const [user, setUser] = useState<LoggedInUser | null>(null);
     const [userGroups, setUserGroups] = useState<Group[]>([]);
     const [userCommentaries, setUserCommentaries] = useState<CommentaryInfo[]>([]);
-    const [groupDocuments, setGroupDocuments] = useState<GroupDocumentInfo[]>([]);
+    const [allDocumentsForGroups, setAllDocumentsForGroups] = useState<GroupDocumentInfo[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
     const [selectedCommentary, setSelectedCommentary] = useState<Commentary | null>(null);
@@ -51,7 +51,7 @@ const App = () => {
         if (!user || (userGroups.length <= 0)) return;
         const groupIds: number[] = userGroups.map(group => group.id);
         groupDocumentsService.getAllDocumentInfoForGroups(groupIds, user.token)
-        .then(groupDocumentInfo => setGroupDocuments(groupDocumentInfo));
+        .then(groupDocumentInfo => setAllDocumentsForGroups(groupDocumentInfo));
     }, [userGroups]);
 
     const updateUser = (userData: LoggedInUser | null): void => {
@@ -72,7 +72,7 @@ const App = () => {
         setSelectedGroup(null);
         setUserGroups([]);
         setUserCommentaries([]);
-        setGroupDocuments([]);
+        setAllDocumentsForGroups([]);
     };
 
     const createGroup = (groupName: string): void => {
@@ -214,12 +214,12 @@ const App = () => {
                             selectedCommentary={selectedCommentary}
                             selectedSection={selectedSection}
                             selectedGroup={selectedGroup}
-                            groupDocuments={groupDocuments}
+                            allDocumentsForGroups={allDocumentsForGroups}
                             logout={logout}
                             createGroup={createGroup}
                             joinGroup={joinGroup}
                             createCommentary={createCommentary}
-                            setGroupDocuments={setGroupDocuments}
+                            setAllDocumentsForGroups={setAllDocumentsForGroups}
                             setSelectedGroup={setSelectedGroup}
                             setSelectedDocument={setSelectedDocument}
                             getCommentaryForSelection={getCommentaryForSelection}

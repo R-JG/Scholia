@@ -5,7 +5,7 @@ import '../css/CommentarySelector.css';
 
 interface Props {
     commentaryInfo: CommentaryInfo,
-    groupDocuments: GroupDocumentInfo[],
+    documentsForGroup: GroupDocumentInfo[],
     selectedDocument: GroupDocumentInfo | null, 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     getCommentaryForSelection: (commentaryId: number) => void, 
@@ -14,7 +14,7 @@ interface Props {
 
 const CommentarySelector = ({
     commentaryInfo, 
-    groupDocuments, 
+    documentsForGroup, 
     selectedDocument, 
     setSelectedDocument,
     getCommentaryForSelection,
@@ -23,7 +23,7 @@ const CommentarySelector = ({
 
     const navigate = useNavigate();
 
-    const findDocumentForCommentary = (): GroupDocumentInfo | undefined => groupDocuments.find(
+    const findDocumentForCommentary = (): GroupDocumentInfo | undefined => documentsForGroup.find(
         documentInfo => (documentInfo.id === commentaryInfo.documentId)
     );
 

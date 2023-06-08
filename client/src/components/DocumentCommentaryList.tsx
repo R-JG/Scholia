@@ -46,7 +46,7 @@ const DocumentCommentaryList = ({
                     <CommentarySelector 
                         key={commentaryInfo.id}
                         commentaryInfo={commentaryInfo}
-                        groupDocuments={documentsForGroup}
+                        documentsForGroup={documentsForGroup}
                         selectedDocument={selectedDocument}
                         setSelectedDocument={setSelectedDocument}
                         getCommentaryForSelection={getCommentaryForSelection}
@@ -65,7 +65,7 @@ const DocumentCommentaryList = ({
                     <CommentarySelector 
                         key={commentaryInfo.id}
                         commentaryInfo={commentaryInfo}
-                        groupDocuments={documentsForGroup}
+                        documentsForGroup={documentsForGroup}
                         selectedDocument={selectedDocument}
                         setSelectedDocument={setSelectedDocument}
                         getCommentaryForSelection={getCommentaryForSelection}

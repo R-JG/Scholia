@@ -18,15 +18,15 @@ interface DocumentSelectorStyle extends GridStyle, TranslateStyle {};
 
 interface Props {
     user: LoggedInUser | null,
+    group: Group, 
     displayStyle: { display: string }, 
     userCommentaries: CommentaryInfo[], 
-    groupDocuments: GroupDocumentInfo[], 
+    allDocumentsForGroups: GroupDocumentInfo[], 
     selectedGroup: Group | null, 
-    documentsForGroup: GroupDocumentInfo[],
     selectedDocument: GroupDocumentInfo | null, 
     selectedCommentary: Commentary | null,
     selectedSection: SelectedSection | null,
-    setGroupDocuments: (groupDocuments: GroupDocumentInfo[]) => void, 
+    setAllDocumentsForGroups: (groupDocuments: GroupDocumentInfo[]) => void, 
     setSelectedDocument: (documentInfo: GroupDocumentInfo) => void,
     createCommentary: (documentId: number, commentaryName: string) => Promise<boolean>, 
     getCommentaryForSelection: (commentaryId: number) => void, 
@@ -36,15 +36,15 @@ interface Props {
 
 const GroupContentPanel = ({ 
     user,
+    group, 
     displayStyle, 
     userCommentaries, 
-    groupDocuments, 
+    allDocumentsForGroups, 
     selectedGroup, 
-    documentsForGroup, 
     selectedDocument, 
     selectedCommentary,
     selectedSection, 
-    setGroupDocuments, 
+    setAllDocumentsForGroups, 
     setSelectedDocument,
     createCommentary, 
     getCommentaryForSelection, 
@@ -54,6 +54,7 @@ const GroupContentPanel = ({
     
     if (!user) return <div className='GroupContentPanel inactive'></div>;
 
+    const [documentsForGroup, setDocumentsForGroup] = useState<GroupDocumentInfo[]>([]);
     const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
     const [previousSelectionRow, setPreviousSelectionRow] = useState<number | null>(null);
     const [previousSelectionHadYTranslate, setPreviousSelectionHadYTranslate] = useState<boolean>(false);
@@ -72,13 +73,15 @@ const GroupContentPanel = ({
     }, [selectedGroup]);
 
     useEffect(() => {
+        setDocumentsForGroup(allDocumentsForGroups
+        .filter(document => (document.groupId === group.id)));
+    }, [allDocumentsForGroups]);
+
+    useEffect(() => {
         if (documentsForGroup.length === 0) return;
         const documentIds: number[] = documentsForGroup.map(document => document.id);
         commentariesService.getAllCommentaryInfoForDocuments(user.token, documentIds)
         .then(commentaries => setAllDocumentCommentaries(commentaries));
-
-        console.log('running doc commentary request...');
-
     }, [documentsForGroup]);
 
     useEffect(() => {
@@ -169,9 +172,9 @@ const GroupContentPanel = ({
             <div className='GroupContentPanel--group-documents-section'>
                 <DocumentUploadForm 
                     user={user}
-                    groupDocuments={groupDocuments}
+                    allDocumentsForGroups={allDocumentsForGroups}
                     selectedGroup={selectedGroup}
-                    setGroupDocuments={setGroupDocuments}
+                    setAllDocumentsForGroups={setAllDocumentsForGroups}
                     setSelectedDocument={setSelectedDocument}
                 />
                 <div 
