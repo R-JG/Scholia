@@ -9,13 +9,13 @@ import '../css/Dashboard.css';
 interface Props {
     user: LoggedInUser | null,
     userGroups: Group[],
+    groupStateIsInitialized: boolean, 
     userCommentaries: CommentaryInfo[], 
     selectedDocument: GroupDocumentInfo | null, 
     selectedCommentary: Commentary | null, 
     selectedSection: SelectedSection | null,
     selectedGroup: Group | null,
     allDocumentsForGroups: GroupDocumentInfo[],
-    userHasNoGroups: boolean, 
     logout: () => void, 
     createGroup: (groupName: string) => void,
     joinGroup: (groupId: number) => void, 
@@ -31,13 +31,13 @@ interface Props {
 const Dashboard = ({ 
     user, 
     userGroups,
+    groupStateIsInitialized, 
     userCommentaries, 
     selectedDocument, 
     selectedCommentary, 
     selectedSection, 
     selectedGroup,
     allDocumentsForGroups, 
-    userHasNoGroups, 
     logout,
     createGroup,
     joinGroup, 
@@ -63,7 +63,7 @@ const Dashboard = ({
                 logout={logout}
             />
             <main className='Dashboard--main'>
-                {userHasNoGroups && 
+                {groupStateIsInitialized && (userGroups.length === 0) && 
                 <div className='Dashboard--no-groups-message-container'>
                     <p className='Dashboard--no-groups-message-text'>
                         {`Welcome to Scholia ${user.username}!`}

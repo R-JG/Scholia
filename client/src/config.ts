@@ -11,4 +11,4 @@ export const pageRenderCooldownMilliseconds: number = 100;
 export const debounceMilliseconds: number = 500;
 
 // File Upload
-export const maxFileBytesSize: number = 30000000;
+export const maxFileBytesSize: number = 20000000;

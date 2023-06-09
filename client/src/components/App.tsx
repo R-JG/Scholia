@@ -25,7 +25,7 @@ const App = () => {
     const [selectedDocument, setSelectedDocument] = useState<GroupDocumentInfo | null>(null);
     const [selectedCommentary, setSelectedCommentary] = useState<Commentary | null>(null);
     const [selectedSection, setSelectedSection] = useState<SelectedSection | null>(null);
-    const [userHasNoGroups, setUserHasNoGroups] = useState(false);
+    const [groupStateIsInitialized, setGroupStateIsInitialized] = useState<boolean>(false);
 
     useEffect(() => {
         const storedUserData = localStorage.getItem('user');
@@ -45,7 +45,8 @@ const App = () => {
         groupsService.getGroupsByUser(user.token)
         .then(groups => {
             setUserGroups(groups);
-            if (groups.length === 0) setUserHasNoGroups(true);
+            setGroupStateIsInitialized(true);
+            if (groups.length > 0) setSelectedGroup(groups[0]);
         });
 
         commentariesService.getAllCommentaryInfoByUser(user.token)
@@ -57,13 +58,6 @@ const App = () => {
         const groupIds: number[] = userGroups.map(group => group.id);
         groupDocumentsService.getAllDocumentInfoForGroups(groupIds, user.token)
         .then(groupDocumentInfo => setAllDocumentsForGroups(groupDocumentInfo));
-    }, [userGroups]);
-
-    useEffect(() => {
-        if (userGroups.length > 0) {
-            setUserHasNoGroups(false);
-            if (!selectedGroup) setSelectedGroup(userGroups[0]);
-        };
     }, [userGroups]);
 
     const updateUser = (userData: LoggedInUser | null): void => {
@@ -85,7 +79,7 @@ const App = () => {
         setUserGroups([]);
         setUserCommentaries([]);
         setAllDocumentsForGroups([]);
-        setUserHasNoGroups(false);
+        setGroupStateIsInitialized(false);
     };
 
     const createGroup = (groupName: string): void => {
@@ -222,13 +216,13 @@ const App = () => {
                         ? <Dashboard 
                             user={user} 
                             userGroups={userGroups}
+                            groupStateIsInitialized={groupStateIsInitialized}
                             userCommentaries={userCommentaries}
                             selectedDocument={selectedDocument}
                             selectedCommentary={selectedCommentary}
                             selectedSection={selectedSection}
                             selectedGroup={selectedGroup}
                             allDocumentsForGroups={allDocumentsForGroups}
-                            userHasNoGroups={userHasNoGroups}
                             logout={logout}
                             createGroup={createGroup}
                             joinGroup={joinGroup}
