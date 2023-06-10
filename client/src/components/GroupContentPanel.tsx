@@ -54,43 +54,30 @@ const GroupContentPanel = ({
     
     if (!user) return <div className='GroupContentPanel inactive'></div>;
 
-    const [documentsForGroup, setDocumentsForGroup] = useState<GroupDocumentInfo[]>([]);
-    const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
-    const [previousSelectionRow, setPreviousSelectionRow] = useState<number | null>(null);
-    const [previousSelectionHadYTranslate, setPreviousSelectionHadYTranslate] = useState<boolean>(false);
-    const [documentSelectorStyles, setDocumentSelectorStyles] = useState<DocumentSelectorStyle[]>([]);
-
-    const documentListRef = useRef<HTMLDivElement>(null);
-
     const gridColumnAmount = 3;
     const gridColumnRemSize = 17;
     const gridRowRemSize = 23.5;
     const gridGapRemSize = 2;
+    
+    const documentsForGroup = allDocumentsForGroups.filter(document => 
+        (document.groupId === group.id)
+    );
+    
+    const [allDocumentCommentaries, setAllDocumentCommentaries] = useState<CommentaryInfo[]>([]);
+    const [documentSelectorStyles, setDocumentSelectorStyles] = useState<DocumentSelectorStyle[]>([]);
+    const [previousSelectionRow, setPreviousSelectionRow] = useState<number | null>(null);
+    const [previousSelectionHadYTranslate, setPreviousSelectionHadYTranslate] = useState<boolean>(false);
+    const [previousDocumentsForGroup, setPreviousDocumentsForGroup] = useState<GroupDocumentInfo[]>([]);
+    const [previousSelectedDocument, setPreviousSelectedDocument] = useState(selectedDocument);
 
-    useEffect(() => {
-        if (previousSelectionRow) setPreviousSelectionRow(null);
-        if (previousSelectionHadYTranslate) setPreviousSelectionHadYTranslate(false);
-    }, [selectedGroup]);
-
-    useEffect(() => {
-        setDocumentsForGroup(allDocumentsForGroups
-        .filter(document => (document.groupId === group.id)));
-    }, [allDocumentsForGroups]);
+    const documentListRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (documentsForGroup.length === 0) return;
         const documentIds: number[] = documentsForGroup.map(document => document.id);
         commentariesService.getAllCommentaryInfoForDocuments(user.token, documentIds)
         .then(commentaries => setAllDocumentCommentaries(commentaries));
-    }, [documentsForGroup]);
-
-    useEffect(() => {
-        const selectedDocumentIndex = ((selectedDocument && selectedGroup && 
-            (selectedDocument.groupId === selectedGroup.id)) ? documentsForGroup
-            .findIndex(document => (document.id === selectedDocument.id)) : null
-        );
-        setDocumentSelectorStyles(getDocumentSelectorStyles(selectedDocumentIndex));
-    }, [documentsForGroup, selectedDocument]);
+    }, [allDocumentsForGroups]);
 
     const filterCommentariesByDocument = (
             commentaries: CommentaryInfo[], documentId: number
@@ -111,7 +98,8 @@ const GroupContentPanel = ({
     };
     
     const getDocumentSelectorTranslateStyle = (
-            documentIndex: number, selectedDocumentIndex: number | null
+            documentIndex: number, 
+            selectedDocumentIndex: number | null
         ): TranslateStyle => {
         const isSelectionIndex = (documentIndex === selectedDocumentIndex);
         const createTranslateStyle = (setY: 'translateY' | 'baseY'): TranslateStyle => ({
@@ -147,24 +135,45 @@ const GroupContentPanel = ({
         return createTranslateStyle('baseY');
     };
 
-    const recordSelectionStyleInfo = (gridRow: number, hasYTranslate: boolean): void => {
-        setPreviousSelectionRow(gridRow);
-        setPreviousSelectionHadYTranslate(hasYTranslate);
+    const createDocumentSelectorStyles = (
+            documentArray: GroupDocumentInfo[], selectedDocumentIndex: number | null
+        ): DocumentSelectorStyle[] => documentArray.map((_document, index) => ({
+        ...getDocumentSelectorGridStyle(index),
+        ...getDocumentSelectorTranslateStyle(index, selectedDocumentIndex)
+    }));
+    
+    const getSelectionStyleValues = (
+            styleArray: DocumentSelectorStyle[], selectedDocumentIndex: number | null
+        ): [number | null, boolean] => {
+        if (selectedDocumentIndex === null) return [null, false];
+        const selectedDocumentStyle = styleArray[selectedDocumentIndex];
+        const selectionYTranslateValue = selectedDocumentStyle.translate
+            .split(/\s+/)[1].match(/(?:\.)?\d+(?:\.\d+)?/);
+        const selectionHasYTranslate = selectionYTranslateValue 
+            ? (selectionYTranslateValue[0] !== '0') : false;
+        const selectionRow = selectedDocumentStyle.gridRowStart;
+        return [selectionRow, selectionHasYTranslate];
     };
 
-    const getDocumentSelectorStyles = (selectedDocumentIndex: number | null): DocumentSelectorStyle[] => {
-        const styleArray = documentsForGroup.map((_document, index) => ({
-            ...getDocumentSelectorGridStyle(index),
-            ...getDocumentSelectorTranslateStyle(index, selectedDocumentIndex)
-        }));
-        styleArray.forEach((style, index) => {
-            if (index === selectedDocumentIndex) {
-                const yTranslateValue = style.translate.split(/\s+/)[1].match(/(?:\.)?\d+(?:\.\d+)?/);
-                const selectionHadYTranslate = (yTranslateValue ? (yTranslateValue[0] !== '0') : false);
-                recordSelectionStyleInfo(style.gridRowStart, selectionHadYTranslate);
-            };
-        });
-        return styleArray;
+    if (group.id === selectedGroup?.id) {
+        const documentsHaveChanged = (
+            JSON.stringify(documentsForGroup) !== JSON.stringify(previousDocumentsForGroup)
+        );
+        const selectedDocumentHasChanged = (selectedDocument?.id !== previousSelectedDocument?.id);
+        if (documentsHaveChanged || selectedDocumentHasChanged) {
+            const selectedDocumentIndex = ((selectedDocument && selectedGroup && 
+                (selectedDocument.groupId === selectedGroup.id)) ? documentsForGroup
+                .findIndex(document => (document.id === selectedDocument.id)) : null
+            );
+            const nextStyles = createDocumentSelectorStyles(documentsForGroup, selectedDocumentIndex);
+            const [selectionRow, selectionHasYTranslate] = getSelectionStyleValues(nextStyles, selectedDocumentIndex);
+            setPreviousSelectionRow(selectionRow);
+            setPreviousSelectionHadYTranslate(selectionHasYTranslate);
+            setDocumentSelectorStyles(nextStyles);
+ 
+            if (documentsHaveChanged) setPreviousDocumentsForGroup(documentsForGroup);
+            if (selectedDocumentHasChanged) setPreviousSelectedDocument(selectedDocument);
+        };
     };
 
     return (
