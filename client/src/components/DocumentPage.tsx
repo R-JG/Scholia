@@ -17,8 +17,8 @@ interface Props {
     yPercentCoordinateOne: number | null,
     yPercentCoordinateTwo: number | null,
     editTextMode: boolean,
+    handleInitialPageLoadSuccess?: () => void, 
     setEditTextMode: (boolean: boolean) => void, 
-    setInitialPageIsLoaded: (isLoaded: boolean) => void,
     setInitialPageHeight: (height: number) => void,
     setPageForSelection: (pageNumber: number) => void,
     setUserIsSelecting: (isSelecting: boolean) => void,
@@ -40,8 +40,8 @@ const DocumentPage = ({
     yPercentCoordinateOne,
     yPercentCoordinateTwo,
     editTextMode, 
+    handleInitialPageLoadSuccess, 
     setEditTextMode, 
-    setInitialPageIsLoaded,
     setInitialPageHeight,
     setPageForSelection,
     setUserIsSelecting,
@@ -131,7 +131,7 @@ const DocumentPage = ({
                 width={pageWidth}
                 onLoadSuccess={isInitialPage ? (page) => {
                     setInitialPageHeight(page.height);
-                    setInitialPageIsLoaded(true);
+                    handleInitialPageLoadSuccess && handleInitialPageLoadSuccess();
                 } : undefined}
                 onRenderSuccess={isInitialPage ? () => {
                     if (selectedSection 

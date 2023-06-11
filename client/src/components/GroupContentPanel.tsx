@@ -156,10 +156,10 @@ const GroupContentPanel = ({
     };
 
     if (group.id === selectedGroup?.id) {
+        const selectedDocumentHasChanged = (selectedDocument?.id !== previousSelectedDocument?.id);
         const documentsHaveChanged = (
             JSON.stringify(documentsForGroup) !== JSON.stringify(previousDocumentsForGroup)
         );
-        const selectedDocumentHasChanged = (selectedDocument?.id !== previousSelectedDocument?.id);
         if (documentsHaveChanged || selectedDocumentHasChanged) {
             const selectedDocumentIndex = ((selectedDocument && selectedGroup && 
                 (selectedDocument.groupId === selectedGroup.id)) ? documentsForGroup

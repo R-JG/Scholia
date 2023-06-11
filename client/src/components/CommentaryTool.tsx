@@ -50,7 +50,6 @@ const CommentaryTool = ({
     const [downloadProgress, setDownloadProgress] = useState<number | undefined>(undefined);
     const [documentBlob, setDocumentBlob] = useState<Blob | null>(null);
     const [documentIsLoaded, setDocumentIsLoaded] = useState<boolean>(false);
-    const [initialPageIsLoaded, setInitialPageIsLoaded] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [initialPageHeight, setInitialPageHeight] = useState<number | null>(null);
     const [initialPageNumber, setInitialPageNumber] = useState<number>(1);
@@ -63,9 +62,12 @@ const CommentaryTool = ({
     const [pageForSelection, setPageForSelection] = useState<number | null>(null);
     const [yPercentCoordinateOne, setYPercentCoordinateOne] = useState<number | null>(null);
     const [yPercentCoordinateTwo, setYPercentCoordinateTwo] = useState<number | null>(null);
-    const [sectionTextHasBeenEdited, setSectionTextHasBeenEdited] = useState<boolean>(false);
 
     const documentContainerRef = useRef<HTMLDivElement>(null);
+
+    const sectionTextHasBeenEdited = (((selectedCommentary && selectedSection) && 
+        (selectedCommentary.commentarySections[selectedSection.index].text !== selectedSection.data.text)
+    ) ?? false);
 
     useEffect(() => {
         const callbackDownloadProgress = (newProgressValue: number | undefined): void => {
@@ -80,7 +82,13 @@ const CommentaryTool = ({
     }, []);
 
     useEffect(() => {
-        if (!documentIsLoaded) return;
+        if (!pageRenderCooldown) return;
+        const handleCooldownEnd = () => setPageRenderCooldown(false);
+        const cooldownTimer = setTimeout(handleCooldownEnd, pageRenderCooldownMilliseconds);
+        return () => clearTimeout(cooldownTimer);
+    }, [pageRenderCooldown]);
+
+    const handleDocumentLoadSuccess = () => {
         if (selectedCommentary && !selectedSection) {
             if (selectedCommentary.commentarySections.length > 0) {
                 const firstSection: CommentarySection = selectedCommentary.commentarySections[0];
@@ -91,30 +99,13 @@ const CommentaryTool = ({
         if (selectedCommentary && selectedSection) {
             setInitialPageNumber(selectedSection.data.pageNumber);
         };
-    }, [documentIsLoaded]);
-
-    useEffect(() => {
-        if (!documentIsLoaded || !initialPageIsLoaded || !initialPageHeight) return;
+        setDocumentIsLoaded(true);
+    };
+    
+    const handleInitialPageLoadSuccess = () => {
         expandNextPages();
         expandPreviousPages();
-    }, [initialPageIsLoaded]);
-
-    useEffect(() => {
-        if (!pageRenderCooldown) return;
-        const handleCooldownEnd = () => setPageRenderCooldown(false);
-        const cooldownTimer = setTimeout(handleCooldownEnd, pageRenderCooldownMilliseconds);
-        return () => clearTimeout(cooldownTimer);
-    }, [pageRenderCooldown]);
-
-    useEffect(() => {
-        if (!selectedCommentary || !selectedSection) return;
-        const sectionInCommentary: CommentarySection | undefined = selectedCommentary.commentarySections
-        .find(section => section.id === selectedSection.data.id);
-        if (!sectionInCommentary) return;
-        if (sectionInCommentary.text !== selectedSection.data.text) {
-            setSectionTextHasBeenEdited(true)
-        } else setSectionTextHasBeenEdited(false);
-    }, [selectedCommentary, selectedSection]);
+    };
 
     const jumpToNewPage = (pageNumber: number): void => {
         setPreviousPagesToRender(0);
@@ -236,7 +227,6 @@ const CommentaryTool = ({
                         yPercentCoordinateTwo={yPercentCoordinateTwo}
                         editTextMode={editTextMode}
                         setEditTextMode={setEditTextMode}
-                        setInitialPageIsLoaded={setInitialPageIsLoaded}
                         setInitialPageHeight={setInitialPageHeight}
                         setPageForSelection={setPageForSelection}
                         setUserIsSelecting={setUserIsSelecting}
@@ -276,7 +266,7 @@ const CommentaryTool = ({
                     loading='Preparing document'
                     onLoadSuccess={(pdf) => {
                         setTotalPages(pdf.numPages);
-                        setDocumentIsLoaded(true);
+                        handleDocumentLoadSuccess();
                     }}
                 >
                     {createPages('before-initial')}
@@ -294,8 +284,8 @@ const CommentaryTool = ({
                         yPercentCoordinateOne={yPercentCoordinateOne}
                         yPercentCoordinateTwo={yPercentCoordinateTwo}
                         editTextMode={editTextMode}
+                        handleInitialPageLoadSuccess={handleInitialPageLoadSuccess}
                         setEditTextMode={setEditTextMode}
-                        setInitialPageIsLoaded={setInitialPageIsLoaded}
                         setInitialPageHeight={setInitialPageHeight}
                         setPageForSelection={setPageForSelection}
                         setUserIsSelecting={setUserIsSelecting}
@@ -337,6 +327,7 @@ const CommentaryTool = ({
                 yPercentCoordinateOne={yPercentCoordinateOne}
                 yPercentCoordinateTwo={yPercentCoordinateTwo}
                 editTextMode={editTextMode}
+                sectionTextHasBeenEdited={sectionTextHasBeenEdited}
                 setSelectedSection={setSelectedSection}
                 setCoordinateSelectMode={setCoordinateSelectMode}
                 resetSelectionCoordinates={resetSelectionCoordinates}

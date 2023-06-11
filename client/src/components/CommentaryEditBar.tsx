@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { LoggedInUser, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import '../css/CommentaryEditBar.css';
 
@@ -11,6 +10,7 @@ interface Props {
     yPercentCoordinateOne: number | null,
     yPercentCoordinateTwo: number | null,
     editTextMode: boolean,
+    sectionTextHasBeenEdited: boolean, 
     setSelectedSection: (section: SelectedSection | null) => void,
     setCoordinateSelectMode: (boolean: boolean) => void,
     resetSelectionCoordinates: () => void,
@@ -34,7 +34,8 @@ const CommentaryEditBar = ({
     pageForSelection,
     yPercentCoordinateOne,
     yPercentCoordinateTwo,
-    editTextMode,
+    editTextMode, 
+    sectionTextHasBeenEdited, 
     setSelectedSection, 
     setCoordinateSelectMode,
     resetSelectionCoordinates,
@@ -47,18 +48,6 @@ const CommentaryEditBar = ({
 
     if (!user || !selectedCommentary || (user.id !== selectedCommentary.userId)
     ) return <div className='CommentaryEditBar inactive'></div>;
-
-    const [sectionTextHasBeenEdited, setSectionTextHasBeenEdited] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (!selectedSection) return;
-        const sectionInCommentary: CommentarySection | undefined = selectedCommentary.commentarySections
-        .find(section => section.id === selectedSection.data.id);
-        if (!sectionInCommentary) return;
-        if (sectionInCommentary.text !== selectedSection.data.text) {
-            setSectionTextHasBeenEdited(true)
-        } else setSectionTextHasBeenEdited(false);
-    }, [selectedCommentary, selectedSection]);
 
     const handleAddNewSectionButton = (): void => {
         setSelectedSection(null);
