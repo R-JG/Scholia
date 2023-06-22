@@ -45,9 +45,7 @@ const CommentaryOverlay = ({
                 onChange={handleTextAreaChange}
                 autoFocus
             />
-            : <p 
-                className='CommentaryOverlay--section-text--read-only' 
-                style={{ whiteSpace: 'pre-line' }}>
+            : <p className='CommentaryOverlay--section-text--read-only'>
                 {selectedSection.data.text}
             </p>}
         </div>

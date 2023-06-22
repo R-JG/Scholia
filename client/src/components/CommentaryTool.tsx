@@ -309,6 +309,7 @@ const CommentaryTool = ({
             />}
             {selectedCommentary && selectedSection && documentIsLoaded && 
             <CommentaryOverlay 
+                key={selectedSection.data.id}
                 selectedCommentary={selectedCommentary}
                 selectedSection={selectedSection}
                 editTextMode={editTextMode}
