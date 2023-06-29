@@ -21,7 +21,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .CommentaryNavigator--commentary-section-icon.selected {

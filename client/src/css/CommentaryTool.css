@@ -18,7 +18,7 @@
     width: 50%;
     height: 80%;
     margin-top: 3%;
-    overflow: scroll;
+    overflow: auto;
     position: relative;
 }
 

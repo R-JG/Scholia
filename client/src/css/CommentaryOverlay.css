@@ -38,12 +38,13 @@
     margin-bottom: calc(var(--commentary-navigator-height) + 0.2rem);
     line-height: 1.5em;
     border-bottom: 0.1rem solid var(--background-color-one);
-    overflow: scroll;
-    white-space: pre-line;
+    overflow: auto;
+    white-space: pre-wrap;
 }
 
 .CommentaryOverlay--section-text--edit {
     font-family: inherit;
+    font-size: inherit;
     box-sizing: border-box;
     height: 100%;
     width: calc(100% - 10rem);
@@ -58,7 +59,7 @@
     border-bottom: 0.1rem solid var(--background-color-one);
     background-color: var(--background-color-two);
     color: var(--font-color);
-    overflow: scroll;
+    overflow: auto;
     resize: none;
     filter: brightness(1.2);
     transition: filter ease 0.5s;

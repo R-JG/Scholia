@@ -7,7 +7,7 @@
     flex-shrink: 0;
     align-self: flex-end;
     color: var(--font-color);
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;

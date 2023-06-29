@@ -1,8 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Document } from 'react-pdf';
-import { 
-    LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection 
-} from '../typeUtils/types';
+import { LoggedInUser, GroupDocumentInfo, Commentary, CommentarySection, SelectedSection } from '../typeUtils/types';
 import { pageAmountToRenderOnScroll, pageRenderCooldownMilliseconds } from '../config';
 import groupDocumentsService from '../services/groupDocumentsService';
 import CommentaryToolHeader from './CommentaryToolHeader';
@@ -256,9 +254,7 @@ const CommentaryTool = ({
             <div 
                 className='CommentaryTool--document-container' 
                 ref={documentContainerRef}
-                onScroll={handleDocumentScroll}
-                style={(pageRenderCooldown) ? { overflow: 'hidden' } : undefined}
-            >
+                onScroll={handleDocumentScroll}>
                 {documentBlob && 
                 <Document 
                     className='CommentaryTool--document-component' 
@@ -267,8 +263,7 @@ const CommentaryTool = ({
                     onLoadSuccess={(pdf) => {
                         setTotalPages(pdf.numPages);
                         handleDocumentLoadSuccess();
-                    }}
-                >
+                    }}>
                     {createPages('before-initial')}
                     <DocumentPage 
                         key={createPageId(initialPageNumber)}
